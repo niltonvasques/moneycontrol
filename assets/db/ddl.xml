@@ -59,6 +59,12 @@
 <row name="nome" null="0" autoincrement="0">
 <datatype>VARCHAR(200)</datatype>
 <default>'NULL'</default></row>
+<row name="saldo" null="1" autoincrement="0">
+<datatype>DECIMAL</datatype>
+<default>NULL</default></row>
+<row name="icon" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
 <row name="id_TipoConta" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <default>NULL</default><relation table="TipoConta" row="id" />
