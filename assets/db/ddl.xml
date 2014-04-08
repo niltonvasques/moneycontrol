@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- SQL XML created by WWW SQL Designer, http://code.google.com/p/wwwsqldesigner/ -->
-<!-- Active URL: http://homes.dcc.ufba.br/~niltonvasques/wwwsqldesigner-2.7/ -->
+<!-- Active URL: file:///media/home/niltonvasques/Development/Server/wwwsqldesigner-2.7/index.html -->
 <sql>
 <datatypes db="sqlite">
 	<group label="Numeric" color="rgb(238,238,170)">
@@ -81,7 +81,7 @@
 <datatype>DECIMAL</datatype>
 <default>NULL</default></row>
 <row name="data" null="0" autoincrement="0">
-<datatype>DATETIME</datatype>
+<datatype>DATE</datatype>
 <default>'NULL'</default></row>
 <row name="id_Conta" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
@@ -154,3 +154,4 @@
 <comment>Saúde, Moradia, Alimentação e etc.</comment>
 </table>
 </sql>
+
