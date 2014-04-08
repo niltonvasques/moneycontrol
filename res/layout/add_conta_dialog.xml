@@ -12,6 +12,7 @@
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:gravity="center"
+	        style="@style/TextViewTitle"
 	        android:text="Adicionar Conta"/>
 	    
 	    <LinearLayout 
@@ -43,6 +44,10 @@
 			        android:gravity="center"
 			        android:hint="saldo inicial"
 			        android:inputType="numberDecimal"/>
+			    <Spinner 
+			        android:id="@+id/addContaDialogSpinnerTipo"
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"/>
 		    </LinearLayout>
 	    </LinearLayout>
 	    

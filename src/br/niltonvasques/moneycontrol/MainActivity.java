@@ -5,12 +5,13 @@ import java.util.List;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
@@ -40,7 +41,7 @@ public class MainActivity extends Activity {
 		
 		db.showTiposBem();
 		
-		contas = db.selectContas();
+		contas = db.select(Conta.class);
 		
 		listViewContas = (ListView) findViewById(R.id.mainActivityListViewContas);
 		listAdapter = new ContaAdapter(contas, getLayoutInflater());
@@ -57,6 +58,16 @@ public class MainActivity extends Activity {
 					}
 				});
 				return false;
+			}
+		});
+		
+		listViewContas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position,long arg3) {
+				Intent it = new Intent(MainActivity.this, TransacoesActivity.class);
+				it.putExtra("conta", contas.get(position).getId());
+				startActivity(it);
+				
 			}
 		});
 		
@@ -94,7 +105,7 @@ public class MainActivity extends Activity {
 	
 	private void update(){
 		contas.clear();
-		contas.addAll(db.selectContas());
+		contas.addAll(db.select(Conta.class));
 		listAdapter.notifyDataSetChanged();
 		
 		float saldoSum = 0;

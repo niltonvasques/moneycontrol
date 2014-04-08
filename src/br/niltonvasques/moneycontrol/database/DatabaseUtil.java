@@ -42,6 +42,44 @@ public class DatabaseUtil {
 		return insert;
     }
 	
+	public static String beanToSqlInsert(Object classObject,String tableName, String idName) {
+		String insert = "INSERT INTO "+tableName+" (";
+		try {
+			
+			Field[] fields = classObject.getClass().getDeclaredFields();
+			
+			for(int i = 0;i< fields.length; i++){
+				if(fields[i].getName().equals(idName)){
+					if(i == fields.length-1) insert+=")";
+					continue;
+				}
+				insert+=fields[i].getName()+( i== fields.length-1 ? ")":",");
+			}
+			
+			insert+=" VALUES(";
+			
+			for(int i = 0;i< fields.length; i++){
+				if(fields[i].getName().equals(idName)){
+					if(i == fields.length-1) insert+=")";
+					continue;
+				}
+				fields[i].setAccessible(true);
+				if(fields[i].getType().equals(String.class)){
+					insert+="'"+fields[i].get(classObject)+"'"
+					+( i== fields.length-1 ? ")":",");
+				}else{
+					insert+=fields[i].get(classObject)+( i== fields.length-1 ? ")":",");
+				}
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+        
+        insert += ";";
+		
+		return insert;
+    }
+	
 	public static String beanToSqlUpdate(Object classObject,String tableName) {
 		return beanToSqlUpdate(classObject, tableName, "COD");
     }

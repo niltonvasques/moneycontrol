@@ -133,25 +133,6 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 		db.close(); // Closing database connection
 	}
 
-	public List<Conta> selectContas(){
-		List<Conta> contas = new ArrayList<Conta>();
-		SQLiteDatabase db = this.getReadableDatabase();    	 
-
-		Cursor c = db.rawQuery("SELECT * FROM Conta", null);
-
-		// looping through all rows and adding to list
-		if (c.moveToFirst()) {
-			do {
-				Conta cc = new Conta();
-				DatabaseUtil.cursorToBean(c, cc);
-				contas.add(cc);
-			} while (c.moveToNext());
-		}
-
-		db.close(); // Closing database connection
-		return contas;
-	}
-
 	public Conta insertConta(Conta cc){
 		SQLiteDatabase db = this.getWritableDatabase();
 
@@ -179,6 +160,50 @@ public class DatabaseHandler extends SQLiteOpenHelper{
     	int count = db.delete("Conta", "id = "+cc.getId(), null);
         
         return count > 0;
+	}
+
+	public <T> List<T> select(Class<T> type){
+		
+		return select(type, "");
+	}
+	
+	public <T> List<T> select(Class<T> type, String where){
+		
+		List<T> items = new ArrayList<T>();
+		
+		SQLiteDatabase db = this.getReadableDatabase();    	 
+	
+		Cursor c = db.rawQuery("SELECT * FROM "+type.getSimpleName()+" "+where, null);
+	
+		// looping through all rows and adding to list
+		try {
+			if (c.moveToFirst()) {
+				do {
+					T cc = type.newInstance();
+					DatabaseUtil.cursorToBean(c, cc);
+					items.add(cc);
+				} while (c.moveToNext());
+			}
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+	
+		db.close(); // Closing database connection		
+		
+		return items;
+	}
+	
+	public <T> boolean insert(T bean){
+		
+		SQLiteDatabase db = this.getWritableDatabase();    	 
+	
+		db.execSQL(DatabaseUtil.beanToSqlInsert(bean, bean.getClass().getSimpleName(), "id"));
+	
+		db.close(); // Closing database connection		
+		
+		return true;
 	}
 
 	//    // Adding new contact
