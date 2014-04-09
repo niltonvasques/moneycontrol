@@ -2,6 +2,7 @@ package br.niltonvasques.moneycontrol.view;
 
 import java.util.List;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,16 +10,20 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import br.niltonvasques.moneycontrol.R;
+import br.niltonvasques.moneycontrol.app.MoneyControlApp;
 import br.niltonvasques.moneycontrol.database.bean.Conta;
+import br.niltonvasques.moneycontrol.database.bean.Transacao;
 
 public class ContaAdapter extends BaseAdapter{
 	
 	private List<Conta> contas;
 	private LayoutInflater inflater;
+	private MoneyControlApp app;
 
-	public ContaAdapter(List<Conta> contas, LayoutInflater inflater) {
+	public ContaAdapter(List<Conta> contas, LayoutInflater inflater,  MoneyControlApp app) {
 		this.contas = contas;
 		this.inflater = inflater;
+		this.app = app;
 	}
 	
 	@Override
@@ -47,10 +52,29 @@ public class ContaAdapter extends BaseAdapter{
 		ImageView imgIcon = (ImageView) view.findViewById(R.id.contaListItemImgIcon);
 		TextView txtNome = (TextView) view.findViewById(R.id.contaListItemTxtNome);
 		TextView txtSaldo = (TextView) view.findViewById(R.id.contaListItemTxtSaldo);
+		TextView txtDebitos = (TextView) view.findViewById(R.id.contaListItemTxtDebitos);
+		TextView txtCreditos = (TextView) view.findViewById(R.id.contaListItemTxtCreditos);
+		
+		List<Transacao> transacoes = app.getDatabase().select(Transacao.class, "WHERE id_Conta = "+cc.getId());
+		
+		float creditos = 0;
+		float debitos = 0;
+		
+		for (Transacao transacao : transacoes) {
+			if(app.getCategoriasTransacao().get(transacao.getId_CategoriaTransacao()).getId_TipoTransacao() == 2){
+				debitos += transacao.getValor();
+			}else{
+				creditos += transacao.getValor();
+			}
+		}
+		
+		
 		
 		txtNome.setText(cc.getNome());
-		txtSaldo.setText(cc.getSaldo()+"");
 		imgIcon.setBackgroundResource(cc.getIcon());
+		txtCreditos.setText("R$ "+creditos);
+		txtDebitos.setText("R$ "+debitos);
+		txtSaldo.setText("R$ "+(cc.getSaldo()+creditos-debitos));
 		
 		return view;
 	}

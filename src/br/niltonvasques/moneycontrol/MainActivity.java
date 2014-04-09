@@ -44,7 +44,7 @@ public class MainActivity extends Activity {
 		contas = db.select(Conta.class);
 		
 		listViewContas = (ListView) findViewById(R.id.mainActivityListViewContas);
-		listAdapter = new ContaAdapter(contas, getLayoutInflater());
+		listAdapter = new ContaAdapter(contas, getLayoutInflater(), app);
 		listViewContas.setAdapter(listAdapter);
 		
 		listViewContas.setOnItemLongClickListener(new OnItemLongClickListener() {
