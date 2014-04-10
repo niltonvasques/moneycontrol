@@ -1,14 +1,19 @@
 package br.niltonvasques.moneycontrol;
 
+import java.text.SimpleDateFormat;
+import java.util.GregorianCalendar;
+
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import br.niltonvasques.moneycontrol.activity.NVFragmentActivity;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
 import br.niltonvasques.moneycontrol.database.DatabaseHandler;
@@ -17,6 +22,8 @@ import br.niltonvasques.moneycontrol.view.fragment.MainFragment;
 
 @SuppressLint("NewApi")
 public class MainActivity extends NVFragmentActivity {
+	
+	private static final String TAG = "[MainActivity]";
 
 	private MoneyControlApp app;
 	private DatabaseHandler db;
@@ -24,7 +31,6 @@ public class MainActivity extends NVFragmentActivity {
 	private String[] mDrawerItens;
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
-	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

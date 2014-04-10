@@ -3,6 +3,7 @@ package br.niltonvasques.moneycontrol.database;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -159,6 +160,34 @@ public class DatabaseHandler extends SQLiteOpenHelper{
     	
     	int count = db.delete("Conta", "id = "+cc.getId(), null);
         
+    	db.close();
+        return count > 0;
+	}
+	
+	public <T> boolean delete(T cc) {
+    	SQLiteDatabase db = this.getWritableDatabase();
+    	
+    	
+    	int count = 0;
+		try {
+			Field[] fields = cc.getClass().getDeclaredFields();
+			
+			Field id = null;
+			for (Field field : fields) {
+				if(field.getName().equals("id")) id = field;
+			}
+			
+			id.setAccessible(true);
+			
+			count = db.delete(cc.getClass().getSimpleName(), "id = "+id.getInt(cc), null);
+			
+			db.close();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+        
         return count > 0;
 	}
 
@@ -171,7 +200,9 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 		
 		List<T> items = new ArrayList<T>();
 		
-		SQLiteDatabase db = this.getReadableDatabase();    	 
+		SQLiteDatabase db = this.getReadableDatabase();
+		
+		Log.d(TAG, "SELECT * FROM "+type.getSimpleName()+" "+where);
 	
 		Cursor c = db.rawQuery("SELECT * FROM "+type.getSimpleName()+" "+where, null);
 	
@@ -197,6 +228,8 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 	
 	public String runQuery(String query){
 		SQLiteDatabase db = this.getReadableDatabase();
+		
+		Log.d(TAG, "runQuery: "+query);
 		
 		Cursor c = db.rawQuery(query, null);
 		

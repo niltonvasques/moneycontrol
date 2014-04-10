@@ -1,5 +1,7 @@
 package br.niltonvasques.moneycontrol.view.adapter;
 
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import android.graphics.Color;
@@ -11,19 +13,27 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import br.niltonvasques.moneycontrol.R;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
+import br.niltonvasques.moneycontrol.database.QuerysUtil;
 import br.niltonvasques.moneycontrol.database.bean.Conta;
 import br.niltonvasques.moneycontrol.database.bean.Transacao;
+import br.niltonvasques.moneycontrol.util.DateUtil;
 
 public class ContaAdapter extends BaseAdapter{
 	
 	private List<Conta> contas;
 	private LayoutInflater inflater;
 	private MoneyControlApp app;
+	private GregorianCalendar dateRange;
 
-	public ContaAdapter(List<Conta> contas, LayoutInflater inflater,  MoneyControlApp app) {
+	public ContaAdapter(List<Conta> contas, GregorianCalendar dateRange, LayoutInflater inflater,  MoneyControlApp app) {
 		this.contas = contas;
+		this.dateRange = dateRange;
 		this.inflater = inflater;
 		this.app = app;
+	}
+	
+	public void setDateRange(GregorianCalendar dateRange){
+		this.dateRange = dateRange;
 	}
 	
 	@Override
@@ -55,7 +65,8 @@ public class ContaAdapter extends BaseAdapter{
 		TextView txtDebitos = (TextView) view.findViewById(R.id.contaListItemTxtDebitos);
 		TextView txtCreditos = (TextView) view.findViewById(R.id.contaListItemTxtCreditos);
 		
-		List<Transacao> transacoes = app.getDatabase().select(Transacao.class, "WHERE id_Conta = "+cc.getId());
+		List<Transacao> transacoes = app.getDatabase().select(Transacao.class, 
+				QuerysUtil.whereTransacaoFromContaWithDateInterval(cc.getId(), dateRange.getTime()));
 		
 		float creditos = 0;
 		float debitos = 0;

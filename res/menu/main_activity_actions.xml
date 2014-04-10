@@ -2,5 +2,6 @@
     <!-- Search, should appear as action button -->
     <item android:id="@+id/action_add"
           android:title="Add"
+          android:icon="@drawable/ic_action_new_holo_dark"
           android:showAsAction="ifRoom" />
 </menu>

@@ -6,11 +6,37 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin" >
+    
+    <RelativeLayout
+        android:id="@+id/principalFragmentLayDateRange"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button 
+            android:id="@+id/principalFragmentBtnPreviousMonth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_action_previous_item"
+            android:layout_alignParentLeft="true"/>
+        <TextView 
+            android:id="@+id/principalFragmentTxtViewMonth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Abril - 2014"
+            style="@style/TextViewTitle"
+            android:layout_centerInParent="true"/>
+        <Button 
+            android:id="@+id/principalFragmentBtnNextMonth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_action_next_item"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
 
     <ListView
         android:id="@+id/mainActivityListViewContas"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/principalFragmentLayDateRange"
         android:layout_above="@+id/mainActivityBottomBar" >
     </ListView>
 
@@ -36,7 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="R$ 0.00"
-            android:textColor="#04a800" />
+            android:textColor="@color/dark_green" />
 
         <TextView
             android:id="@+id/mainActivityTxtSaldoSum"

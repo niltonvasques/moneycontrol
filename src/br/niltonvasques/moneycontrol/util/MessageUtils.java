@@ -228,6 +228,21 @@ public class MessageUtils {
 	    final Spinner spinnerCategoria = (Spinner) view.findViewById(R.id.addTransacaoDialogSpinnerCategoria);
 	    spinnerCategoria.setAdapter(new ArrayAdapter<CategoriaTransacao>(context, android.R.layout.simple_list_item_1, categorias));
 	    
+	    view.findViewById(R.id.addTransacaoDialogBtnAddCategoria).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				MessageUtils.showAddCategoria(context, inflater, db, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						TipoTransacao tipo = (TipoTransacao)spinnerTipos.getSelectedItem();
+			    		categorias.clear();
+			    		categorias.addAll(db.select(CategoriaTransacao.class, "WHERE id_TipoTransacao = "+tipo.getId()));
+			    		((ArrayAdapter)spinnerCategoria.getAdapter()).notifyDataSetChanged();
+					}
+				});
+			}
+		});
+	    
 	    final Spinner spinnerContas = (Spinner) view.findViewById(R.id.addTransacaoDialogSpinnerConta);
 	    spinnerContas.setAdapter(new ArrayAdapter<Conta>(context, android.R.layout.simple_list_item_1, contas));
 	    spinnerContas.setSelection(startContaPos);
