@@ -1,4 +1,4 @@
-package br.niltonvasques.moneycontrol.view;
+package br.niltonvasques.moneycontrol.view.adapter;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

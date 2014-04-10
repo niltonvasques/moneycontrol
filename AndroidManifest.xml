@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="11"
         android:targetSdkVersion="18" />
 
     <application
@@ -24,10 +24,6 @@
             </intent-filter>
         </activity>
         
-        <activity
-            android:name="br.niltonvasques.moneycontrol.TransacoesActivity"
-            android:label="@string/app_name" >
-        </activity>
     </application>
 
 </manifest>

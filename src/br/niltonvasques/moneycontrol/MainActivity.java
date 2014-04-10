@@ -1,34 +1,29 @@
 package br.niltonvasques.moneycontrol;
 
-import java.util.List;
-
-import android.app.Activity;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
-import android.content.Intent;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
+import br.niltonvasques.moneycontrol.activity.NVFragmentActivity;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
 import br.niltonvasques.moneycontrol.database.DatabaseHandler;
-import br.niltonvasques.moneycontrol.database.bean.Conta;
-import br.niltonvasques.moneycontrol.util.MessageUtils;
-import br.niltonvasques.moneycontrol.view.ContaAdapter;
+import br.niltonvasques.moneycontrol.view.fragment.CategoriasFragment;
+import br.niltonvasques.moneycontrol.view.fragment.MainFragment;
 
-public class MainActivity extends Activity {
+@SuppressLint("NewApi")
+public class MainActivity extends NVFragmentActivity {
 
 	private MoneyControlApp app;
 	private DatabaseHandler db;
 	
-	private List<Conta> contas;
-	
-	private ListView listViewContas;
-	private ContaAdapter listAdapter;
+	private String[] mDrawerItens;
+    private DrawerLayout mDrawerLayout;
+    private ListView mDrawerList;
 	
 	
 	@Override
@@ -37,46 +32,34 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		
 		app = (MoneyControlApp) getApplication();
-		db = app.getDatabase();
-		
-		db.showTiposBem();
-		
-		contas = db.select(Conta.class);
-		
-		listViewContas = (ListView) findViewById(R.id.mainActivityListViewContas);
-		listAdapter = new ContaAdapter(contas, getLayoutInflater(), app);
-		listViewContas.setAdapter(listAdapter);
-		
-		listViewContas.setOnItemLongClickListener(new OnItemLongClickListener() {
-			@Override
-			public boolean onItemLongClick(AdapterView<?> arg0, View arg1,final int position, long arg3) {
-				MessageUtils.showMessageYesNo(MainActivity.this, "Atenção!", "Deseja excuir esta conta?", new OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						db.deleteConta(contas.get(position));
-						update();
-					}
-				});
-				return false;
-			}
-		});
-		
-		listViewContas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int position,long arg3) {
-				Intent it = new Intent(MainActivity.this, TransacoesActivity.class);
-				it.putExtra("conta", contas.get(position).getId());
-				startActivity(it);
-				
-			}
-		});
-		
-	}
 	
-	@Override
-	protected void onResume() {
-		super.onResume();
-		update();
+		
+		mDrawerItens = getResources().getStringArray(R.array.planets_array);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+
+        // Set the adapter for the list view
+        mDrawerList.setAdapter(new ArrayAdapter<String>(this,R.layout.drawer_list_item, mDrawerItens));
+        
+        changeFragment( new MainFragment() );
+        getActionBar().setTitle(mDrawerItens[0]);
+        
+        mDrawerList.setOnItemClickListener(new OnItemClickListener() {
+        	@Override
+        	public void onItemClick(AdapterView<?> arg0, View arg1, int position,long arg3) {
+        		if(mDrawerItens[position].equals("Principal")){
+        			changeFragment( new MainFragment() );
+        		}else
+        		if(mDrawerItens[position].equals("Categorias")){
+        			changeFragment(new CategoriasFragment());
+        		}
+        		
+        		mDrawerLayout.closeDrawer(mDrawerList);
+        		getActionBar().setTitle(mDrawerItens[position]);
+        		
+        	}
+		});
+		
 	}
 
 	@Override
@@ -87,31 +70,8 @@ public class MainActivity extends Activity {
 	}
 	
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-	    // Handle presses on the action bar items
-	    switch (item.getItemId()) {
-	        case R.id.action_add:
-	        	MessageUtils.showAddConta(this, getLayoutInflater(), db, new OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						update();
-					}
-				});
-	            return true;
-	        default:
-	            return super.onOptionsItemSelected(item);
-	    }
-	}
-	
-	private void update(){
-		contas.clear();
-		contas.addAll(db.select(Conta.class));
-		listAdapter.notifyDataSetChanged();
-		
-		float saldoSum = 0;
-		for(Conta cc : contas) saldoSum+= cc.getSaldo();
-		
-		((TextView)findViewById(R.id.mainActivityTxtSaldoSum)).setText("R$ "+saldoSum);
+	public int getFragmentContentID() {
+		return R.id.content_frame;
 	}
 
 }

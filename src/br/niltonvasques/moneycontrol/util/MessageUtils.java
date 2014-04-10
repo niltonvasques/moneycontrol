@@ -34,7 +34,7 @@ import br.niltonvasques.moneycontrol.database.bean.Conta;
 import br.niltonvasques.moneycontrol.database.bean.TipoConta;
 import br.niltonvasques.moneycontrol.database.bean.TipoTransacao;
 import br.niltonvasques.moneycontrol.database.bean.Transacao;
-import br.niltonvasques.moneycontrol.view.IconeAdapter;
+import br.niltonvasques.moneycontrol.view.adapter.IconeAdapter;
 
 public class MessageUtils {
 	
@@ -320,6 +320,47 @@ public class MessageUtils {
 		});
 	    
 	    
+	    
+	    alert.show();        
+	}
+	
+	public static void showAddCategoria(final Context context, final LayoutInflater inflater, final DatabaseHandler db, final DialogInterface.OnClickListener listener){
+		final AlertDialog.Builder alert = new AlertDialog.Builder(context);
+		final View view = inflater.inflate(R.layout.add_categoria_dialog, null);
+	    alert.setView(view);
+	    
+	    Log.d(TAG, TipoConta.class.getSimpleName());
+	    
+	    List<TipoTransacao> tipos = db.select(TipoTransacao.class);
+	    
+	    final Spinner spinnerTipos = (Spinner) view.findViewById(R.id.addCategoriaDialogSpinnerTipo);
+	    spinnerTipos.setAdapter(new ArrayAdapter<TipoTransacao>(context, android.R.layout.simple_list_item_1, tipos));
+	    
+	    
+	    alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				EditText editNome = (EditText) view.findViewById(R.id.addCategoriaDialogEditTxtDescrição);
+				
+				CategoriaTransacao c = new CategoriaTransacao();
+				
+				c.setNome(editNome.getText().toString());
+				
+				TipoTransacao t = (TipoTransacao)spinnerTipos.getSelectedItem();
+				c.setId_TipoTransacao(t.getId());
+				
+				db.insert(c);				
+				
+				listener.onClick(dialog, which);
+			}
+		});
+
+	    alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+	        public void onClick(DialogInterface dialog, int whichButton) {
+	            dialog.cancel();
+	        }
+	    });
 	    
 	    alert.show();        
 	}

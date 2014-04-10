@@ -50,7 +50,10 @@ public class DatabaseUtil {
 			
 			for(int i = 0;i< fields.length; i++){
 				if(fields[i].getName().equals(idName)){
-					if(i == fields.length-1) insert+=")";
+					if(i == fields.length-1){
+						insert = insert.substring(0, insert.length()-1);
+						insert+=")";
+					}
 					continue;
 				}
 				insert+=fields[i].getName()+( i== fields.length-1 ? ")":",");
@@ -60,7 +63,10 @@ public class DatabaseUtil {
 			
 			for(int i = 0;i< fields.length; i++){
 				if(fields[i].getName().equals(idName)){
-					if(i == fields.length-1) insert+=")";
+					if(i == fields.length-1) {
+						insert = insert.substring(0, insert.length()-1);
+						insert+=")";
+					}
 					continue;
 				}
 				fields[i].setAccessible(true);

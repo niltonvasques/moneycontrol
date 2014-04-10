@@ -4,5 +4,11 @@
     <string name="app_name">MoneyControl</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    
+    <string-array name="planets_array">
+        <item>Principal</item>
+        <item>Categorias</item>
+        <item>Relatórios</item>
+    </string-array>
 
 </resources>
