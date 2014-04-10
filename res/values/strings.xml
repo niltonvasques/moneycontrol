@@ -11,5 +11,38 @@
         <item>Relatórios</item>
         <item>Sobre</item>
     </string-array>
+    
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    
+    <string name="action_add">Adicionar</string>
+    
+    <string name="default_currency_value">R$ 0.00</string>
+    
+    <!-- add_categoria_dialog.xml -->
+    <string name="categoria_dialog_title">Adicionar Categoria</string>
+    <string name="categoria_dialog_tipo">Tipo:</string>
+    <string name="categoria_dialog_descricao">Descrição:</string>
+    <string name="categoria_dialog_descricao_hint">informe uma descrição</string>
+    
+    <!-- add_conta_dialog.xml -->
+    <string name="add_conta_dialog_title">Adicionar Conta</string>
+    <string name="add_conta_dialog_nome_hint">nome da conta</string>
+    <string name="add_conta_dialog_saldo_hint">saldo inicial</string>
+    
+    <!-- add_transacao_dialog.xml -->
+    <string name="add_transacao_dialog_title">Adicionar Transação</string>
+    <string name="add_transacao_dialog_tipo">Tipo:</string>
+    <string name="add_transacao_dialog_valor">Valor:</string>
+    <string name="add_transacao_dialog_valor_hint">informe o valor</string>
+    <string name="add_transacao_dialog_descricao">Descrição:</string>
+    <string name="add_transacao_dialog_descricao_hint">informe a descrição</string>
+    <string name="add_transacao_dialog_data">Data:</string>
+    <string name="add_transacao_dialog_categoria">Categoria:</string>
+    <string name="add_transacao_dialog_conta">Conta:</string>
+    
+	
+    <!-- icones_dialog.xml -->
+    <string name="icones_dialog_title">Escolha o Ícone</string>
 
 </resources>

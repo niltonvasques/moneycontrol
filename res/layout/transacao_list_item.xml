@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
                 android:textColor="#ff0000"
-                android:text="R$ 0.00"/>
+                android:text="@string/default_currency_value"/>
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

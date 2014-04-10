@@ -13,7 +13,7 @@
 	        android:layout_height="wrap_content"
 	        android:gravity="center"
 	        style="@style/TextViewTitle"
-	        android:text="Adicionar Conta"/>
+	        android:text="@string/add_conta_dialog_title"/>
 	    
 	    <LinearLayout 
 	        android:layout_width="match_parent"
@@ -35,14 +35,14 @@
 			        android:layout_width="match_parent"
 			        android:layout_height="wrap_content"
 			        android:gravity="center"
-			        android:hint="nome da conta"/>
+			        android:hint="@string/add_conta_dialog_nome_hint"/>
 			    
 			    <EditText 
 			        android:id="@+id/addContaDialogEditTxtSaldo"
 			        android:layout_width="match_parent"
 			        android:layout_height="wrap_content"
 			        android:gravity="center"
-			        android:hint="saldo inicial"
+			        android:hint="@string/add_conta_dialog_saldo_hint"
 			        android:inputType="numberDecimal"/>
 			    <Spinner 
 			        android:id="@+id/addContaDialogSpinnerTipo"

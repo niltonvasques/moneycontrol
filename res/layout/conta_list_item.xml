@@ -43,22 +43,22 @@
 	                android:layout_height="wrap_content"
 	                android:layout_weight="1"
 	                android:textColor="#ff0000"
-	                android:text="R$ 0.00" />
+	                android:text="@string/default_currency_value" />
 	            
 	            <TextView
 	                android:id="@+id/contaListItemTxtCreditos" 
 	                android:layout_width="0dp"
 	                android:layout_height="wrap_content"
 	                android:layout_weight="1"
-	                android:textColor="#04a800"
-	                android:text="R$ 0.00"/>
+	                android:textColor="@color/dark_green"
+	                android:text="@string/default_currency_value"/>
 	            
 	            <TextView 
 	                android:id="@+id/contaListItemTxtSaldo"
 	                android:layout_width="0dp"
 	                android:layout_height="wrap_content"
 	                android:layout_weight="1"
-	                android:text="R$ 0.00"/>
+	                android:text="@string/default_currency_value"/>
 	        </LinearLayout>
 	    </LinearLayout>
 	</LinearLayout>

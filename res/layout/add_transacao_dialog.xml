@@ -17,7 +17,7 @@
 	        android:layout_height="wrap_content"
 	        android:gravity="center"
 	        style="@style/TextViewTitle"
-	        android:text="Adicionar Transação"/>
+	        android:text="@string/add_transacao_dialog_title"/>
 	    
 	    <LinearLayout 
 	        android:layout_width="match_parent"
@@ -35,7 +35,7 @@
 	                android:layout_width="0dp"
 	                android:layout_height="wrap_content"
 	                android:layout_weight="3"
-	                android:text="Tipo:"/>
+	                android:text="@string/add_transacao_dialog_tipo"/>
 	            
 			    <Spinner 
 			        android:id="@+id/addTransacaoDialogSpinnerTipo"
@@ -54,7 +54,7 @@
 	                android:layout_width="0dp"
 	                android:layout_height="wrap_content"
 	                android:layout_weight="3"
-	                android:text="Valor:"/>
+	                android:text="@string/add_transacao_dialog_valor"/>
 			    <EditText 
 			        android:id="@+id/addTransacaoDialogEditTxtValor"
 			        android:layout_width="0dp"
@@ -62,7 +62,7 @@
 			        android:layout_weight="7"
 			        android:gravity="center"
 			        android:inputType="numberDecimal"
-			        android:hint="valor"/>
+			        android:hint="@string/add_transacao_dialog_valor_hint"/>
 		    </LinearLayout>
 		    
 		    <LinearLayout 
@@ -75,14 +75,14 @@
 	                android:layout_width="0dp"
 	                android:layout_height="wrap_content"
 	                android:layout_weight="3"
-	                android:text="Descrição:"/>
+	                android:text="@string/add_transacao_dialog_descricao"/>
 			    <EditText 
 			        android:id="@+id/addTransacaoDialogEditTxtDescrição"
 			        android:layout_width="0dp"
 			        android:layout_height="wrap_content"
 			        android:layout_weight="7"
 			        android:gravity="center"
-			        android:hint="descrição"/>
+			        android:hint="@string/add_transacao_dialog_descricao_hint"/>
 		    </LinearLayout>
 		    
    		    <LinearLayout 
@@ -95,7 +95,7 @@
 	                android:layout_width="0dp"
 	                android:layout_height="wrap_content"
 	                android:layout_weight="3"
-	                android:text="Data:"/>
+	                android:text="@string/add_transacao_dialog_data"/>
 			    <Button 
 			        android:id="@+id/addTransacaoDialogBtnData"
 			        android:layout_width="0dp"
@@ -115,7 +115,7 @@
 	                android:layout_width="0dp"
 	                android:layout_height="wrap_content"
 	                android:layout_weight="3"
-	                android:text="Categoria:"/>
+	                android:text="@string/add_transacao_dialog_categoria"/>
 	            
 			    <Spinner 
 			        android:id="@+id/addTransacaoDialogSpinnerCategoria"
@@ -141,7 +141,7 @@
 	                android:layout_width="0dp"
 	                android:layout_height="wrap_content"
 	                android:layout_weight="3"
-	                android:text="Conta:"/>
+	                android:text="@string/add_transacao_dialog_conta"/>
 	            
 			    <Spinner 
 			        android:id="@+id/addTransacaoDialogSpinnerConta"
