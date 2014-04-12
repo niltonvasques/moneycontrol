@@ -54,6 +54,7 @@
              android:layout_height="wrap_content"
              android:layout_weight="1"
              android:textColor="#ff0000"
+             style="@style/TextViewBottomBar"
              android:text="@string/default_currency_value" />
          
          <TextView
@@ -61,7 +62,8 @@
              android:layout_width="0dp"
              android:layout_height="wrap_content"
              android:layout_weight="1"
-             android:textColor="#04a800"
+             android:textColor="@color/dark_green"
+             style="@style/TextViewBottomBar"
              android:text="@string/default_currency_value"/>
          
          <TextView 
@@ -69,6 +71,7 @@
              android:layout_width="0dp"
              android:layout_height="wrap_content"
              android:layout_weight="1"
+             style="@style/TextViewBottomBar"
              android:text="@string/default_currency_value"/>
 	    
 	</LinearLayout>

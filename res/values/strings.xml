@@ -8,6 +8,7 @@
     <string-array name="planets_array">
         <item>Principal</item>
         <item>Categorias</item>
+        <item>Investimentos</item>
         <item>Relatórios</item>
         <item>Sobre</item>
     </string-array>
@@ -44,5 +45,9 @@
 	
     <!-- icones_dialog.xml -->
     <string name="icones_dialog_title">Escolha o Ícone</string>
+    
+    <!-- fragment_report_bycategorias.xml -->
+    <string name="report_by_categorias_despesas_chart_title">Gráfico de Despesas por Categoria</string>
+    <string name="report_by_categorias_receitas_chart_title">Gráfico de Receitas por Categoria</string>
 
 </resources>

@@ -177,8 +177,12 @@ public class MainFragment extends Fragment{
 			debito = Float.valueOf(debitoQuery);
 		}
 		
-		
+		String saldo = db.runQuery(QuerysUtil.computeSaldoBeforeDate(dateRange.getTime()));
 		float saldoSum = 0;
+		if(saldo != null && saldo.length() > 0){
+			saldoSum = Float.valueOf(saldo);
+		}		
+		
 		for(Conta cc : contas) saldoSum+= cc.getSaldo();
 		
 		saldoSum += credito - debito;

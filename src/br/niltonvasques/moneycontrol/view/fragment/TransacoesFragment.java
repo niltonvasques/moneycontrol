@@ -50,7 +50,7 @@ public class TransacoesFragment extends Fragment{
 		
 		this.inflater = inflater;
 		
-		myFragmentView = inflater.inflate(R.layout.activity_transacaoes, null);
+		myFragmentView = inflater.inflate(R.layout.fragment_transacaoes, null);
 		getActivity().getActionBar().setTitle("Transações");
 		
 		app = (MoneyControlApp) getActivity().getApplication();
@@ -165,17 +165,19 @@ public class TransacoesFragment extends Fragment{
 		
 		float debitoSum = 0;
 		float creditoSum = 0;
-		for(Transacao cc : transacoes) {
-			String debitos = db.runQuery(QuerysUtil.sumTransacoesDebitoFromContaWithDateInterval(idConta,dateRange.getTime()));
-			String creditos = db.runQuery(QuerysUtil.sumTransacoesCreditoFromContaWithDateInterval(idConta,dateRange.getTime()));
-			
-			if(debitos != null && debitos.length() > 0)  debitoSum = Float.valueOf(debitos);
-			if(creditos != null && creditos.length() > 0) creditoSum = Float.valueOf(creditos);
-		}
+		String debitos = db.runQuery(QuerysUtil.sumTransacoesDebitoFromContaWithDateInterval(idConta,dateRange.getTime()));
+		String creditos = db.runQuery(QuerysUtil.sumTransacoesCreditoFromContaWithDateInterval(idConta,dateRange.getTime()));
+		
+		if(debitos != null && debitos.length() > 0)  debitoSum = Float.valueOf(debitos);
+		if(creditos != null && creditos.length() > 0) creditoSum = Float.valueOf(creditos);
+		
+		String saldo = db.runQuery(QuerysUtil.computeSaldoFromContaBeforeDate(idConta, dateRange.getTime()));
+		float saldoAnterior = 0;
+		if(saldo != null && saldo.length() > 0) saldoAnterior = Float.valueOf(saldo);
 		
 		((TextView)myFragmentView.findViewById(R.id.transacoesActivityTxtDebitosSum)).setText("R$ "+debitoSum);
 		((TextView)myFragmentView.findViewById(R.id.transacoesActivityTxtCreditosSum)).setText("R$ "+creditoSum);
-		((TextView)myFragmentView.findViewById(R.id.transacoesActivityTxtSaldoSum)).setText("R$ "+(creditoSum-debitoSum));
+		((TextView)myFragmentView.findViewById(R.id.transacoesActivityTxtSaldoSum)).setText("R$ "+(saldoAnterior+creditoSum-debitoSum));
 	}
 	
 	private void updateDateRange() {

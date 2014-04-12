@@ -79,13 +79,17 @@ public class ContaAdapter extends BaseAdapter{
 			}
 		}
 		
+		String saldo = app.getDatabase().runQuery(QuerysUtil.computeSaldoFromContaBeforeDate(cc.getId(), dateRange.getTime()));
+		float saldoAnterior = 0;
+		if(saldo != null && saldo.length() > 0) saldoAnterior = Float.valueOf(saldo);
+		
 		
 		
 		txtNome.setText(cc.getNome());
 		imgIcon.setBackgroundResource(cc.getIcon());
 		txtCreditos.setText("R$ "+creditos);
 		txtDebitos.setText("R$ "+debitos);
-		txtSaldo.setText("R$ "+(cc.getSaldo()+creditos-debitos));
+		txtSaldo.setText("R$ "+(saldoAnterior+cc.getSaldo()+creditos-debitos));
 		
 		return view;
 	}

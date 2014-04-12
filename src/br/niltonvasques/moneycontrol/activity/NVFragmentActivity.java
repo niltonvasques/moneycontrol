@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.Menu;
 import android.view.MenuItem;
 
 public abstract class NVFragmentActivity extends FragmentActivity{
@@ -37,6 +38,12 @@ public abstract class NVFragmentActivity extends FragmentActivity{
 	public boolean onOptionsItemSelected(MenuItem item) {
 		overFragment.onOptionsItemSelected(item);
 		return false;
+	}
+	
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		overFragment.onPrepareOptionsMenu(menu);
+		return super.onPrepareOptionsMenu(menu);
 	}
 
 }

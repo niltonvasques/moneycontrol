@@ -51,12 +51,12 @@ public class QuerysUtil {
 	public static final String whereTransacaoFromContaWithDateInterval(int id_Conta, Date range){
 		return "WHERE id_Conta = "+id_Conta+" AND " +
 				"data < date('"+DateUtil.sqlDateFormat().format(range)+"', '+1 month') AND " +
-				"data >= date('"+DateUtil.sqlDateFormat().format(range)+"')";
+				"data >= date('"+DateUtil.sqlDateFormat().format(range)+"') ORDER BY data DESC";
 	}
 	
 	public static final String whereTransacaoWithDateInterval(Date range){
 		return "WHERE data < date('"+DateUtil.sqlDateFormat().format(range)+"', '+1 month') AND " +
-				"data >= date('"+DateUtil.sqlDateFormat().format(range)+"')";
+				"data >= date('"+DateUtil.sqlDateFormat().format(range)+"') ORDER BY data DESC";
 	}
 	
 	public static final String sumContasCreditoWithDateInterval(Date range){
@@ -68,4 +68,91 @@ public class QuerysUtil {
 		return SUM_CONTAS_DEBITO+" AND data < date('"+DateUtil.sqlDateFormat().format(range)+"', '+1 month') AND " +
 				"data >= date('"+DateUtil.sqlDateFormat().format(range)+"')";
 	}
+	
+	public static final String computeSaldoBeforeDate(Date range){
+		return "SELECT "+ 
+					"COALESCE("+
+						"(SELECT SUM(t.valor) "+ 
+						"FROM Transacao t "+ 
+						"INNER JOIN CategoriaTransacao c on c.id = t.id_CategoriaTransacao "+
+						"WHERE c.id_TipoTransacao = 1 AND t.data < date('"+DateUtil.sqlDateFormat().format(range)+"')) "+
+						",0) "+
+						" - "+
+					"COALESCE( "+
+						" (SELECT SUM(t.valor) "+ 
+						" FROM Transacao t "+ 
+						" INNER JOIN CategoriaTransacao c on c.id = t.id_CategoriaTransacao "+
+						" WHERE c.id_TipoTransacao = 2 AND t.data < date('"+DateUtil.sqlDateFormat().format(range)+"')) "+ 
+						" ,0)";
+	}
+	
+	public static final String computeSaldoFromContaBeforeDate(int id_Conta, Date range){
+		return "SELECT "+ 
+					"COALESCE("+
+						"(SELECT SUM(t.valor) "+ 
+						"FROM Transacao t "+ 
+						"INNER JOIN CategoriaTransacao c on c.id = t.id_CategoriaTransacao "+
+						"WHERE t.id_Conta = "+id_Conta+" AND c.id_TipoTransacao = 1 AND t.data < date('"+DateUtil.sqlDateFormat().format(range)+"')) "+
+						",0) "+
+						" - "+
+					"COALESCE( "+
+						" (SELECT SUM(t.valor) "+ 
+						" FROM Transacao t "+ 
+						" INNER JOIN CategoriaTransacao c on c.id = t.id_CategoriaTransacao "+
+						"WHERE t.id_Conta = "+id_Conta+" AND c.id_TipoTransacao = 2 AND t.data < date('"+DateUtil.sqlDateFormat().format(range)+"')) "+ 
+						" ,0)";
+	}
+	
+	public static final String reportTransacaoDebitosByCategorias(){
+		return 	"SELECT "+ 
+				"MAX(c.nome) AS Categoria, "+ 
+				"SUM(valor)  as Total, "+ 
+				"(SUM(valor) /(SELECT SUM(valor) From Transacao t INNER JOIN CategoriaTransacao c on c.id = t.id_CategoriaTransacao WHERE c.id_TipoTransacao  = 2)*100) as Percentual "+
+				"FROM Transacao  t "+
+				"INNER JOIN CategoriaTransacao c on c.id = t.id_CategoriaTransacao "+
+				"WHERE c.id_TipoTransacao  = 2 "+
+				"GROUP BY id_CategoriaTransacao "+ 
+				"ORDER BY Max(c.nome) ";
+	}
+	
+	public static final String reportTransacaoDebitosByCategoriasWithDateInterval(Date range){
+		return 	"SELECT "+ 
+				"MAX(c.nome) AS Categoria, "+ 
+				"SUM(valor)  as Total, "+ 
+				"(SUM(valor) / " +
+					"(SELECT SUM(valor) " +
+					"From Transacao t " +
+					"INNER JOIN CategoriaTransacao c on c.id = t.id_CategoriaTransacao " +
+					"WHERE c.id_TipoTransacao  = 2 " +
+					"AND data < date('"+DateUtil.sqlDateFormat().format(range)+"', '+1 month') AND " +
+					"data >= date('"+DateUtil.sqlDateFormat().format(range)+"') )*100) as Percentual "+
+				"FROM Transacao  t "+
+				"INNER JOIN CategoriaTransacao c on c.id = t.id_CategoriaTransacao "+
+				"WHERE c.id_TipoTransacao  = 2 "+
+				"AND data < date('"+DateUtil.sqlDateFormat().format(range)+"', '+1 month') AND " +
+				"data >= date('"+DateUtil.sqlDateFormat().format(range)+"') "+
+				"GROUP BY id_CategoriaTransacao "+ 
+				"ORDER BY Max(c.nome) ";
+	}
+	
+	public static final String reportTransacaoByTipoByCategoriasWithDateInterval(int tipo, Date range){
+		return 	"SELECT "+ 
+				"MAX(c.nome) AS Categoria, "+ 
+				"SUM(valor)  as Total, "+ 
+				"(SUM(valor) / " +
+					"(SELECT SUM(valor) " +
+					"From Transacao t " +
+					"INNER JOIN CategoriaTransacao c on c.id = t.id_CategoriaTransacao " +
+					"WHERE c.id_TipoTransacao  = "+tipo+" "+
+					"AND data < date('"+DateUtil.sqlDateFormat().format(range)+"', '+1 month') AND " +
+					"data >= date('"+DateUtil.sqlDateFormat().format(range)+"') )*100) as Percentual "+
+				"FROM Transacao  t "+
+				"INNER JOIN CategoriaTransacao c on c.id = t.id_CategoriaTransacao "+
+				"WHERE c.id_TipoTransacao  = "+tipo+" "+
+				"AND data < date('"+DateUtil.sqlDateFormat().format(range)+"', '+1 month') AND " +
+				"data >= date('"+DateUtil.sqlDateFormat().format(range)+"') "+
+				"GROUP BY id_CategoriaTransacao "+ 
+				"ORDER BY Max(c.nome) ";
+	}
+	
 }

@@ -232,12 +232,21 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 		Log.d(TAG, "runQuery: "+query);
 		
 		Cursor c = db.rawQuery(query, null);
-		
 		if(c.moveToFirst()){
+			db.close();
 			return c.getString(0);
 		}
 		
 		return "";
+	}
+	
+	public Cursor runQueryCursor(String query){
+		SQLiteDatabase db = this.getReadableDatabase();
+		
+		Log.d(TAG, "runQuery: "+query);
+		
+		Cursor c = db.rawQuery(query, null);
+		return c;
 	}
 	
 	public <T> boolean insert(T bean){

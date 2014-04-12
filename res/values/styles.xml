@@ -20,5 +20,9 @@
     <style name="TextViewTitle">
         <item name="android:textSize">30sp</item>
     </style>
+    
+    <style name="TextViewBottomBar">
+        <item name="android:textSize">25sp</item>
+    </style>
 
 </resources>

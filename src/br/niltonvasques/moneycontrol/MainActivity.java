@@ -17,6 +17,8 @@ import br.niltonvasques.moneycontrol.app.MoneyControlApp;
 import br.niltonvasques.moneycontrol.database.DatabaseHandler;
 import br.niltonvasques.moneycontrol.view.fragment.CategoriasFragment;
 import br.niltonvasques.moneycontrol.view.fragment.MainFragment;
+import br.niltonvasques.moneycontrol.view.fragment.ReportByCategoriasFragment;
+import br.niltonvasques.moneycontrol.view.fragment.ReportsFragment;
 
 @SuppressLint("NewApi")
 public class MainActivity extends NVFragmentActivity {
@@ -54,10 +56,11 @@ public class MainActivity extends NVFragmentActivity {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position,long arg3) {
 				if(mDrawerItens[position].equals("Principal")){
 					changeFragment( new MainFragment() );
-				}else
-					if(mDrawerItens[position].equals("Categorias")){
-						changeFragment(new CategoriasFragment());
-					}
+				}else if(mDrawerItens[position].equals("Categorias")){
+					changeFragment(new CategoriasFragment());
+				}else if(mDrawerItens[position].equals("Relatórios")){
+					changeFragment(new ReportsFragment());
+				}
 
 				mDrawerLayout.closeDrawer(mDrawerList);
 				getActionBar().setTitle(mDrawerItens[position]);

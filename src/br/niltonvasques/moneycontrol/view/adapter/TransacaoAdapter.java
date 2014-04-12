@@ -52,7 +52,7 @@ public class TransacaoAdapter extends BaseAdapter{
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		
-		Transacao cc = (Transacao) getItem(position);
+		Transacao tr = (Transacao) getItem(position);
 		
 		View view = inflater.inflate(R.layout.transacao_list_item, null);
 		
@@ -60,7 +60,7 @@ public class TransacaoAdapter extends BaseAdapter{
 		TextView txtSaldo = (TextView) view.findViewById(R.id.transacaoListItemTxtValor);
 		TextView txtData = (TextView) view.findViewById(R.id.transacaoListItemTxtData);
 		
-		String tipo = app.getDatabase().runQuery(QuerysUtil.checkTipoTransacao(cc.getId()));
+		String tipo = app.getDatabase().runQuery(QuerysUtil.checkTipoTransacao(tr.getId()));
 		
 		if(tipo.equals("2")){
 			txtSaldo.setTextColor(Color.RED);
@@ -68,11 +68,11 @@ public class TransacaoAdapter extends BaseAdapter{
 			txtSaldo.setTextColor(app.getResources().getColor(R.color.dark_green));
 		}
 		
-		txtNome.setText(cc.getDescricao());
-		txtSaldo.setText("R$ "+cc.getValor());
+		txtNome.setText(tr.getDescricao());
+		txtSaldo.setText("R$ "+tr.getValor());
 		try {
 			GregorianCalendar g = new GregorianCalendar();
-			g.setTime(DateUtil.sqlDateFormat().parse(cc.getData()));
+			g.setTime(DateUtil.sqlDateFormat().parse(tr.getData()));
 			ViewUtil.adjustDateOnTextView(txtData,g);
 		} catch (ParseException e) {
 			e.printStackTrace();
