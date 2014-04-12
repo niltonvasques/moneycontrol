@@ -99,9 +99,9 @@ public class ContaAdapter extends BaseAdapter{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		txtCreditos.setText("R$ "+creditoSum);
-		txtDebitos.setText("R$ "+debitoSum);
-		txtSaldo.setText("R$ "+(saldoAnterior+creditoSum-debitoSum));
+		txtCreditos.setText("R$ "+String.format("%.2f",creditoSum));
+		txtDebitos.setText("R$ "+String.format("%.2f",debitoSum));
+		txtSaldo.setText("R$ "+String.format("%.2f",(saldoAnterior+creditoSum-debitoSum)));
 		
 		return view;
 	}

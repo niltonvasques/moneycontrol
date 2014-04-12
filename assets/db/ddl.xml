@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- SQL XML created by WWW SQL Designer, http://code.google.com/p/wwwsqldesigner/ -->
-<!-- Active URL: file:///media/home/niltonvasques/Development/Server/wwwsqldesigner-2.7/index.html -->
+<!-- Active URL: http://homes.dcc.ufba.br/~niltonvasques/wwwsqldesigner-2.7/ -->
 <sql>
 <datatypes db="sqlite">
 	<group label="Numeric" color="rgb(238,238,170)">
@@ -148,6 +148,9 @@
 <datatype>INTEGER</datatype>
 <default>NULL</default><relation table="TipoTransacao" row="id" />
 </row>
+<row name="system" null="0" autoincrement="0">
+<datatype>bit</datatype>
+<default>0</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
