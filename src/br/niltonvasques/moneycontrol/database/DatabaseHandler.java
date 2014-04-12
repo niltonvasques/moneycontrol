@@ -23,9 +23,11 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 
 	private static final String DDL_FILENAME = "db/ddl.sql";
 
-	private static final int DATABASE_VERSION = 2;
+	private static final int DATABASE_VERSION = 4;
 
 	private static final String DATABASE_NAME = "money-db";
+	
+	private static final String DATABASE_UPDATE_PATTERN = "db/db-update-";
 
 	private Context context;
 
@@ -111,7 +113,19 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		
+		switch (oldVersion) {
+		case 1:
+		case 2:
+			DatabaseUtil.execSqlFromFile(db, context, DATABASE_UPDATE_PATTERN+3+".sql");
+			break;
+			
+		case 3:
+			DatabaseUtil.execSqlFromFile(db, context, DATABASE_UPDATE_PATTERN+newVersion+".sql");
+			break;
+
+		default:
+			break;
+		}
 
 	}
 
@@ -254,6 +268,17 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 		SQLiteDatabase db = this.getWritableDatabase();    	 
 	
 		db.execSQL(DatabaseUtil.beanToSqlInsert(bean, bean.getClass().getSimpleName(), "id"));
+	
+		db.close(); // Closing database connection		
+		
+		return true;
+	}
+	
+	public <T> boolean update(T bean){
+		
+		SQLiteDatabase db = this.getWritableDatabase();    	 
+	
+		db.execSQL(DatabaseUtil.beanToSqlUpdate(bean, bean.getClass().getSimpleName(), "id"));
 	
 		db.close(); // Closing database connection		
 		

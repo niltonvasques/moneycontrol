@@ -1,8 +1,6 @@
 package br.niltonvasques.moneycontrol.view.adapter;
 
-import java.util.List;
-
-import br.niltonvasques.moneycontrol.R;
+import java.io.IOException;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,25 +8,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import br.niltonvasques.moneycontrol.R;
+import br.niltonvasques.moneycontrol.util.AssetUtil;
 
 public class IconeAdapter extends BaseAdapter{
-	private List<Integer> icones;
-	private LayoutInflater context;
+	private Context context;
+	private String[] icones;
+	private LayoutInflater inflater;
 
-	public IconeAdapter(List<Integer> icones, LayoutInflater context) {
+	public IconeAdapter(String[] icones, LayoutInflater context, Context app) {
 		this.icones = icones;
-		this.context = context;
+		this.inflater = context;
+		this.context = app;
 	}
 	
 	@Override
 	public int getCount() {
-		if(icones != null) return icones.size();
+		if(icones != null) return icones.length;
 		return 0;		
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return icones.get(position);
+		return icones[position];
 	}
 
 	@Override
@@ -39,10 +41,18 @@ public class IconeAdapter extends BaseAdapter{
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		
-		Integer icon = (Integer) getItem(position);
-		View view = context.inflate(R.layout.icon_list_item, null);
-		ImageView img = (ImageView) view.findViewById(R.id.iconListItemImgIcon);
-		img.setBackgroundResource(icon);				
+		View view = inflater.inflate(R.layout.icon_list_item, null);
+		
+		try {
+			String icon = (String) getItem(position);
+			// get input stream
+			
+			ImageView img = (ImageView) view.findViewById(R.id.iconListItemImgIcon);
+			img.setImageDrawable(AssetUtil.loadDrawableFromAsset(context, "icons/"+icon));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		return view;
 	}

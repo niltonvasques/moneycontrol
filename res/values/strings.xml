@@ -16,7 +16,9 @@
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     
+    <!-- Actions -->
     <string name="action_add">Adicionar</string>
+    <string name="action_transfer">Transferir</string>
     
     <string name="default_currency_value">R$ 0.00</string>
     
@@ -41,6 +43,17 @@
     <string name="add_transacao_dialog_data">Data:</string>
     <string name="add_transacao_dialog_categoria">Categoria:</string>
     <string name="add_transacao_dialog_conta">Conta:</string>
+    
+    <!-- transferencia_dialog.xml -->
+    <string name="transferencia_dialog_conta_origem">Conta origem:</string>
+    <string name="transferencia_dialog_conta_destino">Conta destino:</string>
+    <string name="transferencia_dialog_categoria">Categoria:</string>
+    <string name="transferencia_dialog_data">Data: </string>
+    <string name="transferencia_dialog_descricao_hint">informe uma descrição</string>
+    <string name="transferencia_dialog_descricao">Descrição:</string>
+    <string name="transferencia_dialog_valor_hint">informe um valor</string>
+    <string name="transferencia_dialog_valor">Valor:</string>
+    <string name="transferencia_dialog_title">Transferência</string>
     
 	
     <!-- icones_dialog.xml -->

@@ -1,5 +1,6 @@
 package br.niltonvasques.moneycontrol.util;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -86,10 +87,17 @@ public class MessageUtils {
 		final View view = inflater.inflate(R.layout.add_conta_dialog, null);
 	    alert.setView(view);
 	    
+	    final String[] icons = getIconsNameOnAsset(context);
+	    
 	    final Conta cc = new Conta();
-	    cc.setIcon(R.drawable.bradesco_icon);
+	    cc.setIcon("bb_icon.jpg");
 	    
 	    final ImageView imgIcon = (ImageView) view.findViewById(R.id.addContaDialogImgIcon);
+	    try {
+			imgIcon.setImageDrawable(AssetUtil.loadDrawableFromAsset(context, "icons/"+icons[0]));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	    imgIcon.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -98,8 +106,12 @@ public class MessageUtils {
 				showIconesDialog(context, inflater, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						imgIcon.setBackgroundResource(which);
-						cc.setIcon(which);
+						try {
+							imgIcon.setImageDrawable(AssetUtil.loadDrawableFromAsset(context, "icons/"+icons[which]));
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+						cc.setIcon(icons[which]);
 					}
 				});
 			}
@@ -149,29 +161,116 @@ public class MessageUtils {
 	    alert.show();        
 	}
 	
+	public static void showEditConta(final Context context, final Conta conta, final LayoutInflater inflater, final DatabaseHandler db, final DialogInterface.OnClickListener listener){
+		final AlertDialog.Builder alert = new AlertDialog.Builder(context);
+		final View view = inflater.inflate(R.layout.add_conta_dialog, null);
+	    alert.setView(view);
+	    
+	    final String[] icons = getIconsNameOnAsset(context);
+	    
+	    final ImageView imgIcon = (ImageView) view.findViewById(R.id.addContaDialogImgIcon);
+	    
+	    try {
+			imgIcon.setImageDrawable(AssetUtil.loadDrawableFromAsset(context, "icons/"+conta.getIcon()));
+		} catch (IOException e1) {
+			try {
+				imgIcon.setImageDrawable(AssetUtil.loadDrawableFromAsset(context, "icons/"+icons[0]));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	    
+	    imgIcon.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(context, "Escolha um ícone!", Toast.LENGTH_LONG).show();
+				showIconesDialog(context, inflater, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						try {
+							imgIcon.setImageDrawable(AssetUtil.loadDrawableFromAsset(context, "icons/"+icons[which]));
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+						conta.setIcon(icons[which]);
+					}
+				});
+			}
+		});
+	    
+	    Log.d(TAG, TipoConta.class.getSimpleName());
+	    
+	    List<TipoConta> tipos = db.select(TipoConta.class);
+	    
+	    int pos = 0;
+	    for (TipoConta tipoConta : tipos) {
+			if(tipoConta.getId() == conta.getId_TipoConta()) break;
+			pos++;
+		}
+	    
+	    final Spinner spinnerTipos = (Spinner) view.findViewById(R.id.addContaDialogSpinnerTipo);
+	    spinnerTipos.setAdapter(new ArrayAdapter<TipoConta>(context, android.R.layout.simple_list_item_1, tipos));
+	    spinnerTipos.setSelection(pos);
+	    
+	    final EditText editNome = (EditText) view.findViewById(R.id.addContaDialogEditTxtNome);
+	    editNome.setText(conta.getNome());
+	    final EditText editSaldo = (EditText) view.findViewById(R.id.addContaDialogEditTxtSaldo);
+	    editSaldo.setText(conta.getSaldo()+"");
+	    
+	    
+	    alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+
+				String ccNome = editNome.getText().toString();
+				conta.setNome(ccNome);
+				TipoConta tConta = (TipoConta) spinnerTipos.getSelectedItem();
+				conta.setId_TipoConta(tConta.getId());
+				
+				try{
+					float saldo = Float.valueOf(editSaldo.getText().toString());
+					conta.setSaldo(saldo);
+				}catch(Exception e){
+					
+				}
+				
+				db.update(conta);
+//				
+				listener.onClick(dialog, which);
+			}
+		});
+
+	    alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+	        public void onClick(DialogInterface dialog, int whichButton) {
+	            dialog.cancel();
+	        }
+	    });
+	    
+	    
+	    
+	    alert.show();        
+	}
+	
 
 	public static void showIconesDialog(final Context context, LayoutInflater inflater, final DialogInterface.OnClickListener listener){
 		final AlertDialog.Builder alert = new AlertDialog.Builder(context);
 		final View view = inflater.inflate(R.layout.icones_dialog, null);
 	    alert.setView(view);
 	    
-	    final List<Integer> icons = new ArrayList<Integer>();
-	    icons.add(R.drawable.bb_icon);
-	    icons.add(R.drawable.bradesco_icon);
-	    icons.add(R.drawable.sofisa_icon);
-	    icons.add(R.drawable.directa_icon);
-	    icons.add(R.drawable.visa_icon);
+	    final String[] icons = getIconsNameOnAsset(context);
 	    
 	    final GridView grid = (GridView) view.findViewById(R.id.iconesDialogGridView);
-	    grid.setTag(icons.get(0));
-	    grid.setAdapter(new IconeAdapter(icons, inflater));
+	    grid.setTag(icons[0]);
+	    grid.setAdapter(new IconeAdapter(icons, inflater, context));
 	    
 	    grid.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 					long arg3) {
-				grid.setTag(icons.get(position));
+				grid.setTag(position);
 			}
 	    	
 		});
@@ -181,7 +280,6 @@ public class MessageUtils {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-//				
 				listener.onClick(dialog, (Integer)grid.getTag());
 			}
 		});
@@ -194,6 +292,19 @@ public class MessageUtils {
 	    
 	    
 	    alert.show();        
+	}
+
+	private static String[] getIconsNameOnAsset(final Context context) {
+		try {
+			String[] iconss = context.getAssets().list("icons");
+			for (String string : iconss) {
+				Log.d(TAG, string);
+			}
+			return iconss;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	@SuppressLint("NewApi")
@@ -376,6 +487,111 @@ public class MessageUtils {
 	            dialog.cancel();
 	        }
 	    });
+	    
+	    alert.show();        
+	}
+	
+	public static void showTransferencia(final Context context, final LayoutInflater inflater, final DatabaseHandler db, final DialogInterface.OnClickListener listener){
+		final AlertDialog.Builder alert = new AlertDialog.Builder(context);
+		final View view = inflater.inflate(R.layout.transferencia_dialog, null);
+	    alert.setView(view);
+	    
+	    final GregorianCalendar value = new GregorianCalendar();
+	    final Button btnDate = (Button)view.findViewById(R.id.transferenciaDialogBtnData);
+	    ViewUtil.adjustDateOnTextView(btnDate, value);
+	    
+	    final Transacao tCredito = new Transacao();
+	    final Transacao tDebito = new Transacao();
+	    
+	    final CategoriaTransacao transfCatDebito = db.select(CategoriaTransacao.class, "WHERE system = 1 AND id_TipoTransacao = "+2).get(0);
+	    final CategoriaTransacao transfCatCredito = db.select(CategoriaTransacao.class, "WHERE system = 1 AND id_TipoTransacao = "+1).get(0);
+	    
+	    final List<Conta> contas = db.select(Conta.class);
+	    
+	    final Spinner spinnerContasOrigem = (Spinner) view.findViewById(R.id.transferenciaDialogSpinnerContaOrigem);
+	    spinnerContasOrigem.setAdapter(new ArrayAdapter<Conta>(context, android.R.layout.simple_list_item_1, contas));
+	    spinnerContasOrigem.setSelection(0);
+	    
+	    final Spinner spinnerContasDestino = (Spinner) view.findViewById(R.id.transferenciaDialogSpinnerContaDestino);
+	    spinnerContasDestino.setAdapter(new ArrayAdapter<Conta>(context, android.R.layout.simple_list_item_1, contas));
+	    spinnerContasDestino.setSelection(1);
+	    
+	    alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+				EditText editValor = (EditText) view.findViewById(R.id.addTransacaoDialogEditTxtValor);
+				
+				try{
+					float valor = Float.valueOf(editValor.getText().toString());
+					tCredito.setValor(valor);
+					tDebito.setValor(valor);
+					
+					Conta cDebito = (Conta) spinnerContasOrigem.getSelectedItem();
+					tDebito.setId_Conta(cDebito.getId());
+					
+					Conta cCredito = (Conta) spinnerContasDestino.getSelectedItem();
+					tCredito.setId_Conta(cCredito.getId());
+//				
+					tCredito.setDescricao("Transferência de "+cDebito.getNome());
+					tDebito.setDescricao("Transferência p/ "+cCredito.getNome());
+					
+					tCredito.setId_CategoriaTransacao(transfCatCredito.getId());
+					tDebito.setId(transfCatDebito.getId());
+					
+					tCredito.setData(format.format(value.getTime()));
+					tDebito.setData(format.format(value.getTime()));
+					
+					db.insert(tCredito);
+					db.insert(tDebito);
+				}catch(Exception e){
+					e.printStackTrace();
+				}
+				
+				listener.onClick(dialog, which);
+			}
+		});
+
+	    alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+	        public void onClick(DialogInterface dialog, int whichButton) {
+	            dialog.cancel();
+	        }
+	    });
+	    
+	    
+		OnDateSetListener dateListener = new DatePickerDialog.OnDateSetListener() {
+
+			public void onDateSet(DatePicker view, int year, int monthOfYear,
+					int dayOfMonth) {
+				Calendar c = Calendar.getInstance();
+				c.set(Calendar.YEAR, year);
+				c.set(Calendar.MONTH, monthOfYear);
+				c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+				value.set(Calendar.YEAR, year);
+				value.set(Calendar.MONTH, monthOfYear);
+				value.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+				ViewUtil.adjustDateOnTextView(btnDate, value);
+
+			}
+		};
+
+		final DatePickerDialog dateDialog = new DatePickerDialog(context, dateListener, 
+				value.get(Calendar.YEAR), 
+				value.get(Calendar.MONTH), 
+				value.get(Calendar.DAY_OF_MONTH));
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
+			dateDialog.getDatePicker().setMaxDate(Calendar.getInstance().getTimeInMillis());
+		}
+
+		btnDate.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				dateDialog.show();				
+			}
+		});
+	    
+	    
 	    
 	    alert.show();        
 	}

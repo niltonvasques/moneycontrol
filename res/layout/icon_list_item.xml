@@ -6,7 +6,6 @@
         android:id="@+id/iconListItemImgIcon"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:background="@drawable/bradesco_icon" 
         android:scaleType="fitXY"/>
     
 </LinearLayout>

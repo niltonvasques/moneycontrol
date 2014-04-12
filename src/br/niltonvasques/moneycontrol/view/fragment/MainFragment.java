@@ -131,6 +131,15 @@ public class MainFragment extends Fragment{
 					}
 				});
 	            return true;
+	            
+	        case R.id.action_transfer:
+	        	MessageUtils.showTransferencia(getActivity(), inflater, db, new OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						update();
+					}
+				});
+	            return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }

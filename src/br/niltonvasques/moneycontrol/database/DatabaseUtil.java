@@ -1,10 +1,15 @@
 package br.niltonvasques.moneycontrol.database;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 
+import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 
 public class DatabaseUtil {
 	
@@ -184,4 +189,34 @@ public class DatabaseUtil {
 		
 		return -1;
 	}
+	
+	public static boolean execSqlFromFile(SQLiteDatabase db, Context context, String filename){
+		try {
+			StringBuilder completeDML = new StringBuilder();
+			InputStreamReader stream = new InputStreamReader(context.getAssets().open(filename),"UTF-8");
+			BufferedReader reader = new BufferedReader(stream);
+
+			String line = "";
+			while(line != null){
+				completeDML.append(line);
+				line = reader.readLine();				
+			}
+			reader.close();
+
+			String[] ddls = completeDML.toString().split(";");
+
+			for (String dml : ddls) {
+				System.out.println("db.execSQL("+dml+");");
+				db.execSQL(dml);				
+			}
+
+			return true;
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	};
 }

@@ -15,7 +15,7 @@ public class Conta {
 	private int id;
 	private String nome;
 	private float saldo;
-	private int icon;	
+	private String icon;	
 	private int id_TipoConta;
 	
 	public int getId() {
@@ -38,10 +38,10 @@ public class Conta {
 		this.saldo = saldo;
 	}
 	
-	public int getIcon() {
+	public String getIcon() {
 		return icon;
 	}
-	public void setIcon(int icon) {
+	public void setIcon(String icon) {
 		this.icon = icon;
 	}
 	public int getId_TipoConta() {
@@ -54,6 +54,6 @@ public class Conta {
 	
 	@Override
 	public String toString() {
-		return nome + " saldo: "+saldo;
+		return nome;
 	}
 }

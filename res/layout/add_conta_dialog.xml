@@ -23,8 +23,7 @@
 		    <ImageView 
 		        android:id="@+id/addContaDialogImgIcon"
 		        android:layout_width="50dp"
-		        android:layout_height="50dp"
-		        android:background="@drawable/bb_icon"/>
+		        android:layout_height="50dp"/>
 		    
 		    <LinearLayout 
 		        android:layout_width="match_parent"
