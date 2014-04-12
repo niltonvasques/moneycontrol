@@ -88,6 +88,7 @@ public class QuerysUtil {
 	
 	public static final String computeSaldoFromContaBeforeDate(int id_Conta, Date range){
 		return "SELECT "+ 
+					"(SELECT saldo FROM Conta WHERE id = "+id_Conta+")+ "+
 					"COALESCE("+
 						"(SELECT SUM(t.valor) "+ 
 						"FROM Transacao t "+ 
@@ -124,11 +125,13 @@ public class QuerysUtil {
 					"From Transacao t " +
 					"INNER JOIN CategoriaTransacao c on c.id = t.id_CategoriaTransacao " +
 					"WHERE c.id_TipoTransacao  = 2 " +
+					"AND c.nome not like 'Transferência'"+
 					"AND data < date('"+DateUtil.sqlDateFormat().format(range)+"', '+1 month') AND " +
 					"data >= date('"+DateUtil.sqlDateFormat().format(range)+"') )*100) as Percentual "+
 				"FROM Transacao  t "+
 				"INNER JOIN CategoriaTransacao c on c.id = t.id_CategoriaTransacao "+
 				"WHERE c.id_TipoTransacao  = 2 "+
+				"AND c.nome not like 'Transferência'"+
 				"AND data < date('"+DateUtil.sqlDateFormat().format(range)+"', '+1 month') AND " +
 				"data >= date('"+DateUtil.sqlDateFormat().format(range)+"') "+
 				"GROUP BY id_CategoriaTransacao "+ 
@@ -144,6 +147,7 @@ public class QuerysUtil {
 					"From Transacao t " +
 					"INNER JOIN CategoriaTransacao c on c.id = t.id_CategoriaTransacao " +
 					"WHERE c.id_TipoTransacao  = "+tipo+" "+
+					"AND c.nome not like 'Transferência'"+
 					"AND data < date('"+DateUtil.sqlDateFormat().format(range)+"', '+1 month') AND " +
 					"data >= date('"+DateUtil.sqlDateFormat().format(range)+"') )*100) as Percentual "+
 				"FROM Transacao  t "+
@@ -151,6 +155,7 @@ public class QuerysUtil {
 				"WHERE c.id_TipoTransacao  = "+tipo+" "+
 				"AND data < date('"+DateUtil.sqlDateFormat().format(range)+"', '+1 month') AND " +
 				"data >= date('"+DateUtil.sqlDateFormat().format(range)+"') "+
+				"AND c.nome not like 'Transferência'"+
 				"GROUP BY id_CategoriaTransacao "+ 
 				"ORDER BY Max(c.nome) ";
 	}

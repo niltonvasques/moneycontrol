@@ -21,6 +21,7 @@ import br.niltonvasques.moneycontrol.R;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
 import br.niltonvasques.moneycontrol.database.DatabaseHandler;
 import br.niltonvasques.moneycontrol.database.QuerysUtil;
+import br.niltonvasques.moneycontrol.database.bean.Conta;
 import br.niltonvasques.moneycontrol.database.bean.Transacao;
 import br.niltonvasques.moneycontrol.util.DateUtil;
 import br.niltonvasques.moneycontrol.util.MessageUtils;
@@ -159,6 +160,9 @@ public class TransacoesFragment extends Fragment{
 	};
 	
 	private void update(){
+		
+		Conta c = db.select(Conta.class, " WHERE id = "+idConta).get(0);
+		
 		transacoes.clear();
 		transacoes.addAll(db.select(Transacao.class,QuerysUtil.whereTransacaoFromContaWithDateInterval(idConta, dateRange.getTime())));
 		listAdapter.notifyDataSetChanged();
@@ -175,9 +179,9 @@ public class TransacoesFragment extends Fragment{
 		float saldoAnterior = 0;
 		if(saldo != null && saldo.length() > 0) saldoAnterior = Float.valueOf(saldo);
 		
-		((TextView)myFragmentView.findViewById(R.id.transacoesActivityTxtDebitosSum)).setText("R$ "+debitoSum);
-		((TextView)myFragmentView.findViewById(R.id.transacoesActivityTxtCreditosSum)).setText("R$ "+creditoSum);
-		((TextView)myFragmentView.findViewById(R.id.transacoesActivityTxtSaldoSum)).setText("R$ "+(saldoAnterior+creditoSum-debitoSum));
+		((TextView)myFragmentView.findViewById(R.id.transacoesActivityTxtDebitosSum)).setText("R$ "+String.format("%.2f", debitoSum));
+		((TextView)myFragmentView.findViewById(R.id.transacoesActivityTxtCreditosSum)).setText("R$ "+String.format("%.2f",creditoSum));
+		((TextView)myFragmentView.findViewById(R.id.transacoesActivityTxtSaldoSum)).setText("R$ "+String.format("%.2f",(saldoAnterior+creditoSum-debitoSum)));
 	}
 	
 	private void updateDateRange() {

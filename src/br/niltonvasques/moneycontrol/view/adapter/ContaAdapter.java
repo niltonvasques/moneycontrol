@@ -101,7 +101,7 @@ public class ContaAdapter extends BaseAdapter{
 		}
 		txtCreditos.setText("R$ "+creditoSum);
 		txtDebitos.setText("R$ "+debitoSum);
-		txtSaldo.setText("R$ "+(saldoAnterior+cc.getSaldo()+creditoSum-debitoSum));
+		txtSaldo.setText("R$ "+(saldoAnterior+creditoSum-debitoSum));
 		
 		return view;
 	}

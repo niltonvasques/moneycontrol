@@ -62,5 +62,9 @@
     <!-- fragment_report_bycategorias.xml -->
     <string name="report_by_categorias_despesas_chart_title">Gráfico de Despesas por Categoria</string>
     <string name="report_by_categorias_receitas_chart_title">Gráfico de Receitas por Categoria</string>
+    
+    <!-- Messages -->
+    <string name="error_title">Erro!</string>
+    <string name="error_message">Um erro inesperado aconteceu!</string>
 
 </resources>

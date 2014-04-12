@@ -521,7 +521,7 @@ public class MessageUtils {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-				EditText editValor = (EditText) view.findViewById(R.id.addTransacaoDialogEditTxtValor);
+				EditText editValor = (EditText) view.findViewById(R.id.transferenciaDialogEditTxtValor);
 				
 				try{
 					float valor = Float.valueOf(editValor.getText().toString());
@@ -538,7 +538,7 @@ public class MessageUtils {
 					tDebito.setDescricao("Transferência p/ "+cCredito.getNome());
 					
 					tCredito.setId_CategoriaTransacao(transfCatCredito.getId());
-					tDebito.setId(transfCatDebito.getId());
+					tDebito.setId_CategoriaTransacao(transfCatDebito.getId());
 					
 					tCredito.setData(format.format(value.getTime()));
 					tDebito.setData(format.format(value.getTime()));
@@ -547,6 +547,7 @@ public class MessageUtils {
 					db.insert(tDebito);
 				}catch(Exception e){
 					e.printStackTrace();
+					MessageUtils.showMessage(context, context.getResources().getString(R.string.error_title), context.getResources().getString(R.string.error_message));
 				}
 				
 				listener.onClick(dialog, which);
