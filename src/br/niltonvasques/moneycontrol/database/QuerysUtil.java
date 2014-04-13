@@ -86,6 +86,23 @@ public class QuerysUtil {
 						" ,0)";
 	}
 	
+	public static final String computeSaldoConta(int id_Conta){
+		return "SELECT "+				
+					"COALESCE("+
+						"(SELECT SUM(t.valor) "+ 
+						"FROM Transacao t "+ 
+						"INNER JOIN CategoriaTransacao c on c.id = t.id_CategoriaTransacao "+
+						"WHERE c.id_TipoTransacao = 1 AND t.id_Conta = "+id_Conta+" )"+
+						",0) "+
+						" - "+
+					"COALESCE( "+
+						" (SELECT SUM(t.valor) "+ 
+						" FROM Transacao t "+ 
+						" INNER JOIN CategoriaTransacao c on c.id = t.id_CategoriaTransacao "+
+						" WHERE c.id_TipoTransacao = 2 AND t.id_Conta = "+id_Conta+" )"+ 
+						" ,0)";
+	}
+	
 	public static final String computeSaldoFromContaBeforeDate(int id_Conta, Date range){
 		return "SELECT "+ 
 					"(SELECT saldo FROM Conta WHERE id = "+id_Conta+")+ "+

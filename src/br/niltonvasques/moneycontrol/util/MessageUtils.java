@@ -2,7 +2,6 @@ package br.niltonvasques.moneycontrol.util;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -20,6 +19,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -30,6 +30,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 import br.niltonvasques.moneycontrol.R;
 import br.niltonvasques.moneycontrol.database.DatabaseHandler;
+import br.niltonvasques.moneycontrol.database.bean.CartaoCredito;
 import br.niltonvasques.moneycontrol.database.bean.CategoriaTransacao;
 import br.niltonvasques.moneycontrol.database.bean.Conta;
 import br.niltonvasques.moneycontrol.database.bean.TipoConta;
@@ -123,6 +124,22 @@ public class MessageUtils {
 	    
 	    final Spinner spinnerTipos = (Spinner) view.findViewById(R.id.addContaDialogSpinnerTipo);
 	    spinnerTipos.setAdapter(new ArrayAdapter<TipoConta>(context, android.R.layout.simple_list_item_1, tipos));
+	    spinnerTipos.setOnItemSelectedListener( new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long arg3) {
+				TipoConta tipo = (TipoConta)arg0.getItemAtPosition(position);
+	    		if(tipo.getId() == 4){ //Cartão de Crédito
+	    			view.findViewById(R.id.addContaDialogLayoutCartaoCredito).setVisibility(View.VISIBLE);
+	    		}else{
+	    			view.findViewById(R.id.addContaDialogLayoutCartaoCredito).setVisibility(View.GONE);
+	    		}
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+			}
+		});
 	    
 	    
 	    alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -145,7 +162,25 @@ public class MessageUtils {
 				}
 				
 				db.insertConta(cc);
-//				
+				
+				if(cc.getId_TipoConta() == 4){
+					EditText editTxtLimite = (EditText) view.findViewById(R.id.addContaDialogEditTxtLimite);
+					Spinner spinnerFechamento = (Spinner) view.findViewById(R.id.addContaDialogSpinnerFechamento);
+					Spinner spinnerVencimento = (Spinner) view.findViewById(R.id.addContaDialogSpinnerVencimento);
+					float limite = 0;
+					try{
+						limite = Float.valueOf(editTxtLimite.getText().toString());
+					}catch(Exception e){ }
+					
+					CartaoCredito cartao = new CartaoCredito();
+					cartao.setId_Conta(cc.getId());
+					cartao.setLimite(limite);
+					cartao.setDia_fechamento(Integer.valueOf(Integer.valueOf((String)spinnerFechamento.getSelectedItem())));
+					cartao.setDia_vencimento(Integer.valueOf(Integer.valueOf((String)spinnerVencimento.getSelectedItem())));
+					
+					db.insert(cartao);
+				}
+
 				listener.onClick(dialog, which);
 			}
 		});

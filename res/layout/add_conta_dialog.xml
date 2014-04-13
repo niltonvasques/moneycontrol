@@ -49,6 +49,72 @@
 			        android:layout_height="wrap_content"/>
 		    </LinearLayout>
 	    </LinearLayout>
+	    <LinearLayout 
+	        android:id="@+id/addContaDialogLayoutCartaoCredito"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical"
+	        android:visibility="gone">
+	        <TextView 
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:text="Cartão de Crédito"
+	            android:gravity="center"/>
+	        <LinearLayout 
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:gravity="center">
+	            <TextView 
+	                android:layout_width="0dp"
+	                android:layout_height="wrap_content"
+	                android:layout_weight="2"
+	                android:text="Limite:"/>
+	            
+	            <EditText 
+	                android:id="@+id/addContaDialogEditTxtLimite"
+	                android:layout_width="0dp"
+	                android:layout_height="wrap_content"
+					android:layout_weight="7"
+					android:inputType="numberDecimal"/>
+	        </LinearLayout>
+	        
+    	    <LinearLayout 
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:gravity="center">
+	            <TextView 
+	                android:layout_width="0dp"
+	                android:layout_height="wrap_content"
+	                android:layout_weight="2"
+	                android:text="Vencimento:"/>
+	            <Spinner 
+	                android:id="@+id/addContaDialogSpinnerVencimento"
+	                android:layout_width="0dp"
+	                android:layout_height="wrap_content"
+					android:layout_weight="7"
+					android:inputType="numberDecimal"
+					android:entries="@array/add_conta_dialog_days"/>
+	        </LinearLayout>
+	        
+    	    <LinearLayout 
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:gravity="center">
+	            <TextView 
+	                android:layout_width="0dp"
+	                android:layout_height="wrap_content"
+	                android:layout_weight="2"
+	                android:text="Fechamento:"/>
+	            <Spinner 
+	                android:id="@+id/addContaDialogSpinnerFechamento"
+	                android:layout_width="0dp"
+	                android:layout_height="wrap_content"
+					android:layout_weight="7"
+					android:inputType="numberDecimal"
+					android:entries="@array/add_conta_dialog_days"
+					/>
+	        </LinearLayout>
+	    </LinearLayout>
 	    
     </LinearLayout>
 

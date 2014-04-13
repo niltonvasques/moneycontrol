@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- SQL XML created by WWW SQL Designer, http://code.google.com/p/wwwsqldesigner/ -->
-<!-- Active URL: http://homes.dcc.ufba.br/~niltonvasques/wwwsqldesigner-2.7/ -->
+<!-- Active URL: file:///home/niltonvasques/Development/Server/wwwsqldesigner-2.7/index.html -->
 <sql>
 <datatypes db="sqlite">
 	<group label="Numeric" color="rgb(238,238,170)">
@@ -125,7 +125,7 @@
 </key>
 <comment>O bem pode ser do tipo passivo ou ativo.</comment>
 </table>
-<table x="118" y="235" name="TipoConta">
+<table x="499" y="317" name="TipoConta">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -155,6 +155,27 @@
 <part>id</part>
 </key>
 <comment>Saúde, Moradia, Alimentação e etc.</comment>
+</table>
+<table x="82" y="240" name="CartaoCredito">
+<row name="id" null="1" autoincrement="1">
+<datatype>TINYINT</datatype>
+<default>NULL</default></row>
+<row name="limite" null="1" autoincrement="0">
+<datatype>DECIMAL</datatype>
+<default>NULL</default></row>
+<row name="dia_vencimento" null="0" autoincrement="0">
+<datatype>INT</datatype>
+<default>1</default></row>
+<row name="dia_fechamento" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>1</default></row>
+<row name="id_Conta" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="Conta" row="id" />
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
 </table>
 </sql>
 
