@@ -92,6 +92,7 @@ public class ContaAdapter extends BaseAdapter{
 		});
 		
 		Date range = dateRange.getTime();
+		GregorianCalendar cartaoDateRange = null;
 		
 		String debitos = null;
 		String creditos = null;
@@ -100,10 +101,11 @@ public class ContaAdapter extends BaseAdapter{
 		
 		if(cc.getId_TipoConta() == 4){
 			cartao = app.getDatabase().select(CartaoCredito.class, " WHERE id_Conta = "+cc.getId()).get(0);
-			GregorianCalendar tmpDateRange = (GregorianCalendar)dateRange.clone();
-			tmpDateRange.add(GregorianCalendar.MONTH, -2);
-			tmpDateRange.set(GregorianCalendar.DAY_OF_MONTH, cartao.getDia_fechamento());
-			range = tmpDateRange.getTime();
+			cartaoDateRange = (GregorianCalendar)dateRange.clone();
+			cartaoDateRange.add(GregorianCalendar.MONTH, -2);
+			cartaoDateRange.set(GregorianCalendar.DAY_OF_MONTH, cartao.getDia_fechamento());
+			range = cartaoDateRange.getTime();
+			cartaoDateRange.add(GregorianCalendar.MONTH, 1);
 		}else{
 			creditos = app.getDatabase().runQuery(QuerysUtil.sumTransacoesCreditoFromContaWithDateInterval(cc.getId(),range));
 			if(creditos != null && creditos.length() > 0) creditoSum = Float.valueOf(creditos);
@@ -113,20 +115,24 @@ public class ContaAdapter extends BaseAdapter{
 		if(debitos != null && debitos.length() > 0)  debitoSum = Float.valueOf(debitos);
 		
 		
-		String saldo = app.getDatabase().runQuery(QuerysUtil.computeSaldoFromContaBeforeDate(cc.getId(), range));
+		String saldo = app.getDatabase().runQuery(QuerysUtil.computeSaldoFromContaBeforeDate(cc.getId(), cc.getId_TipoConta() == 4 ? cartaoDateRange.getTime() : range));
 		float saldoAnterior = 0;
 		if(saldo != null && saldo.length() > 0) saldoAnterior = Float.valueOf(saldo);
 		
 		
 		if(cc.getId_TipoConta() == 4){
-			float fatura = debitoSum+Math.abs(saldoAnterior);
+			String pagamentos = app.getDatabase().runQuery(QuerysUtil.getPagamentoFaturaCartao(cc.getId(),cartaoDateRange.getTime()));
+			float pagsF = 0;
+			if(pagamentos != null && pagamentos.length() > 0 ) pagsF = Float.valueOf(pagamentos);
+			
+			float fatura = saldoAnterior;
 			String cartaoSaldo = app.getDatabase().runQuery(QuerysUtil.computeSaldoConta(cc.getId()));
 			float limite = Float.valueOf(cartaoSaldo);
 			limite = cartao.getLimite()-( limite > 0 ? 0 : Math.abs(limite));
 			
 			txtCreditos.setText("limite: R$ "+String.format("%.2f",limite));
 			txtDebitos.setText("fatura: R$ "+String.format("%.2f",fatura));
-			txtSaldo.setVisibility(View.GONE);
+			txtSaldo.setText(pagsF > 0 ? "paga" : "pendente");
 		}else{
 			txtCreditos.setText("R$ "+String.format("%.2f",creditoSum));
 			txtDebitos.setText("R$ "+String.format("%.2f",debitoSum));

@@ -42,6 +42,10 @@ public class QuerysUtil {
 				"data >= date('"+DateUtil.sqlDateFormat().format(range)+"')";
 	}
 	
+	public static final String getPagamentoFaturaCartao(int id_Conta, Date range){
+		return sumTransacoesCreditoFromContaWithDateInterval(id_Conta,range)+ " AND c.nome like 'Transferência'";
+	}
+	
 	public static final String checkTipoTransacao(int id_Transacao){
 		return "SELECT id_TipoTransacao FROM CategoriaTransacao c " +
 				"INNER JOIN Transacao t on t.id_CategoriaTransacao = c.id " +
@@ -60,12 +64,16 @@ public class QuerysUtil {
 	}
 	
 	public static final String sumContasCreditoWithDateInterval(Date range){
-		return SUM_CONTAS_CREDITO+" AND data < date('"+DateUtil.sqlDateFormat().format(range)+"', '+1 month') AND " +
+		return SUM_CONTAS_CREDITO+" " +
+				"AND c.nome not like 'Transferência' "+
+				"AND data < date('"+DateUtil.sqlDateFormat().format(range)+"', '+1 month') AND " +
 				"data >= date('"+DateUtil.sqlDateFormat().format(range)+"')";
 	}
 	
 	public static final String sumContasDebitoWithDateInterval(Date range){
-		return SUM_CONTAS_DEBITO+" AND data < date('"+DateUtil.sqlDateFormat().format(range)+"', '+1 month') AND " +
+		return SUM_CONTAS_DEBITO+" " +
+				"AND c.nome not like 'Transferência' "+
+				"AND data < date('"+DateUtil.sqlDateFormat().format(range)+"', '+1 month') AND " +
 				"data >= date('"+DateUtil.sqlDateFormat().format(range)+"')";
 	}
 	
@@ -75,14 +83,16 @@ public class QuerysUtil {
 						"(SELECT SUM(t.valor) "+ 
 						"FROM Transacao t "+ 
 						"INNER JOIN CategoriaTransacao c on c.id = t.id_CategoriaTransacao "+
-						"WHERE c.id_TipoTransacao = 1 AND t.data < date('"+DateUtil.sqlDateFormat().format(range)+"')) "+
+						"WHERE c.id_TipoTransacao = 1 " +
+						"AND t.data < date('"+DateUtil.sqlDateFormat().format(range)+"')) "+
 						",0) "+
 						" - "+
 					"COALESCE( "+
 						" (SELECT SUM(t.valor) "+ 
 						" FROM Transacao t "+ 
 						" INNER JOIN CategoriaTransacao c on c.id = t.id_CategoriaTransacao "+
-						" WHERE c.id_TipoTransacao = 2 AND t.data < date('"+DateUtil.sqlDateFormat().format(range)+"')) "+ 
+						" WHERE c.id_TipoTransacao = 2 " +
+						"AND t.data < date('"+DateUtil.sqlDateFormat().format(range)+"')) "+ 
 						" ,0)";
 	}
 	
