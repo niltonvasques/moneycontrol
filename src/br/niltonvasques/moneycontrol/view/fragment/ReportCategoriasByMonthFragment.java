@@ -7,6 +7,8 @@ import java.util.List;
 
 import org.afree.data.general.DefaultPieDataset;
 import org.afree.data.general.PieDataset;
+import org.afree.data.time.Month;
+import org.afree.data.time.TimeSeries;
 
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -35,9 +37,10 @@ import br.niltonvasques.moneycontrol.util.MessageUtils;
 import br.niltonvasques.moneycontrol.view.adapter.TransacaoAdapter;
 import br.niltonvasques.moneycontrol.view.chart.PieChartView;
 import br.niltonvasques.moneycontrol.view.chart.PieChartDemo01View;
+import br.niltonvasques.moneycontrol.view.chart.TimeSeriesChartView;
 import br.niltonvasques.moneycontrol.view.custom.SquareLayout;
 
-public class ReportByCategoriasFragment extends Fragment{
+public class ReportCategoriasByMonthFragment extends Fragment{
 	
 	private static final String TAG = "[CategoriasFragment]";
 	
@@ -53,7 +56,7 @@ public class ReportByCategoriasFragment extends Fragment{
 	private TextView txtViewDateRange;
     private Button	btnNextMonth;
     private Button btnPreviousMonth;
-    private PieChartView pieChartView;
+    private TimeSeriesChartView timeSeriesChart;
 
 	
 	
@@ -69,10 +72,15 @@ public class ReportByCategoriasFragment extends Fragment{
 		dateRange = new GregorianCalendar();
 		dateRange.set(GregorianCalendar.DAY_OF_MONTH, 1);
 		
-		this.tipoTransacao = getArguments().getInt("TipoTransacao");
-		String title = getActivity().getResources().getString( tipoTransacao == 1 ? R.string.report_by_categorias_receitas_chart_title : R.string.report_by_categorias_despesas_chart_title);
-		pieChartView = new PieChartView(getActivity(), title, app, createDataset(app, tipoTransacao, dateRange.getTime()));
-		view.addView(pieChartView);
+		List<CategoriaTransacao> categorias = app.getDatabase().select(CategoriaTransacao.class," WHERE id_TipoTransacao = 2 AND nome not like 'Transferência'");
+		TimeSeries[] timeSeries = new TimeSeries[categorias.size()];
+		int i = 0;
+		for (CategoriaTransacao categoriaTransacao : categorias) {
+			timeSeries[i++] = createDataset(app, categoriaTransacao.getId(), dateRange.getTime()); //Alimentação
+		}
+		
+		timeSeriesChart = new TimeSeriesChartView(getActivity(), getActivity().getResources().getString(R.string.report_categorias_title), timeSeries);
+		view.addView(timeSeriesChart);
 		
 		
 		return myFragmentView;
@@ -142,25 +150,26 @@ public class ReportByCategoriasFragment extends Fragment{
 	}
 	
 	private void update(){
-		pieChartView.setPieDataset(createDataset(app, tipoTransacao, dateRange.getTime()));
+//		pieChartView.setPieDataset(createDataset(app, tipoTransacao, dateRange.getTime()));
 	}
 	
     /**
      * Creates a sample dataset.
      * @return a sample dataset.
      */
-    private static PieDataset createDataset(MoneyControlApp app, int tipo, Date range) {
-    	Cursor c = app.getDatabase().runQueryCursor(QuerysUtil.reportTransacaoByTipoByCategoriasWithDateInterval(tipo, range));
-    	DefaultPieDataset dataset = new DefaultPieDataset();
+    private static TimeSeries createDataset(MoneyControlApp app, int id_CategoriaTransacao, Date range) {
+    	CategoriaTransacao cat = app.getDatabase().select(CategoriaTransacao.class, " WHERE id = "+id_CategoriaTransacao).get(0);
+    	Cursor c = app.getDatabase().runQueryCursor(QuerysUtil.reportCategoriaByMonth(id_CategoriaTransacao));
+    	TimeSeries s1 = new TimeSeries(cat.getNome());
     	if (c.moveToFirst()) {
 			do {
-				float valor = c.getFloat(1);
-				float percentual = c.getFloat(2);
-				percentual = Math.round(percentual*100)/100f;
-				dataset.setValue(c.getString(0)+" R$ "+String.format("%.2f", valor)+" - "+percentual+"%", new Double(valor));
+				float valor = c.getFloat(0);
+				int month = c.getInt(1);
+				int year = c.getInt(2);
+		        s1.add(new Month(month, year), valor);
 			} while (c.moveToNext());
 		}
-        return dataset;
+        return s1;
     }
     
     @Override

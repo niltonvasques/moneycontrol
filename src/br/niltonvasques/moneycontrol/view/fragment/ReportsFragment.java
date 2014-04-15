@@ -3,6 +3,7 @@ package br.niltonvasques.moneycontrol.view.fragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import br.niltonvasques.moneycontrol.R;
 import br.niltonvasques.moneycontrol.activity.NVFragmentActivity;
+import br.niltonvasques.moneycontrol.activity.TimeSeriesChartDemo01Activity;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
 import br.niltonvasques.moneycontrol.database.DatabaseHandler;
 
@@ -34,6 +36,7 @@ public class ReportsFragment extends Fragment{
 	static{
 		reports.add("Despesas por Categoria");
 		reports.add("Receitas por Categoria");
+		reports.add("Histórico por Categoria");
 	}
 	
 	
@@ -69,6 +72,14 @@ public class ReportsFragment extends Fragment{
 					args.putInt("TipoTransacao", 1);
 					fragment.setArguments(args);
 					((NVFragmentActivity)getActivity()).changeFragment(fragment);
+				}else if(item.equals("Histórico por Categoria")){
+//					Fragment fragment = new ReportCategoriasByMonthFragment();
+//					Bundle args = new Bundle();
+//					args.putInt("TipoTransacao", 1);
+//					fragment.setArguments(args);
+//					((NVFragmentActivity)getActivity()).changeFragment(fragment);
+					Intent it = new Intent(getActivity(), TimeSeriesChartDemo01Activity.class);
+					startActivity(it);                                                                                                                                                                                                   
 				}
 			}
 		});

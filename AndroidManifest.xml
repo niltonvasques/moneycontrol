@@ -5,8 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="11"
-        android:targetSdkVersion="18" />
+        android:minSdkVersion="11" />
 
     <application
         android:name="br.niltonvasques.moneycontrol.app.MoneyControlApp"
@@ -21,6 +20,13 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+        <activity android:name="br.niltonvasques.moneycontrol.activity.TimeSeriesChartDemo01Activity"
+            android:label="Time Series Demo 01">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
         

@@ -187,4 +187,10 @@ public class QuerysUtil {
 				"ORDER BY Max(c.nome) ";
 	}
 	
+	public static final String reportCategoriaByMonth(int id_CategoriaTransacao){
+		return 	"SELECT SUM(valor) as total, strftime(\"%m\",data) as month, strftime(\"%Y\",data) as year From Transacao "+
+				"WHERE id_CategoriaTransacao = " +id_CategoriaTransacao+" "+
+				"GROUP BY strftime(\"%m-%Y\", data)";
+	}
+	
 }
