@@ -15,6 +15,7 @@ import android.widget.TextView;
 import br.niltonvasques.moneycontrol.R;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
 import br.niltonvasques.moneycontrol.database.QuerysUtil;
+import br.niltonvasques.moneycontrol.database.bean.CategoriaTransacao;
 import br.niltonvasques.moneycontrol.database.bean.Transacao;
 import br.niltonvasques.moneycontrol.util.DateUtil;
 import br.niltonvasques.moneycontrol.util.ViewUtil;
@@ -62,6 +63,8 @@ public class TransacaoAdapter extends BaseAdapter{
 		
 		String tipo = app.getDatabase().runQuery(QuerysUtil.checkTipoTransacao(tr.getId()));
 		
+		CategoriaTransacao c = app.getCategoriasTransacao().get(tr.getId_CategoriaTransacao());
+		
 		if(tipo.equals("2")){
 			txtSaldo.setTextColor(Color.RED);
 		}else{
@@ -74,6 +77,7 @@ public class TransacaoAdapter extends BaseAdapter{
 			GregorianCalendar g = new GregorianCalendar();
 			g.setTime(DateUtil.sqlDateFormat().parse(tr.getData()));
 			ViewUtil.adjustDateOnTextView(txtData,g);
+			txtData.setText(txtData.getText().toString()+(c != null ? " - "+c.getNome() : "")); 
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
