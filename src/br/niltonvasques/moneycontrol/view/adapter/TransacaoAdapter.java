@@ -72,7 +72,7 @@ public class TransacaoAdapter extends BaseAdapter{
 		}
 		
 		txtNome.setText(tr.getDescricao());
-		txtSaldo.setText("R$ "+tr.getValor());
+		txtSaldo.setText("R$ "+String.format("%.2f", tr.getValor()));
 		try {
 			GregorianCalendar g = new GregorianCalendar();
 			g.setTime(DateUtil.sqlDateFormat().parse(tr.getData()));
