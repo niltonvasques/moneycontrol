@@ -42,26 +42,25 @@
 package br.niltonvasques.moneycontrol.activity;
 
 
-import java.util.Date;
-import java.util.List;
+import java.util.TreeSet;
 
 import org.afree.data.time.Month;
 import org.afree.data.time.TimeSeries;
 
+import android.app.Activity;
+import android.database.Cursor;
+import android.os.Bundle;
+import android.view.Window;
 import br.niltonvasques.moneycontrol.R;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
 import br.niltonvasques.moneycontrol.database.QuerysUtil;
 import br.niltonvasques.moneycontrol.database.bean.CategoriaTransacao;
 import br.niltonvasques.moneycontrol.view.chart.TimeSeriesChartView;
-import android.app.Activity;
-import android.database.Cursor;
-import android.os.Bundle;
-import android.view.Window;
 
 /**
  * TimeSeriesChartDemo01Activity
  */
-public class TimeSeriesChartDemo01Activity extends Activity {
+public class TimeSeriesActivity extends Activity {
 
 	private MoneyControlApp app;
     /**
@@ -74,7 +73,7 @@ public class TimeSeriesChartDemo01Activity extends Activity {
         
         app = (MoneyControlApp) getApplication();
 
-        List<CategoriaTransacao> categorias = app.getDatabase().select(CategoriaTransacao.class," WHERE id_TipoTransacao = 2 AND nome not like 'Transferência'");
+        TreeSet<CategoriaTransacao> categorias = (TreeSet<CategoriaTransacao>) app.getData();
 		TimeSeries[] timeSeries = new TimeSeries[categorias.size()];
 		int i = 0;
 		for (CategoriaTransacao categoriaTransacao : categorias) {

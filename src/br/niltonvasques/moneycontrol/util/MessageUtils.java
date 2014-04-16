@@ -26,6 +26,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 import br.niltonvasques.moneycontrol.R;
@@ -36,9 +37,14 @@ import br.niltonvasques.moneycontrol.database.bean.Conta;
 import br.niltonvasques.moneycontrol.database.bean.TipoConta;
 import br.niltonvasques.moneycontrol.database.bean.TipoTransacao;
 import br.niltonvasques.moneycontrol.database.bean.Transacao;
+import br.niltonvasques.moneycontrol.view.adapter.CategoriaChooseAdapter;
 import br.niltonvasques.moneycontrol.view.adapter.IconeAdapter;
 
 public class MessageUtils {
+	
+	public interface MessageListener{
+		public void onMessage(int result, Object data);
+	}
 	
 	private static final String TAG = "[MessageUtils]";
 
@@ -628,6 +634,35 @@ public class MessageUtils {
 		});
 	    
 	    
+	    
+	    alert.show();        
+	}
+	
+	public static void showCategoriasChooseDialog(final Context context, final LayoutInflater inflater, final DatabaseHandler db, final MessageListener listener){
+		final AlertDialog.Builder alert = new AlertDialog.Builder(context);
+		final View view = inflater.inflate(R.layout.report_categorias_by_month_dialog, null);
+	    alert.setView(view);
+	    
+	    Log.d(TAG, TipoConta.class.getSimpleName());
+	    
+	    List<CategoriaTransacao> tipos = db.select(CategoriaTransacao.class);
+	    
+	    final ListView spinnerTipos = (ListView) view.findViewById(R.id.reportCategoriasByMonthListViewCategorias);
+	    final CategoriaChooseAdapter adapter = new CategoriaChooseAdapter(tipos, inflater);
+	    spinnerTipos.setAdapter(adapter);
+	    
+	    alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				listener.onMessage(0, adapter.getCategoriasSelected());
+			}
+		});
+
+	    alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+	        public void onClick(DialogInterface dialog, int whichButton) {
+	            dialog.cancel();
+	        }
+	    });
 	    
 	    alert.show();        
 	}

@@ -2,6 +2,7 @@ package br.niltonvasques.moneycontrol.app;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.TreeSet;
 
 import android.app.Application;
 import br.niltonvasques.moneycontrol.database.DatabaseHandler;
@@ -10,7 +11,7 @@ import br.niltonvasques.moneycontrol.database.bean.CategoriaTransacao;
 public class MoneyControlApp extends Application{
 	
 	private DatabaseHandler handler = null;
-	
+	private Object data;
 	private HashMap<Integer, CategoriaTransacao> categoriasTransacao;
 	
 	@Override
@@ -36,6 +37,15 @@ public class MoneyControlApp extends Application{
 	
 	public HashMap<Integer, CategoriaTransacao> getCategoriasTransacao(){
 		return categoriasTransacao;
+	}
+	
+		
+	public Object getData(){
+		return data;
+	}
+	
+	public void setData(Object data){
+		this.data = data;
 	}
 	
 	

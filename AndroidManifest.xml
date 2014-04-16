@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         
-        <activity android:name="br.niltonvasques.moneycontrol.activity.TimeSeriesChartDemo01Activity"
+        <activity android:name="br.niltonvasques.moneycontrol.activity.TimeSeriesActivity"
             android:label="Time Series Demo 01">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

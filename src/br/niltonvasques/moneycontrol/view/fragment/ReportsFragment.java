@@ -10,15 +10,17 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import br.niltonvasques.moneycontrol.R;
 import br.niltonvasques.moneycontrol.activity.NVFragmentActivity;
-import br.niltonvasques.moneycontrol.activity.TimeSeriesChartDemo01Activity;
+import br.niltonvasques.moneycontrol.activity.TimeSeriesActivity;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
 import br.niltonvasques.moneycontrol.database.DatabaseHandler;
+import br.niltonvasques.moneycontrol.util.MessageUtils;
+import br.niltonvasques.moneycontrol.util.MessageUtils.MessageListener;
 
 public class ReportsFragment extends Fragment{
 	
@@ -73,13 +75,14 @@ public class ReportsFragment extends Fragment{
 					fragment.setArguments(args);
 					((NVFragmentActivity)getActivity()).changeFragment(fragment);
 				}else if(item.equals("Histórico por Categoria")){
-//					Fragment fragment = new ReportCategoriasByMonthFragment();
-//					Bundle args = new Bundle();
-//					args.putInt("TipoTransacao", 1);
-//					fragment.setArguments(args);
-//					((NVFragmentActivity)getActivity()).changeFragment(fragment);
-					Intent it = new Intent(getActivity(), TimeSeriesChartDemo01Activity.class);
-					startActivity(it);                                                                                                                                                                                                   
+					MessageUtils.showCategoriasChooseDialog(getActivity(), ReportsFragment.this.inflater, db, new MessageListener() {
+						@Override
+						public void onMessage(int result, Object data) {
+							app.setData(data);
+							Intent it = new Intent(getActivity(), TimeSeriesActivity.class);
+							startActivity(it);
+						}
+					} );
 				}
 			}
 		});

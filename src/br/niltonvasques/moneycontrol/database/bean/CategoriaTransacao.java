@@ -1,6 +1,6 @@
 package br.niltonvasques.moneycontrol.database.bean;
 
-public class CategoriaTransacao {
+public class CategoriaTransacao implements Comparable<CategoriaTransacao>{
 
 	private int id;
 	private String nome;
@@ -29,7 +29,10 @@ public class CategoriaTransacao {
 	public String toString() {
 		return nome;
 	}
-	
+	@Override
+	public int compareTo(CategoriaTransacao another) {
+		return this.id - another.getId();
+	}
 	
 	
 }

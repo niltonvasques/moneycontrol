@@ -101,7 +101,6 @@
     <string name="report_categorias_title">"Histórico mensal por categoria"</string>
     <string name="axis_date_label">Data</string>
     <string name="axis_price_label">Total por mês(R$)</string>
+    <string name="report_categorias_by_month_dialog_title">Escolha as categorias</string>
     
-    
-
 </resources>
