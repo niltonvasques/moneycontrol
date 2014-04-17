@@ -50,6 +50,7 @@ import org.afree.data.time.TimeSeries;
 import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Window;
 import br.niltonvasques.moneycontrol.R;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
@@ -61,6 +62,8 @@ import br.niltonvasques.moneycontrol.view.chart.TimeSeriesChartView;
  * TimeSeriesChartDemo01Activity
  */
 public class TimeSeriesActivity extends Activity {
+	
+	private static final String TAG = "[TimeSeriesActivity]";
 
 	private MoneyControlApp app;
     /**
@@ -92,8 +95,10 @@ public class TimeSeriesActivity extends Activity {
     	if (c.moveToFirst()) {
 			do {
 				float valor = c.getFloat(0);
-				int month = c.getInt(1);
+				int month = Integer.valueOf(c.getString(1));
 				int year = c.getInt(2);
+				Log.d(TAG, "createDataset string: month: "+c.getString(1)+" year: "+c.getString(2));
+				Log.d(TAG, "createDataset: month: "+month+" year: "+year);
 		        s1.add(new Month(month, year), valor);
 			} while (c.moveToNext());
 		}
