@@ -20,6 +20,10 @@
     <string name="action_add">Adicionar</string>
     <string name="action_transfer">Transferir</string>
     
+    <!-- Actions Transacoes -->
+    <string name="action_group">Agrupar</string>
+    <string name="action_disgroup">Desagrupar</string>
+    
     <string name="default_currency_value">R$ 0.00</string>
     
     <!-- add_categoria_dialog.xml -->

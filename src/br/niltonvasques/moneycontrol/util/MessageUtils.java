@@ -1,8 +1,10 @@
 package br.niltonvasques.moneycontrol.util;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -443,6 +445,178 @@ public class MessageUtils {
 				t.setData(format.format(value.getTime()));
 				
 				db.insert(t);
+				
+				listener.onClick(dialog, which);
+			}
+		});
+
+	    alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+	        public void onClick(DialogInterface dialog, int whichButton) {
+	            dialog.cancel();
+	        }
+	    });
+	    
+	    
+		OnDateSetListener dateListener = new DatePickerDialog.OnDateSetListener() {
+
+			public void onDateSet(DatePicker view, int year, int monthOfYear,
+					int dayOfMonth) {
+				Calendar c = Calendar.getInstance();
+				c.set(Calendar.YEAR, year);
+				c.set(Calendar.MONTH, monthOfYear);
+				c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+				value.set(Calendar.YEAR, year);
+				value.set(Calendar.MONTH, monthOfYear);
+				value.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+				ViewUtil.adjustDateOnTextView(btnDate, value);
+
+			}
+		};
+
+		final DatePickerDialog dateDialog = new DatePickerDialog(context, dateListener, 
+				value.get(Calendar.YEAR), 
+				value.get(Calendar.MONTH), 
+				value.get(Calendar.DAY_OF_MONTH));
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
+			dateDialog.getDatePicker().setMaxDate(Calendar.getInstance().getTimeInMillis());
+		}
+
+		btnDate.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				dateDialog.show();				
+			}
+		});
+	    
+	    
+	    
+	    alert.show();        
+	}
+	
+	@SuppressLint("NewApi")
+	public static void showEditTransacao(final Context context, final Transacao t, final LayoutInflater inflater, final DatabaseHandler db, final DialogInterface.OnClickListener listener){
+		final AlertDialog.Builder alert = new AlertDialog.Builder(context);
+		final View view = inflater.inflate(R.layout.add_transacao_dialog, null);
+	    alert.setView(view);
+	    
+	    final GregorianCalendar value = new GregorianCalendar();
+		try {
+			Date date = DateUtil.sqlDateFormat().parse(t.getData());
+			value.setTime(date);
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+		}
+	    final Button btnDate = (Button)view.findViewById(R.id.addTransacaoDialogBtnData);
+	    ViewUtil.adjustDateOnTextView(btnDate, value);
+	    
+	    CategoriaTransacao c = db.select(CategoriaTransacao.class, " WHERE id = "+t.getId_CategoriaTransacao()).get(0);
+	    
+	    final List<TipoTransacao> tipos = db.select(TipoTransacao.class);
+	    final List<CategoriaTransacao> categorias = db.select(CategoriaTransacao.class, "WHERE id_TipoTransacao = "+c.getId_TipoTransacao());
+	    final List<Conta> contas = db.select(Conta.class);
+	    
+	    int startContaPos = 0;
+	    
+	    for(int i = 0; i < contas.size(); i++) {
+	    	if(contas.get(i).getId() == t.getId_Conta()) {
+	    		startContaPos = i;
+	    		break;
+	    	}
+	    }
+	    
+	    int startCategoria = 0;
+	    
+	    for(int i = 0; i < categorias.size(); i++) {
+	    	if(categorias.get(i).getId() == t.getId_CategoriaTransacao()) {
+	    		startCategoria = i;
+	    		break;
+	    	}
+	    }
+	    
+	    int startTipoTransacaoPos = 0;
+	    
+	    for(int i = 0; i < tipos.size(); i++) {
+	    	if(tipos.get(i).getId() == c.getId_TipoTransacao()) {
+	    		startTipoTransacaoPos = i;
+	    		break;
+	    	}
+	    }
+	    
+	    final Spinner spinnerTipos = (Spinner) view.findViewById(R.id.addTransacaoDialogSpinnerTipo);
+	    spinnerTipos.setAdapter(new ArrayAdapter<TipoTransacao>(context, android.R.layout.simple_list_item_1, tipos));
+	    spinnerTipos.setSelection(startTipoTransacaoPos);
+	    
+	    final Spinner spinnerCategoria = (Spinner) view.findViewById(R.id.addTransacaoDialogSpinnerCategoria);
+	    spinnerCategoria.setAdapter(new ArrayAdapter<CategoriaTransacao>(context, android.R.layout.simple_list_item_1, categorias));
+	    spinnerCategoria.setSelection(startCategoria);
+	    
+	    view.findViewById(R.id.addTransacaoDialogBtnAddCategoria).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				MessageUtils.showAddCategoria(context, inflater, db, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						TipoTransacao tipo = (TipoTransacao)spinnerTipos.getSelectedItem();
+			    		categorias.clear();
+			    		categorias.addAll(db.select(CategoriaTransacao.class, "WHERE id_TipoTransacao = "+tipo.getId()));
+			    		((ArrayAdapter)spinnerCategoria.getAdapter()).notifyDataSetChanged();
+					}
+				});
+			}
+		});
+	    
+	    final Spinner spinnerContas = (Spinner) view.findViewById(R.id.addTransacaoDialogSpinnerConta);
+	    spinnerContas.setAdapter(new ArrayAdapter<Conta>(context, android.R.layout.simple_list_item_1, contas));
+	    spinnerContas.setSelection(startContaPos);
+	    
+	    spinnerTipos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+	    	@Override
+	    	public void onItemSelected(AdapterView<?> arg0, View arg1,int position, long arg3) {
+	    		TipoTransacao tipo = (TipoTransacao)spinnerTipos.getSelectedItem();
+	    		categorias.clear();
+	    		categorias.addAll(db.select(CategoriaTransacao.class, "WHERE id_TipoTransacao = "+tipo.getId()));
+	    		((ArrayAdapter)spinnerCategoria.getAdapter()).notifyDataSetChanged();
+	    	}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+	    
+	    final EditText editValor = (EditText) view.findViewById(R.id.addTransacaoDialogEditTxtValor);
+		final EditText editDescricao = (EditText) view.findViewById(R.id.addTransacaoDialogEditTxtDescrição);
+		editValor.setText(t.getValor()+"");
+		editDescricao.setText(t.getDescricao());
+		
+	    
+	    alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+				
+				
+				
+				try{
+					float valor = Float.valueOf(editValor.getText().toString());
+					t.setValor(valor);
+				}catch(Exception e){
+					e.printStackTrace();
+				}
+				
+				t.setDescricao(editDescricao.getText().toString());
+				
+				CategoriaTransacao cat = (CategoriaTransacao) spinnerCategoria.getSelectedItem();
+				t.setId_CategoriaTransacao(cat.getId());
+				
+				Conta cc = (Conta) spinnerContas.getSelectedItem();
+				t.setId_Conta(cc.getId());
+				
+				t.setData(format.format(value.getTime()));
+				
+				db.update(t);
 				
 				listener.onClick(dialog, which);
 			}

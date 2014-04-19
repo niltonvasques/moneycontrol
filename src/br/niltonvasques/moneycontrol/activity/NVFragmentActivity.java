@@ -33,17 +33,5 @@ public abstract class NVFragmentActivity extends FragmentActivity{
 	}
 	
 	public abstract int getFragmentContentID();
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		overFragment.onOptionsItemSelected(item);
-		return false;
-	}
-	
-	@Override
-	public boolean onPrepareOptionsMenu(Menu menu) {
-		overFragment.onPrepareOptionsMenu(menu);
-		return super.onPrepareOptionsMenu(menu);
-	}
 
 }

@@ -58,6 +58,13 @@ public class QuerysUtil {
 				"data >= date('"+DateUtil.sqlDateFormat().format(range)+"') ORDER BY data DESC";
 	}
 	
+	public static final String whereTransacaoFromContaWithDateIntervalAndCategoria(int id_Conta, int id_CategoriaTransacao, Date range){
+		return "WHERE id_Conta = "+id_Conta+" AND " +
+				"id_CategoriaTransacao = "+id_CategoriaTransacao+" AND "+
+				"data < date('"+DateUtil.sqlDateFormat().format(range)+"', '+1 month') AND " +
+				"data >= date('"+DateUtil.sqlDateFormat().format(range)+"') ORDER BY data DESC";
+	}
+	
 	public static final String whereTransacaoWithDateInterval(Date range){
 		return "WHERE data < date('"+DateUtil.sqlDateFormat().format(range)+"', '+1 month') AND " +
 				"data >= date('"+DateUtil.sqlDateFormat().format(range)+"') ORDER BY data DESC";

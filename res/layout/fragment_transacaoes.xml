@@ -40,6 +40,15 @@
 	    android:layout_below="@id/transacoesFragmentLayDateRange"
 	    android:layout_above="@+id/transacoesActivityBottomBar"></ListView>
 	
+	<ExpandableListView
+        android:id="@+id/transacoesFragmentExpandableListViewTransacoes"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/transacoesFragmentLayDateRange"
+	    android:layout_above="@+id/transacoesActivityBottomBar"
+	    android:visibility="gone" >
+    </ExpandableListView>
+	
 	<LinearLayout 
 	    android:id="@id/transacoesActivityBottomBar"
 	    android:layout_width="match_parent"

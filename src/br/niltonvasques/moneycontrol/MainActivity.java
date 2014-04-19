@@ -118,6 +118,7 @@ public class MainActivity extends NVFragmentActivity {
 		// If the nav drawer is open, hide action items related to the content view
 		boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
 		menu.findItem(R.id.action_add).setVisible(!drawerOpen);
+		menu.findItem(R.id.action_transfer).setVisible(!drawerOpen);
 		return super.onPrepareOptionsMenu(menu);
 	}
 

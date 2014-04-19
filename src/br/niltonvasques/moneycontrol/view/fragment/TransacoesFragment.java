@@ -2,32 +2,45 @@ package br.niltonvasques.moneycontrol.view.fragment;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.TextView;
 import br.niltonvasques.moneycontrol.R;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
 import br.niltonvasques.moneycontrol.database.DatabaseHandler;
 import br.niltonvasques.moneycontrol.database.QuerysUtil;
+import br.niltonvasques.moneycontrol.database.bean.CategoriaTransacao;
 import br.niltonvasques.moneycontrol.database.bean.Conta;
 import br.niltonvasques.moneycontrol.database.bean.Transacao;
 import br.niltonvasques.moneycontrol.util.DateUtil;
 import br.niltonvasques.moneycontrol.util.MessageUtils;
+import br.niltonvasques.moneycontrol.view.adapter.ExpandableListAdapter;
 import br.niltonvasques.moneycontrol.view.adapter.TransacaoAdapter;
 
 public class TransacoesFragment extends Fragment{
+	
+	public static final String TAG = "[TransacaoesFragment]";
 	
 	private int idConta = -1;
 	
@@ -44,6 +57,13 @@ public class TransacoesFragment extends Fragment{
     private Button btnPreviousMonth;
 	private ListView listViewTransacoes;
 	private TransacaoAdapter listAdapter;
+	private ExpandableListView expandableListView;
+	private ExpandableListAdapter expandableAdapter;
+	
+	
+	List<CategoriaTransacao> groupList = new LinkedList<CategoriaTransacao>();
+    List<Transacao> childList;
+    Map<CategoriaTransacao, List<Transacao>> categoriasCollection = new LinkedHashMap<CategoriaTransacao, List<Transacao>>();
 	
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,14 +89,19 @@ public class TransacoesFragment extends Fragment{
 		
 		loadComponentsFromXml();
 		
-		configureComponents(inflater);
-		
+		configureComponents();
 		
 		return myFragmentView;
 		
 	}
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
+	}
 
-	private void configureComponents(LayoutInflater inflater) {
+	private void configureComponents() {
 		
 		updateDateRange();
         
@@ -85,8 +110,21 @@ public class TransacoesFragment extends Fragment{
         
 		transacoes = db.select(Transacao.class,QuerysUtil.whereTransacaoFromContaWithDateInterval(idConta, dateRange.getTime()));
 		
-		listAdapter = new TransacaoAdapter(transacoes, dateRange, inflater, app);
+		listAdapter = new TransacaoAdapter(transacoes, inflater, app);
 		listViewTransacoes.setAdapter(listAdapter);
+		listViewTransacoes.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position,long arg3) {
+				Transacao t = transacoes.get(position);
+				MessageUtils.showEditTransacao(getActivity(), t, inflater, db, new OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						update();
+					}
+				});
+			}
+		});
+		
 		listViewTransacoes.setOnItemLongClickListener(new OnItemLongClickListener() {
 			
 			public boolean onItemLongClick(android.widget.AdapterView<?> arg0, View arg1, final int position, long arg3) {
@@ -102,6 +140,11 @@ public class TransacoesFragment extends Fragment{
 			};
 			
 		});
+		
+        updateCollection();
+        expandableAdapter = new ExpandableListAdapter(getActivity(), app, groupList, categoriasCollection);
+        expandableListView.setAdapter(expandableAdapter);
+ 
 	}
 
 	private void loadComponentsFromXml() {
@@ -109,6 +152,7 @@ public class TransacoesFragment extends Fragment{
 		btnPreviousMonth 	= (Button) myFragmentView.findViewById(R.id.transacoesFragmentBtnPreviousMonth);
 		btnNextMonth		= (Button) myFragmentView.findViewById(R.id.transacoesFragmentBtnNextMonth);
 		listViewTransacoes = (ListView) myFragmentView.findViewById(R.id.transacoesActivityListViewTransacoes);
+		expandableListView = (ExpandableListView) myFragmentView.findViewById(R.id.transacoesFragmentExpandableListViewTransacoes);
 	}
 	
 	@Override
@@ -118,18 +162,43 @@ public class TransacoesFragment extends Fragment{
 	}
 	
 	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		inflater.inflate(R.menu.main_transacaoes_actions, menu);
+		super.onCreateOptionsMenu(menu, inflater);
+	}
+	
+	@Override
+	public void onPrepareOptionsMenu(Menu menu) {
+		menu.findItem(R.id.action_transfer).setVisible(false);
+		super.onPrepareOptionsMenu(menu);
+	}
+	
+	
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    // Handle presses on the action bar items
 	    switch (item.getItemId()) {
 	        case R.id.action_add:
 	        	MessageUtils.showAddTransacao(getActivity(), inflater, db, idConta, new OnClickListener() {
-					
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						update();
 					}
 				});
 	            return true;
+	            
+	        case R.id.action_group:
+	        	if(item.getTitle().equals(getActivity().getString(R.string.action_group))){
+	        		item.setTitle(getActivity().getString(R.string.action_disgroup));
+		        	listViewTransacoes.setVisibility(View.GONE);
+		        	expandableListView.setVisibility(View.VISIBLE);
+	        	}else{
+	        		item.setTitle(getActivity().getString(R.string.action_group));
+		        	listViewTransacoes.setVisibility(View.VISIBLE);
+		        	expandableListView.setVisibility(View.GONE);
+	        	}
+	        	
+	        	return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }
@@ -167,6 +236,9 @@ public class TransacoesFragment extends Fragment{
 		transacoes.addAll(db.select(Transacao.class,QuerysUtil.whereTransacaoFromContaWithDateInterval(idConta, dateRange.getTime())));
 		listAdapter.notifyDataSetChanged();
 		
+		updateCollection();
+		expandableAdapter.notifyDataSetChanged();
+		
 		float debitoSum = 0;
 		float creditoSum = 0;
 		String debitos = db.runQuery(QuerysUtil.sumTransacoesDebitoFromContaWithDateInterval(idConta,dateRange.getTime()));
@@ -188,5 +260,26 @@ public class TransacoesFragment extends Fragment{
 		SimpleDateFormat format2 = new SimpleDateFormat("MMMMM - yyyy");
 	    txtViewDateRange.setText(format2.format(dateRange.getTime()));
 	}
+	
+    private void updateCollection() {
+    	groupList.clear();
+    	groupList.addAll(db.select(CategoriaTransacao.class));
+    	categoriasCollection.clear();
+    	
+    	List<CategoriaTransacao> emptys = new ArrayList<CategoriaTransacao>();
+ 
+        for (CategoriaTransacao categoria : groupList) {
+        	childList = db.select(Transacao.class, QuerysUtil.whereTransacaoFromContaWithDateIntervalAndCategoria(idConta, categoria.getId(), dateRange.getTime()));
+        	if(childList.isEmpty()){
+        		emptys.add(categoria);
+        	}else{
+        		categoriasCollection.put(categoria, childList);
+        	}
+        }
+        
+        for (CategoriaTransacao categoriaTransacao : emptys) {
+        	groupList.remove(categoriaTransacao);
+        }
+    }
 
 }

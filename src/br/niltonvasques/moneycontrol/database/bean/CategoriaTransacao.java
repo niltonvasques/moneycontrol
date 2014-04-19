@@ -34,5 +34,13 @@ public class CategoriaTransacao implements Comparable<CategoriaTransacao>{
 		return this.id - another.getId();
 	}
 	
+	@Override
+	public boolean equals(Object o) {
+		if(o instanceof CategoriaTransacao){
+			if(((CategoriaTransacao)o).getId() == id) return true;
+		}
+		return false;
+	}
+	
 	
 }

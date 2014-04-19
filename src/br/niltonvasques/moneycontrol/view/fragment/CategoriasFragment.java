@@ -53,6 +53,12 @@ public class CategoriasFragment extends Fragment{
 		return myFragmentView;
 	}
 	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
+	}
+	
 	
 	
 	@Override

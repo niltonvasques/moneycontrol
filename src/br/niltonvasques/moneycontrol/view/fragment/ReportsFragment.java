@@ -41,6 +41,12 @@ public class ReportsFragment extends Fragment{
 		reports.add("Histórico por Categoria");
 	}
 	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
+	}
+	
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -93,6 +99,7 @@ public class ReportsFragment extends Fragment{
 	@Override
 	public void onPrepareOptionsMenu(Menu menu) {
 		menu.findItem(R.id.action_add).setVisible(false);
+		menu.findItem(R.id.action_transfer).setVisible(false);
 		super.onPrepareOptionsMenu(menu);
 	}
 	
