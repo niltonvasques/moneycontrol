@@ -10,6 +10,7 @@ import android.widget.TextView;
 import br.niltonvasques.moneycontrol.R;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
 import br.niltonvasques.moneycontrol.database.QuerysUtil;
+import br.niltonvasques.moneycontrol.database.bean.Ativo;
 import br.niltonvasques.moneycontrol.database.bean.CategoriaTransacao;
 import br.niltonvasques.moneycontrol.database.bean.Transacao;
 import br.niltonvasques.moneycontrol.util.DateUtil;
@@ -41,6 +42,30 @@ public class ViewFactory {
 			g.setTime(DateUtil.sqlDateFormat().parse(tr.getData()));
 			ViewUtil.adjustDateOnTextView(txtData,g);
 			txtData.setText(txtData.getText().toString()+(c != null ? " - "+c.getNome() : "")); 
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		return view;
+	}
+
+	public static View createAtivoItemView(Ativo ativo, MoneyControlApp app,
+			LayoutInflater inflater) {
+		View view = inflater.inflate(R.layout.transacao_list_item, null);
+		
+		TextView txtNome = (TextView) view.findViewById(R.id.transacaoListItemTxtDescricao);
+		TextView txtSaldo = (TextView) view.findViewById(R.id.transacaoListItemTxtValor);
+		TextView txtData = (TextView) view.findViewById(R.id.transacaoListItemTxtData);
+		
+		String tipo = app.getDatabase().runQuery(QuerysUtil.checkTipoAtivo(ativo.getId()));
+		
+		txtNome.setText(ativo.getNome());
+		txtSaldo.setText("R$ "+String.format("%.2f", ativo.getValor()*ativo.getQuantidade()));
+		try {
+			GregorianCalendar g = new GregorianCalendar();
+			g.setTime(DateUtil.sqlDateFormat().parse(ativo.getData()));
+			ViewUtil.adjustDateOnTextView(txtData,g);
+			txtData.setText(txtData.getText().toString()+" - "+tipo); 
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}

@@ -240,5 +240,11 @@ public class QuerysUtil {
 		return "SELECT SUM(saldo) FROM Conta";
 	}
 
+	public static String checkTipoAtivo(int id) {
+		return "SELECT t.nome FROM Ativo a " +
+				"INNER JOIN TipoAtivo t on t.id = a.id_TipoAtivo " +
+				"WHERE a.id = "+id;
+	}
+
 	
 }

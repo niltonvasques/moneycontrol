@@ -26,6 +26,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -230,6 +231,15 @@ public class TransacoesByContaFragment extends Fragment{
 		        	expandableListView.setVisibility(View.GONE);
 	        	}
 	        	
+	        	return true;
+	        	
+	        case R.id.action_investiment:
+	        	MessageUtils.showAddAtivo(getActivity(), inflater, db, idConta, new OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						update();
+					}
+				});
 	        	return true;
 	        default:
 	            return super.onOptionsItemSelected(item);

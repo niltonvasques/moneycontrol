@@ -23,7 +23,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 
 	private static final String DDL_FILENAME = "db/ddl.sql";
 
-	private static final int DATABASE_VERSION = 5;
+	private static final int DATABASE_VERSION = 8;
 
 	private static final String DATABASE_NAME = "money-db";
 	
@@ -121,6 +121,12 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 			DatabaseUtil.execSqlFromFile(db, context, DATABASE_UPDATE_PATTERN+4+".sql");
 		case 4:
 			DatabaseUtil.execSqlFromFile(db, context, DATABASE_UPDATE_PATTERN+5+".sql");
+		case 5:
+			DatabaseUtil.execSqlFromFile(db, context, DATABASE_UPDATE_PATTERN+6+".sql");
+		case 6:
+			DatabaseUtil.execSqlFromFile(db, context, DATABASE_UPDATE_PATTERN+7+".sql");
+		case 7:
+			DatabaseUtil.execSqlFromFile(db, context, DATABASE_UPDATE_PATTERN+8+".sql");
 
 		default:
 			break;

@@ -24,6 +24,7 @@
     <!-- Actions Transacoes -->
     <string name="action_group">Agrupar</string>
     <string name="action_disgroup">Desagrupar</string>
+    <string name="action_investment">Investir</string>
     
     <string name="default_currency_value">R$ 0.00</string>
     
@@ -112,5 +113,18 @@
     <string name="report_receita_x_despesas_title">"Receitas x Despesas"</string>
     <string name="report_receita_x_despesas_axis_category">Meses</string>
     <string name="report_receita_x_despesas_axis_value">Valor(R$)</string>
+    
+    <!-- add_transacao_dialog.xml -->
+    <string name="add_ativo_dialog_title">Adicionar Ativo</string>
+    <string name="add_ativo_dialog_tipo">Tipo:</string>
+    <string name="add_ativo_dialog_valor">Valor:</string>
+    <string name="add_ativo_dialog_valor_hint">informe o valor</string>
+    <string name="add_ativo_dialog_descricao">Nome:</string>
+    <string name="add_ativo_dialog_descricao_hint">informe o nome do ativo</string>
+    <string name="add_ativo_dialog_sigla">Sigla:</string>
+    <string name="add_ativo_dialog_data">Data:</string>
+    <string name="add_ativo_dialog_vencimento">Vencimento:</string>
+    <string name="add_ativo_dialog_conta">Conta:</string>
+    <string name="add_ativo_dialog_quantidade">Quantidade:</string>
     
 </resources>

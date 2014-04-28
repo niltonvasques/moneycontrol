@@ -33,9 +33,11 @@ import android.widget.Spinner;
 import android.widget.Toast;
 import br.niltonvasques.moneycontrol.R;
 import br.niltonvasques.moneycontrol.database.DatabaseHandler;
+import br.niltonvasques.moneycontrol.database.bean.Ativo;
 import br.niltonvasques.moneycontrol.database.bean.CartaoCredito;
 import br.niltonvasques.moneycontrol.database.bean.CategoriaTransacao;
 import br.niltonvasques.moneycontrol.database.bean.Conta;
+import br.niltonvasques.moneycontrol.database.bean.TipoAtivo;
 import br.niltonvasques.moneycontrol.database.bean.TipoConta;
 import br.niltonvasques.moneycontrol.database.bean.TipoTransacao;
 import br.niltonvasques.moneycontrol.database.bean.Transacao;
@@ -840,6 +842,167 @@ public class MessageUtils {
 	            dialog.cancel();
 	        }
 	    });
+	    
+	    alert.show();        
+	}
+	
+	@SuppressLint("NewApi")
+	public static void showAddAtivo(final Context context, final LayoutInflater inflater, final DatabaseHandler db, int idConta, final DialogInterface.OnClickListener listener){
+		final AlertDialog.Builder alert = new AlertDialog.Builder(context);
+		final View view = inflater.inflate(R.layout.add_ativo_dialog, null);
+	    alert.setView(view);
+	    
+	    final GregorianCalendar data = new GregorianCalendar();
+	    final GregorianCalendar vencimento = new GregorianCalendar();
+	    final Button btnDate = (Button)view.findViewById(R.id.addAtivoDialogBtnData);
+	    final Button btnVencimento = (Button)view.findViewById(R.id.addAtivoDialogBtnVencimento);
+	    ViewUtil.adjustDateOnTextView(btnDate, data);
+	    ViewUtil.adjustDateOnTextView(btnVencimento, vencimento);
+	    
+	    final Ativo ativo = new Ativo();
+	    
+	    final List<TipoAtivo> tipos = db.select(TipoAtivo.class);
+	    final List<Conta> contas = db.select(Conta.class);
+	    
+	    int startContaPos = 0;
+	    
+	    for(int i = 0; i < contas.size(); i++) {
+	    	if(contas.get(i).getId() == idConta) {
+	    		startContaPos = i;
+	    		break;
+	    	}
+	    }
+	    
+	    final Spinner spinnerTipos = (Spinner) view.findViewById(R.id.addAtivoDialogSpinnerTipo);
+	    spinnerTipos.setAdapter(new ArrayAdapter<TipoAtivo>(context, android.R.layout.simple_list_item_1, tipos));
+	    spinnerTipos.setSelection(1);
+	    
+	    final Spinner spinnerContas = (Spinner) view.findViewById(R.id.addAtivoDialogSpinnerConta);
+	    spinnerContas.setAdapter(new ArrayAdapter<Conta>(context, android.R.layout.simple_list_item_1, contas));
+	    spinnerContas.setSelection(startContaPos);
+	    
+	    spinnerTipos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+	    	@Override
+	    	public void onItemSelected(AdapterView<?> arg0, View arg1,int position, long arg3) {
+	    		TipoAtivo tipo = (TipoAtivo)spinnerTipos.getSelectedItem();
+	    		if(tipo.getNome().equals("Ações") || tipo.getNome().equals("Fundos Imobiliários")){
+	    			view.findViewById(R.id.addAtivoLayoutVencimento).setVisibility(View.GONE);
+	    		}else{
+	    			view.findViewById(R.id.addAtivoLayoutVencimento).setVisibility(View.VISIBLE);
+	    		}
+	    	}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+	    
+	    
+	    alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+				
+				EditText editValor = (EditText) view.findViewById(R.id.addAtivoDialogEditTxtValor);
+				EditText editDescricao = (EditText) view.findViewById(R.id.addAtivoDialogEditTxtDescrição);
+				EditText editQuantidade = (EditText) view.findViewById(R.id.addAtivoDialogEditTxtQtd);
+				EditText editSigla = (EditText) view.findViewById(R.id.addAtivoDialogEditTxtSigla);
+				
+				try{
+					float valor = Float.valueOf(editValor.getText().toString());
+					ativo.setValor(valor);
+					float quantidade = Float.valueOf(editQuantidade.getText().toString());
+					ativo.setQuantidade(quantidade);
+				}catch(Exception e){
+					e.printStackTrace();
+				}
+				
+				ativo.setNome(editDescricao.getText().toString());
+				ativo.setSigla(editSigla.getText().toString());
+				
+				Conta cc = (Conta) spinnerContas.getSelectedItem();
+				ativo.setId_Conta(cc.getId());
+				
+				TipoAtivo tA = (TipoAtivo) spinnerTipos.getSelectedItem();
+				ativo.setId_TipoAtivo(tA.getId());
+				
+				ativo.setData(format.format(data.getTime()));
+				ativo.setVencimento(format.format(vencimento.getTime()));
+				
+				db.insert(ativo);
+				
+				listener.onClick(dialog, which);
+			}
+		});
+
+	    alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+	        public void onClick(DialogInterface dialog, int whichButton) {
+	            dialog.cancel();
+	        }
+	    });
+	    
+	    
+		OnDateSetListener dateListener = new DatePickerDialog.OnDateSetListener() {
+
+			public void onDateSet(DatePicker view, int year, int monthOfYear,
+					int dayOfMonth) {
+				Calendar c = Calendar.getInstance();
+				c.set(Calendar.YEAR, year);
+				c.set(Calendar.MONTH, monthOfYear);
+				c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+				data.set(Calendar.YEAR, year);
+				data.set(Calendar.MONTH, monthOfYear);
+				data.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+				ViewUtil.adjustDateOnTextView(btnDate, data);
+
+			}
+		};
+
+		final DatePickerDialog dateDialog = new DatePickerDialog(context, dateListener, 
+				data.get(Calendar.YEAR), 
+				data.get(Calendar.MONTH), 
+				data.get(Calendar.DAY_OF_MONTH));
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
+			dateDialog.getDatePicker().setMaxDate(Calendar.getInstance().getTimeInMillis());
+		}
+
+		btnDate.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				dateDialog.show();				
+			}
+		});
+		
+		OnDateSetListener vencimentoListener = new DatePickerDialog.OnDateSetListener() {
+
+			public void onDateSet(DatePicker view, int year, int monthOfYear,
+					int dayOfMonth) {
+				Calendar c = Calendar.getInstance();
+				c.set(Calendar.YEAR, year);
+				c.set(Calendar.MONTH, monthOfYear);
+				c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+				vencimento.set(Calendar.YEAR, year);
+				vencimento.set(Calendar.MONTH, monthOfYear);
+				vencimento.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+				ViewUtil.adjustDateOnTextView(btnVencimento, vencimento);
+			}
+		};
+
+		final DatePickerDialog vencimentoDialog = new DatePickerDialog(context, dateListener, 
+				vencimento.get(Calendar.YEAR), 
+				vencimento.get(Calendar.MONTH), 
+				vencimento.get(Calendar.DAY_OF_MONTH));
+
+		btnVencimento.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				vencimentoDialog.show();				
+			}
+		});
+	    
 	    
 	    alert.show();        
 	}
