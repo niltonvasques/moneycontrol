@@ -52,7 +52,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="456" y="77" name="Conta">
+<table x="540" y="81" name="Conta">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -125,7 +125,7 @@
 </key>
 <comment>O bem pode ser do tipo passivo ou ativo.</comment>
 </table>
-<table x="499" y="317" name="TipoConta">
+<table x="560" y="264" name="TipoConta">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -156,7 +156,7 @@
 </key>
 <comment>Saúde, Moradia, Alimentação e etc.</comment>
 </table>
-<table x="82" y="240" name="CartaoCredito">
+<table x="237" y="34" name="CartaoCredito">
 <row name="id" null="1" autoincrement="1">
 <datatype>TINYINT</datatype>
 <default>NULL</default></row>
@@ -177,7 +177,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="569" y="544" name="TipoAtivo">
+<table x="614" y="582" name="TipoAtivo">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -188,7 +188,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="287" y="425" name="Ativo">
+<table x="402" y="328" name="Ativo">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -202,9 +202,9 @@
 <datatype>INTEGER</datatype>
 <default>NULL</default><relation table="Conta" row="id" />
 </row>
-<row name="quantidade" null="1" autoincrement="0">
+<row name="quantidade" null="0" autoincrement="0">
 <datatype>INTEGER</datatype>
-<default>NULL</default></row>
+<default>1</default></row>
 <row name="id_TipoAtivo" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <default>NULL</default><relation table="TipoAtivo" row="id" />
@@ -216,7 +216,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="34" y="434" name="RentabilidadeAtivo">
+<table x="37" y="480" name="RentabilidadeAtivo">
 <row name="id" null="1" autoincrement="1">
 <datatype>TINYINT</datatype>
 <default>NULL</default></row>
@@ -230,6 +230,30 @@
 <datatype>INTEGER</datatype>
 <default>NULL</default><relation table="Ativo" row="id" />
 </row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="35" y="257" name="EventoAtivo">
+<row name="id" null="1" autoincrement="1">
+<datatype>TINYINT</datatype>
+<default>NULL</default></row>
+<row name="nome" null="0" autoincrement="0">
+<datatype>VARCHAR</datatype>
+<default>'NULL'</default></row>
+<row name="data" null="0" autoincrement="0">
+<datatype>DATE</datatype>
+<default>'NULL'</default></row>
+<row name="id_Ativo" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="Ativo" row="id" />
+</row>
+<row name="quantidade" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="valor" null="0" autoincrement="0">
+<datatype>DECIMAL</datatype>
+<default>NULL</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
