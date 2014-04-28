@@ -107,7 +107,7 @@ public class MainFragment extends Fragment{
 		listViewContas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position,long arg3) {
-				Fragment fragment = new TransacoesFragment();
+				Fragment fragment = new TransacoesByContaFragment();
 				Bundle args = new Bundle();
 				args.putInt("conta", contas.get(position).getId());
 				args.putString("range", DateUtil.sqlDateFormat().format(dateRange.getTime()));

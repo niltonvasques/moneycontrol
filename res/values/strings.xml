@@ -5,8 +5,9 @@
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     
-    <string-array name="planets_array">
-        <item>Principal</item>
+    <string-array name="menu_array">
+        <item>Contas</item>
+        <item>Transações</item>
         <item>Categorias</item>
         <item>Investimentos</item>
         <item>Relatórios</item>
@@ -106,5 +107,10 @@
     <string name="axis_date_label">Data</string>
     <string name="axis_price_label">Total por mês(R$)</string>
     <string name="report_categorias_by_month_dialog_title">Escolha as categorias</string>
+    
+    <!-- ReportReceitasXDespesas.java -->
+    <string name="report_receita_x_despesas_title">"Receitas x Despesas"</string>
+    <string name="report_receita_x_despesas_axis_category">Meses</string>
+    <string name="report_receita_x_despesas_axis_value">Valor(R$)</string>
     
 </resources>

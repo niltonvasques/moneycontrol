@@ -1,5 +1,6 @@
 package br.niltonvasques.moneycontrol.view.fragment;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
@@ -22,9 +24,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import br.niltonvasques.moneycontrol.R;
@@ -34,14 +36,17 @@ import br.niltonvasques.moneycontrol.database.QuerysUtil;
 import br.niltonvasques.moneycontrol.database.bean.CategoriaTransacao;
 import br.niltonvasques.moneycontrol.database.bean.Conta;
 import br.niltonvasques.moneycontrol.database.bean.Transacao;
+import br.niltonvasques.moneycontrol.util.AssetUtil;
 import br.niltonvasques.moneycontrol.util.DateUtil;
 import br.niltonvasques.moneycontrol.util.MessageUtils;
 import br.niltonvasques.moneycontrol.view.adapter.ExpandableListAdapter;
 import br.niltonvasques.moneycontrol.view.adapter.TransacaoAdapter;
 
-public class TransacoesFragment extends Fragment{
+public class TransacoesByContaFragment extends Fragment{
 	
 	public static final String TAG = "[TransacaoesFragment]";
+	
+	private int idConta = -1;
 	
 	private DatabaseHandler db;
 	private MoneyControlApp app;
@@ -58,7 +63,7 @@ public class TransacoesFragment extends Fragment{
 	private TransacaoAdapter listAdapter;
 	private ExpandableListView expandableListView;
 	private ExpandableListAdapter expandableAdapter;
-	
+	private Conta conta;
 	
 	List<CategoriaTransacao> groupList = new LinkedList<CategoriaTransacao>();
     List<Transacao> childList;
@@ -75,6 +80,8 @@ public class TransacoesFragment extends Fragment{
 		
 		app = (MoneyControlApp) getActivity().getApplication();
 		db = app.getDatabase();
+		idConta = getArguments().getInt("conta");
+		conta = db.select(Conta.class, " WHERE id = "+idConta).get(0);
 		
 		String range = getArguments().getString("range");
 		dateRange = new GregorianCalendar();
@@ -98,6 +105,23 @@ public class TransacoesFragment extends Fragment{
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		update();
+		getActivity().getActionBar().setTitle(conta.getNome());
+		updateIcon(conta);
+	}
+
+	@SuppressLint("NewApi")
+	private void updateIcon(Conta c) {
+		try {
+			getActivity().getActionBar().setIcon(AssetUtil.loadDrawableFromAsset(app, "icons/"+c.getIcon()));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	private void configureComponents() {
 		
@@ -106,7 +130,7 @@ public class TransacoesFragment extends Fragment{
         btnPreviousMonth.setOnClickListener(mOnClick);
         btnNextMonth.setOnClickListener(mOnClick);
         
-		transacoes = db.select(Transacao.class,QuerysUtil.whereTransacaoWithDateInterval(dateRange.getTime()));
+		transacoes = db.select(Transacao.class,QuerysUtil.whereTransacaoFromContaWithDateInterval(idConta, dateRange.getTime()));
 		
 		listAdapter = new TransacaoAdapter(transacoes, inflater, app);
 		listViewTransacoes.setAdapter(listAdapter);
@@ -136,11 +160,11 @@ public class TransacoesFragment extends Fragment{
 				});
 				return false;
 			};
-			
 		});
 		
         updateCollection();
         expandableAdapter = new ExpandableListAdapter(getActivity(), app, groupList, categoriasCollection);
+        expandableAdapter.setConta(conta);
         expandableListView.setAdapter(expandableAdapter);
         
         expandableListView.setOnChildClickListener(new OnChildClickListener() {
@@ -170,12 +194,6 @@ public class TransacoesFragment extends Fragment{
 	}
 	
 	@Override
-	public void onResume() {
-		super.onResume();
-		update();
-	}
-	
-	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.main_transacaoes_actions, menu);
 		super.onCreateOptionsMenu(menu, inflater);
@@ -193,7 +211,7 @@ public class TransacoesFragment extends Fragment{
 	    // Handle presses on the action bar items
 	    switch (item.getItemId()) {
 	        case R.id.action_add:
-	        	MessageUtils.showAddTransacao(getActivity(), inflater, db, 0, new OnClickListener() {
+	        	MessageUtils.showAddTransacao(getActivity(), inflater, db, idConta, new OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						update();
@@ -245,40 +263,27 @@ public class TransacoesFragment extends Fragment{
 	private void update(){
 		
 		transacoes.clear();
-		transacoes.addAll(db.select(Transacao.class,QuerysUtil.whereTransacaoWithDateInterval(dateRange.getTime())));
+		transacoes.addAll(db.select(Transacao.class,QuerysUtil.whereTransacaoFromContaWithDateInterval(idConta, dateRange.getTime())));
 		listAdapter.notifyDataSetChanged();
 		
 		updateCollection();
 		expandableAdapter.notifyDataSetChanged();
 		
-		float credito = 0;
-		String creditoQuery = db.runQuery(QuerysUtil.sumContasCreditoWithDateInterval(dateRange.getTime()));
-		if(creditoQuery != null && creditoQuery.length() > 0){
-			credito = Float.valueOf(creditoQuery);
-		}
+		float debitoSum = 0;
+		float creditoSum = 0;
+		String debitos = db.runQuery(QuerysUtil.sumTransacoesDebitoFromContaWithDateInterval(idConta,dateRange.getTime()));
+		String creditos = db.runQuery(QuerysUtil.sumTransacoesCreditoFromContaWithDateInterval(idConta,dateRange.getTime()));
 		
-		float debito = 0;
-		String debitoQuery = db.runQuery(QuerysUtil.sumContasDebitoWithDateInterval(dateRange.getTime()));
-		if(debitoQuery != null && debitoQuery.length() > 0){
-			debito = Float.valueOf(debitoQuery);
-		}
+		if(debitos != null && debitos.length() > 0)  debitoSum = Float.valueOf(debitos);
+		if(creditos != null && creditos.length() > 0) creditoSum = Float.valueOf(creditos);
 		
-		String saldo = db.runQuery(QuerysUtil.computeSaldoBeforeDate(dateRange.getTime()));
-		float saldoSum = 0;
-		if(saldo != null && saldo.length() > 0){
-			saldoSum = Float.valueOf(saldo);
-		}		
+		String saldo = db.runQuery(QuerysUtil.computeSaldoFromContaBeforeDate(idConta, dateRange.getTime()));
+		float saldoAnterior = 0;
+		if(saldo != null && saldo.length() > 0) saldoAnterior = Float.valueOf(saldo);
 		
-		saldo = db.runQuery(QuerysUtil.sumSaldoContas());
-		if(saldo != null && saldo.length() > 0){
-			saldoSum += Float.valueOf(saldo);
-		}
-		
-		saldoSum += credito - debito;
-		
-		((TextView)myFragmentView.findViewById(R.id.transacoesActivityTxtDebitosSum)).setText("R$ "+String.format("%.2f", debito));
-		((TextView)myFragmentView.findViewById(R.id.transacoesActivityTxtCreditosSum)).setText("R$ "+String.format("%.2f",credito));
-		((TextView)myFragmentView.findViewById(R.id.transacoesActivityTxtSaldoSum)).setText("R$ "+String.format("%.2f",saldoSum));
+		((TextView)myFragmentView.findViewById(R.id.transacoesActivityTxtDebitosSum)).setText("R$ "+String.format("%.2f", debitoSum));
+		((TextView)myFragmentView.findViewById(R.id.transacoesActivityTxtCreditosSum)).setText("R$ "+String.format("%.2f",creditoSum));
+		((TextView)myFragmentView.findViewById(R.id.transacoesActivityTxtSaldoSum)).setText("R$ "+String.format("%.2f",(saldoAnterior+creditoSum-debitoSum)));
 	}
 	
 	private void updateDateRange() {
@@ -294,7 +299,7 @@ public class TransacoesFragment extends Fragment{
     	List<CategoriaTransacao> emptys = new ArrayList<CategoriaTransacao>();
  
         for (CategoriaTransacao categoria : groupList) {
-        	childList = db.select(Transacao.class, QuerysUtil.whereTransacaoWithDateIntervalAndCategoria(categoria.getId(), dateRange.getTime()));
+        	childList = db.select(Transacao.class, QuerysUtil.whereTransacaoFromContaWithDateIntervalAndCategoria(idConta, categoria.getId(), dateRange.getTime()));
         	if(childList.isEmpty()){
         		emptys.add(categoria);
         	}else{

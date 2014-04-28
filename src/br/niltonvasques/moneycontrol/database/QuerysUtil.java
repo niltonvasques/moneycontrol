@@ -65,6 +65,12 @@ public class QuerysUtil {
 				"data >= date('"+DateUtil.sqlDateFormat().format(range)+"') ORDER BY data DESC";
 	}
 	
+	public static String whereTransacaoWithDateIntervalAndCategoria(int id_CategoriaTransacao,	Date time) {
+		return "WHERE id_CategoriaTransacao = "+id_CategoriaTransacao+" AND "+
+				"data < date('"+DateUtil.sqlDateFormat().format(time)+"', '+1 month') AND " +
+				"data >= date('"+DateUtil.sqlDateFormat().format(time)+"') ORDER BY data DESC";
+	}
+	
 	public static final String whereTransacaoWithDateInterval(Date range){
 		return "WHERE data < date('"+DateUtil.sqlDateFormat().format(range)+"', '+1 month') AND " +
 				"data >= date('"+DateUtil.sqlDateFormat().format(range)+"') ORDER BY data DESC";
@@ -194,10 +200,45 @@ public class QuerysUtil {
 				"ORDER BY Max(c.nome) ";
 	}
 	
+	public static final String reportCategoriaWithDateInterval(int id_CategoriaTransacao, int month, int year){
+		return 	"SELECT SUM(valor) as total, strftime(\"%m\",data) as month, strftime(\"%Y\",data) as year From Transacao "+
+				"WHERE id_CategoriaTransacao = " +id_CategoriaTransacao+" "+
+				"AND CAST(strftime(\"%m\", data) as integer) = "+month+" "+
+				"AND CAST(strftime(\"%Y\", data) as INTEGER) = "+year;
+	}
+	
+	public static final String reportCategoriaWithDateIntervalAndConta(int id_CategoriaTransacao, int id_Conta, int month, int year){
+		return 	reportCategoriaWithDateInterval(id_CategoriaTransacao, month, year)+
+				" AND id_Conta = "+id_Conta;
+	}
+	
 	public static final String reportCategoriaByMonth(int id_CategoriaTransacao){
 		return 	"SELECT SUM(valor) as total, strftime(\"%m\",data) as month, strftime(\"%Y\",data) as year From Transacao "+
 				"WHERE id_CategoriaTransacao = " +id_CategoriaTransacao+" "+
 				"GROUP BY strftime(\"%m-%Y\", data)";
 	}
+	
+	
+	public static final String reportHistoryReceitas(){
+		return reportHistory(1);
+	}
+	
+	public static final String reportHistoryDespesas(){
+		return reportHistory(2);
+	}
+	
+	public static final String reportHistory(int tipoTransacao){
+		return "SELECT SUM(valor) as total, " +
+				"strftime(\"%m-%Y\", data) as month " +
+				"FROM Transacao t " +
+				"INNER JOIN CategoriaTransacao c on c.id = t.id_CategoriaTransacao " +
+				"WHERE c.id_TipoTransacao = "+tipoTransacao+" AND c.nome not like 'Transferência' " +
+				"GROUP BY strftime(\"%m-%Y\", data)";
+	}
+
+	public static String sumSaldoContas() {
+		return "SELECT SUM(saldo) FROM Conta";
+	}
+
 	
 }

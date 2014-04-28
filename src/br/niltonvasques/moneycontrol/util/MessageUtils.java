@@ -299,8 +299,9 @@ public class MessageUtils {
 
 	public static void showIconesDialog(final Context context, LayoutInflater inflater, final DialogInterface.OnClickListener listener){
 		final AlertDialog.Builder alert = new AlertDialog.Builder(context);
+		final AlertDialog alertDialog = alert.create();
 		final View view = inflater.inflate(R.layout.icones_dialog, null);
-	    alert.setView(view);
+		alertDialog.setView(view);
 	    
 	    final String[] icons = getIconsNameOnAsset(context);
 	    
@@ -314,27 +315,29 @@ public class MessageUtils {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 					long arg3) {
 				grid.setTag(position);
+				listener.onClick(alertDialog, (Integer)grid.getTag());
+				alertDialog.cancel();
 			}
 	    	
 		});
 	    
 	    	    
-	    alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				listener.onClick(dialog, (Integer)grid.getTag());
-			}
-		});
-
-	    alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-	        public void onClick(DialogInterface dialog, int whichButton) {
-	            dialog.cancel();
-	        }
-	    });
+//	    alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+//			
+//			@Override
+//			public void onClick(DialogInterface dialog, int which) {
+//				listener.onClick(dialog, (Integer)grid.getTag());
+//			}
+//		});
+//
+//	    alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//	        public void onClick(DialogInterface dialog, int whichButton) {
+//	            dialog.cancel();
+//	        }
+//	    });
 	    
 	    
-	    alert.show();        
+	    alertDialog.show();        
 	}
 
 	private static String[] getIconsNameOnAsset(final Context context) {

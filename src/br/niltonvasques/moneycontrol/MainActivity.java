@@ -1,9 +1,12 @@
 package br.niltonvasques.moneycontrol;
 
+import java.util.GregorianCalendar;
+
 import android.annotation.SuppressLint;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,13 +18,21 @@ import android.widget.ListView;
 import br.niltonvasques.moneycontrol.activity.NVFragmentActivity;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
 import br.niltonvasques.moneycontrol.database.DatabaseHandler;
+import br.niltonvasques.moneycontrol.util.DateUtil;
 import br.niltonvasques.moneycontrol.view.fragment.CategoriasFragment;
 import br.niltonvasques.moneycontrol.view.fragment.MainFragment;
-import br.niltonvasques.moneycontrol.view.fragment.ReportByCategoriasFragment;
 import br.niltonvasques.moneycontrol.view.fragment.ReportsFragment;
+import br.niltonvasques.moneycontrol.view.fragment.TransacoesFragment;
 
 @SuppressLint("NewApi")
 public class MainActivity extends NVFragmentActivity {
+	
+	private static final int CONTAS_ITEM_MENU = 0;
+	private static final int TRANSACOES_ITEM_MENU = 1;
+	private static final int CATEGORIAS_ITEM_MENU = 2;
+	private static final int INVESTIMENTOS_ITEM_MENU = 3;
+	private static final int RELATORIOS_ITEM_MENU = 4;
+	private static final int SOBRE_ITEM_MENU = 5;
 
 	private static final String TAG = "[MainActivity]";
 
@@ -41,7 +52,7 @@ public class MainActivity extends NVFragmentActivity {
 		app = (MoneyControlApp) getApplication();
 
 
-		mDrawerItens = getResources().getStringArray(R.array.planets_array);
+		mDrawerItens = getResources().getStringArray(R.array.menu_array);
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
@@ -49,21 +60,32 @@ public class MainActivity extends NVFragmentActivity {
 		mDrawerList.setAdapter(new ArrayAdapter<String>(this,R.layout.drawer_list_item, mDrawerItens));
 
 		changeFragment( new MainFragment() );
-		getActionBar().setTitle(mDrawerItens[0]);
+		getActionBar().setTitle(mDrawerItens[CONTAS_ITEM_MENU]);
 
 		mDrawerList.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position,long arg3) {
-				if(mDrawerItens[position].equals("Principal")){
-					changeFragment( new MainFragment() );
-				}else if(mDrawerItens[position].equals("Categorias")){
-					changeFragment(new CategoriasFragment());
-				}else if(mDrawerItens[position].equals("Relatórios")){
-					changeFragment(new ReportsFragment());
-				}
-
-				mDrawerLayout.closeDrawer(mDrawerList);
+				getActionBar().setIcon(R.drawable.ic_launcher);
 				getActionBar().setTitle(mDrawerItens[position]);
+				
+				if(mDrawerItens[position].equals(mDrawerItens[CONTAS_ITEM_MENU])){
+					changeFragment( new MainFragment() );
+				}else if(mDrawerItens[position].equals(mDrawerItens[CATEGORIAS_ITEM_MENU])){
+					changeFragment(new CategoriasFragment());
+				}else if(mDrawerItens[position].equals(mDrawerItens[RELATORIOS_ITEM_MENU])){
+					changeFragment(new ReportsFragment());
+				}else if(mDrawerItens[position].equals(mDrawerItens[TRANSACOES_ITEM_MENU])){
+					GregorianCalendar dateRange = new GregorianCalendar();
+					dateRange.set(GregorianCalendar.DAY_OF_MONTH, 1);
+					Fragment fragment = new TransacoesFragment();
+					Bundle args = new Bundle();
+					args.putString("range", DateUtil.sqlDateFormat().format(dateRange.getTime()));
+					fragment.setArguments(args);
+					changeFragment(fragment);
+				}
+				
+				mDrawerLayout.closeDrawer(mDrawerList);
+
 
 			}
 		});

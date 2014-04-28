@@ -39,6 +39,7 @@ public class ReportsFragment extends Fragment{
 		reports.add("Despesas por Categoria");
 		reports.add("Receitas por Categoria");
 		reports.add("Histórico por Categoria");
+		reports.add("Histórico Receitas X Despesas");
 	}
 	
 	@Override
@@ -89,6 +90,12 @@ public class ReportsFragment extends Fragment{
 							startActivity(it);
 						}
 					} );
+				}else if(item.equals(reports.get(3))){
+					Fragment fragment = new ReportReceitasDespesasFragment();
+					Bundle args = new Bundle();
+					args.putInt("TipoTransacao", 1);
+					fragment.setArguments(args);
+					((NVFragmentActivity)getActivity()).changeFragment(fragment);
 				}
 			}
 		});
