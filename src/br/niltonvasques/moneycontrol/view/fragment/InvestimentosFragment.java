@@ -68,7 +68,6 @@ public class InvestimentosFragment extends Fragment{
 		this.inflater = inflater;
 		
 		myFragmentView = inflater.inflate(R.layout.fragment_investimentos, null);
-		getActivity().getActionBar().setTitle("Transações");
 		
 		app = (MoneyControlApp) getActivity().getApplication();
 		db = app.getDatabase();
@@ -110,27 +109,29 @@ public class InvestimentosFragment extends Fragment{
 		listViewAtivos.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position,long arg3) {
-				Ativo t = ativos.get(position);
-//				MessageUtils.showEditTransacao(getActivity(), t, inflater, db, new OnClickListener() {
-//					@Override
-//					public void onClick(DialogInterface dialog, int which) {
-//						update();
-//					}
-//				});
+				Ativo ativo = ativos.get(position);
+				MessageUtils.showEditAtivo(getActivity(), ativo, inflater, db, new OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						update();
+					}
+				});
 			}
 		});
 		
 		listViewAtivos.setOnItemLongClickListener(new OnItemLongClickListener() {
 			
 			public boolean onItemLongClick(android.widget.AdapterView<?> arg0, View arg1, final int position, long arg3) {
-//				MessageUtils.showMessageYesNo(getActivity(), "Atenção!", "Deseja excluir esta transação?", new OnClickListener() {
-//					@Override
-//					public void onClick(DialogInterface dialog, int which) {
-//						Transacao t = ativos.get(position);
-//						db.delete(t);
-//						update();
-//					}
-//				});
+				MessageUtils.showMessageYesNo(getActivity(), "Atenção!", "Deseja excluir este ativo?", new OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						Ativo at = ativos.get(position);
+						Transacao tr = db.select(Transacao.class, " WHERE id = "+at.getId_Transacao()).get(0);
+						db.delete(at);
+						db.delete(tr);
+						update();
+					}
+				});
 				return false;
 			};
 			

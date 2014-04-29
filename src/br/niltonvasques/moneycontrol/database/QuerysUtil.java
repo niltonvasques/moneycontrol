@@ -172,6 +172,7 @@ public class QuerysUtil {
 				"INNER JOIN CategoriaTransacao c on c.id = t.id_CategoriaTransacao "+
 				"WHERE c.id_TipoTransacao  = 2 "+
 				"AND c.nome not like 'Transferência'"+
+				"AND c.nome not like 'Investimento'"+
 				"AND data < date('"+DateUtil.sqlDateFormat().format(range)+"', '+1 month') AND " +
 				"data >= date('"+DateUtil.sqlDateFormat().format(range)+"') "+
 				"GROUP BY id_CategoriaTransacao "+ 
@@ -196,6 +197,7 @@ public class QuerysUtil {
 				"AND data < date('"+DateUtil.sqlDateFormat().format(range)+"', '+1 month') AND " +
 				"data >= date('"+DateUtil.sqlDateFormat().format(range)+"') "+
 				"AND c.nome not like 'Transferência'"+
+				"AND c.nome not like 'Investimento'"+
 				"GROUP BY id_CategoriaTransacao "+ 
 				"ORDER BY Max(c.nome) ";
 	}
@@ -233,6 +235,7 @@ public class QuerysUtil {
 				"FROM Transacao t " +
 				"INNER JOIN CategoriaTransacao c on c.id = t.id_CategoriaTransacao " +
 				"WHERE c.id_TipoTransacao = "+tipoTransacao+" AND c.nome not like 'Transferência' " +
+				"AND c.nome not like 'Investimento'"+
 				"GROUP BY strftime(\"%m-%Y\", data)";
 	}
 

@@ -23,7 +23,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 
 	private static final String DDL_FILENAME = "db/ddl.sql";
 
-	private static final int DATABASE_VERSION = 8;
+	private static final int DATABASE_VERSION = 11;
 
 	private static final String DATABASE_NAME = "money-db";
 	
@@ -35,7 +35,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 		this.context = context;
 
-		System.out.println("DatabaseHandler()");
+		System.out.println("DatabaseHandler() ver: "+DATABASE_VERSION);
 	}
 
 	@Override
@@ -127,6 +127,10 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 			DatabaseUtil.execSqlFromFile(db, context, DATABASE_UPDATE_PATTERN+7+".sql");
 		case 7:
 			DatabaseUtil.execSqlFromFile(db, context, DATABASE_UPDATE_PATTERN+8+".sql");
+		case 8:
+			DatabaseUtil.execSqlFromFile(db, context, DATABASE_UPDATE_PATTERN+9+".sql");
+		case 10:
+			DatabaseUtil.execSqlFromFile(db, context, DATABASE_UPDATE_PATTERN+11+".sql");
 
 		default:
 			break;
@@ -269,12 +273,17 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 	}
 	
 	public <T> boolean insert(T bean){
+		try{
+			SQLiteDatabase db = this.getWritableDatabase();    	 
 		
-		SQLiteDatabase db = this.getWritableDatabase();    	 
-	
-		db.execSQL(DatabaseUtil.beanToSqlInsert(bean, bean.getClass().getSimpleName(), "id"));
-	
-		db.close(); // Closing database connection		
+			db.execSQL(DatabaseUtil.beanToSqlInsert(bean, bean.getClass().getSimpleName(), "id"));
+			int id = Integer.parseInt(runQuery("SELECT MAX(id) FROM "+bean.getClass().getSimpleName()));
+			DatabaseUtil.setBeanId(bean, "id", id);
+			db.close(); // Closing database connection
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
 		
 		return true;
 	}

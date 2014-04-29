@@ -9,6 +9,7 @@ public class Ativo {
 	private String vencimento;
 	private int id_Conta;
 	private int id_TipoAtivo;
+	private int id_Transacao;
 	private String nome;
 	private String sigla;
 	
@@ -66,8 +67,12 @@ public class Ativo {
 	public void setSigla(String sigla) {
 		this.sigla = sigla;
 	}
-	
-	
+	public int getId_Transacao() {
+		return id_Transacao;
+	}
+	public void setId_Transacao(int id_Transacao) {
+		this.id_Transacao = id_Transacao;
+	}
 	
 	
 }

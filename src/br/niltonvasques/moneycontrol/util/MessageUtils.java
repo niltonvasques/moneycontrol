@@ -932,7 +932,19 @@ public class MessageUtils {
 				ativo.setData(format.format(data.getTime()));
 				ativo.setVencimento(format.format(vencimento.getTime()));
 				
-				db.insert(ativo);
+				Transacao t = new Transacao();
+				t.setData(format.format(data.getTime()));
+				t.setDescricao("Investimento -> "+ativo.getNome());
+				t.setId_Conta(ativo.getId_Conta());
+				t.setValor(ativo.getValor()*ativo.getQuantidade());
+				t.setId_CategoriaTransacao(db.select(CategoriaTransacao.class, " WHERE nome = 'Investimento' AND system = 1").get(0).getId());
+				
+				if(db.insert(t)){
+					ativo.setId_Transacao(t.getId());
+					db.insert(ativo);
+				}else{
+					MessageUtils.showMessage(context, "Erro!", "Não foi possível realizar o investimento!");
+				}
 				
 				listener.onClick(dialog, which);
 			}
@@ -991,7 +1003,199 @@ public class MessageUtils {
 			}
 		};
 
-		final DatePickerDialog vencimentoDialog = new DatePickerDialog(context, dateListener, 
+		final DatePickerDialog vencimentoDialog = new DatePickerDialog(context, vencimentoListener, 
+				vencimento.get(Calendar.YEAR), 
+				vencimento.get(Calendar.MONTH), 
+				vencimento.get(Calendar.DAY_OF_MONTH));
+
+		btnVencimento.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				vencimentoDialog.show();				
+			}
+		});
+	    
+	    
+	    alert.show();        
+	}
+	
+	@SuppressLint("NewApi")
+	public static void showEditAtivo(final Context context, final Ativo ativo,  final LayoutInflater inflater, final DatabaseHandler db, final DialogInterface.OnClickListener listener){
+		final AlertDialog.Builder alert = new AlertDialog.Builder(context);
+		final View view = inflater.inflate(R.layout.add_ativo_dialog, null);
+	    alert.setView(view);
+	    
+	    final GregorianCalendar data = new GregorianCalendar();
+	    final GregorianCalendar vencimento = new GregorianCalendar();
+	    try {
+			Date date = DateUtil.sqlDateFormat().parse(ativo.getData());
+			data.setTime(date);
+			Date vencDate = DateUtil.sqlDateFormat().parse(ativo.getVencimento());
+			vencimento.setTime(vencDate);
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+		}
+	    final Button btnDate = (Button)view.findViewById(R.id.addAtivoDialogBtnData);
+	    final Button btnVencimento = (Button)view.findViewById(R.id.addAtivoDialogBtnVencimento);
+	    ViewUtil.adjustDateOnTextView(btnDate, data);
+	    ViewUtil.adjustDateOnTextView(btnVencimento, vencimento);
+	    
+	    final List<TipoAtivo> tipos = db.select(TipoAtivo.class);
+	    final List<Conta> contas = db.select(Conta.class);
+	    
+	    int startContaPos = 0;
+	    
+	    for(int i = 0; i < contas.size(); i++) {
+	    	if(contas.get(i).getId() == ativo.getId_Conta()) {
+	    		startContaPos = i;
+	    		break;
+	    	}
+	    }
+	    
+	    int startTipoAtivoPos = 0;
+	    
+	    for(int i = 0; i < tipos.size(); i++) {
+	    	if(tipos.get(i).getId() == ativo.getId_TipoAtivo()) {
+	    		startTipoAtivoPos = i;
+	    		break;
+	    	}
+	    }
+	    
+	    final Spinner spinnerTipos = (Spinner) view.findViewById(R.id.addAtivoDialogSpinnerTipo);
+	    spinnerTipos.setAdapter(new ArrayAdapter<TipoAtivo>(context, android.R.layout.simple_list_item_1, tipos));
+	    spinnerTipos.setSelection(startTipoAtivoPos);
+	    
+	    final Spinner spinnerContas = (Spinner) view.findViewById(R.id.addAtivoDialogSpinnerConta);
+	    spinnerContas.setAdapter(new ArrayAdapter<Conta>(context, android.R.layout.simple_list_item_1, contas));
+	    spinnerContas.setSelection(startContaPos);
+	    
+	    spinnerTipos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+	    	@Override
+	    	public void onItemSelected(AdapterView<?> arg0, View arg1,int position, long arg3) {
+	    		TipoAtivo tipo = (TipoAtivo)spinnerTipos.getSelectedItem();
+	    		if(tipo.getNome().equals("Ações") || tipo.getNome().equals("Fundos Imobiliários")){
+	    			view.findViewById(R.id.addAtivoLayoutVencimento).setVisibility(View.GONE);
+	    		}else{
+	    			view.findViewById(R.id.addAtivoLayoutVencimento).setVisibility(View.VISIBLE);
+	    		}
+	    	}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+	    
+	    final EditText editValor = (EditText) view.findViewById(R.id.addAtivoDialogEditTxtValor);
+	    final EditText editDescricao = (EditText) view.findViewById(R.id.addAtivoDialogEditTxtDescrição);
+	    final EditText editQuantidade = (EditText) view.findViewById(R.id.addAtivoDialogEditTxtQtd);
+	    final EditText editSigla = (EditText) view.findViewById(R.id.addAtivoDialogEditTxtSigla);
+	    
+	    editValor.setText(ativo.getValor()+"");
+	    editDescricao.setText(ativo.getNome());
+	    editQuantidade.setText(ativo.getQuantidade()+"");
+	    editSigla.setText(ativo.getSigla()+"");
+	    
+	    alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+				
+				
+				try{
+					float valor = Float.valueOf(editValor.getText().toString());
+					ativo.setValor(valor);
+					float quantidade = Float.valueOf(editQuantidade.getText().toString());
+					ativo.setQuantidade(quantidade);
+				}catch(Exception e){
+					e.printStackTrace();
+				}
+				
+				ativo.setNome(editDescricao.getText().toString());
+				ativo.setSigla(editSigla.getText().toString());
+				
+				Conta cc = (Conta) spinnerContas.getSelectedItem();
+				ativo.setId_Conta(cc.getId());
+				
+				TipoAtivo tA = (TipoAtivo) spinnerTipos.getSelectedItem();
+				ativo.setId_TipoAtivo(tA.getId());
+				
+				ativo.setData(format.format(data.getTime()));
+				ativo.setVencimento(format.format(vencimento.getTime()));
+				
+				Transacao t = db.select(Transacao.class, " WHERE id = "+ativo.getId_Transacao()).get(0);
+				t.setData(format.format(data.getTime()));
+				t.setDescricao("Investimento -> "+ativo.getNome());
+				t.setId_Conta(ativo.getId_Conta());
+				t.setValor(ativo.getValor()*ativo.getQuantidade());
+				t.setId_CategoriaTransacao(db.select(CategoriaTransacao.class, " WHERE nome = 'Investimento' AND system = 1").get(0).getId());
+				
+				if(db.update(t)){
+					db.update(ativo);
+				}else{
+					MessageUtils.showMessage(context, "Erro!", "Não foi possível atualizar o investimento!");
+				}
+				
+				listener.onClick(dialog, which);
+			}
+		});
+
+	    alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+	        public void onClick(DialogInterface dialog, int whichButton) {
+	            dialog.cancel();
+	        }
+	    });
+	    
+	    
+		OnDateSetListener dateListener = new DatePickerDialog.OnDateSetListener() {
+
+			public void onDateSet(DatePicker view, int year, int monthOfYear,
+					int dayOfMonth) {
+				Calendar c = Calendar.getInstance();
+				c.set(Calendar.YEAR, year);
+				c.set(Calendar.MONTH, monthOfYear);
+				c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+				data.set(Calendar.YEAR, year);
+				data.set(Calendar.MONTH, monthOfYear);
+				data.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+				ViewUtil.adjustDateOnTextView(btnDate, data);
+
+			}
+		};
+
+		final DatePickerDialog dateDialog = new DatePickerDialog(context, dateListener, 
+				data.get(Calendar.YEAR), 
+				data.get(Calendar.MONTH), 
+				data.get(Calendar.DAY_OF_MONTH));
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
+			dateDialog.getDatePicker().setMaxDate(Calendar.getInstance().getTimeInMillis());
+		}
+
+		btnDate.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				dateDialog.show();				
+			}
+		});
+		
+		OnDateSetListener vencimentoListener = new DatePickerDialog.OnDateSetListener() {
+
+			public void onDateSet(DatePicker view, int year, int monthOfYear,
+					int dayOfMonth) {
+				Calendar c = Calendar.getInstance();
+				c.set(Calendar.YEAR, year);
+				c.set(Calendar.MONTH, monthOfYear);
+				c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+				vencimento.set(Calendar.YEAR, year);
+				vencimento.set(Calendar.MONTH, monthOfYear);
+				vencimento.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+				ViewUtil.adjustDateOnTextView(btnVencimento, vencimento);
+			}
+		};
+
+		final DatePickerDialog vencimentoDialog = new DatePickerDialog(context, vencimentoListener, 
 				vencimento.get(Calendar.YEAR), 
 				vencimento.get(Calendar.MONTH), 
 				vencimento.get(Calendar.DAY_OF_MONTH));

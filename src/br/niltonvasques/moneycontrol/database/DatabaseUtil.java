@@ -190,6 +190,24 @@ public class DatabaseUtil {
 		return -1;
 	}
 	
+	public static boolean setBeanId(Object bean, String idField, int id){
+		try {
+			
+			Field[] fields = bean.getClass().getDeclaredFields();
+			
+			for(int i = 0;i< fields.length; i++){
+				fields[i].setAccessible(true);
+				if(fields[i].getName().equals(idField)){
+					fields[i].setInt(bean, id);
+				}
+			}
+		}catch (Exception e) {
+			return false;
+		}
+		
+		return true;
+	}
+	
 	public static boolean execSqlFromFile(SQLiteDatabase db, Context context, String filename){
 		try {
 			StringBuilder completeDML = new StringBuilder();
