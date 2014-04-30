@@ -127,4 +127,17 @@
     <string name="add_ativo_dialog_conta">Conta:</string>
     <string name="add_ativo_dialog_quantidade">Quantidade:</string>
     
+    <!-- ReportAportesFragment.java -->
+    <string name="report_aportes_title">"Histórico de Aportes"</string>
+    <string name="report_aportes_axis_category">Meses</string>
+    <string name="report_aportes_axis_value">Valor(R$)</string>
+    
+        <!-- add_ativo_event_dialog.xml -->
+    <string name="add_ativo_event_dialog_title">Adicionar Cotação</string>
+    <string name="add_ativo_event_dialog_price">Cotação:</string>
+    <string name="add_ativo_event_dialog_price_hint">informe a cotação</string>
+    <string name="add_ativo_event_dialog_data">Data:</string>
+    <string name="add_ativo_event_dialog_msg_error">Um erro inesperado aconteceu!</string>
+    <string name="add_ativo_event_dialog_msg_title">Desculpe!</string>
+    
 </resources>

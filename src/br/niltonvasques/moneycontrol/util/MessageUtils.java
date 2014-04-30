@@ -33,10 +33,12 @@ import android.widget.Spinner;
 import android.widget.Toast;
 import br.niltonvasques.moneycontrol.R;
 import br.niltonvasques.moneycontrol.database.DatabaseHandler;
+import br.niltonvasques.moneycontrol.database.DatabaseUtil;
 import br.niltonvasques.moneycontrol.database.bean.Ativo;
 import br.niltonvasques.moneycontrol.database.bean.CartaoCredito;
 import br.niltonvasques.moneycontrol.database.bean.CategoriaTransacao;
 import br.niltonvasques.moneycontrol.database.bean.Conta;
+import br.niltonvasques.moneycontrol.database.bean.RentabilidadeAtivo;
 import br.niltonvasques.moneycontrol.database.bean.TipoAtivo;
 import br.niltonvasques.moneycontrol.database.bean.TipoConta;
 import br.niltonvasques.moneycontrol.database.bean.TipoTransacao;
@@ -1207,6 +1209,80 @@ public class MessageUtils {
 			}
 		});
 	    
+	    
+	    alert.show();        
+	}
+	
+	public static void showAddAtivoRentabilidade(final Context context, final Ativo ativo, final LayoutInflater inflater, final DatabaseHandler db, final DialogInterface.OnClickListener listener){
+		final AlertDialog.Builder alert = new AlertDialog.Builder(context);
+		final View view = inflater.inflate(R.layout.add_ativo_event_dialog, null);
+	    alert.setView(view);
+	    
+	    final GregorianCalendar data = new GregorianCalendar();
+	    final Button btnDate = (Button)view.findViewById(R.id.addAtivoEventDialogBtnData);
+	    ViewUtil.adjustDateOnTextView(btnDate, data);
+	    
+	    Log.d(TAG, TipoConta.class.getSimpleName());
+	    
+	    
+	    alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				EditText editNome = (EditText) view.findViewById(R.id.addAtivoEventDialogEditTxtPrice);
+				
+				RentabilidadeAtivo r = new RentabilidadeAtivo();
+				
+				try {
+					float valor = Float.valueOf(editNome.getText().toString());
+					r.setValor(valor);
+					r.setId_Ativo(ativo.getId());
+					r.setData(DateUtil.sqlDateFormat().format(data.getTime()));
+					db.insert(r);				
+				} catch (Exception e) {
+					MessageUtils.showMessage(context, context.getString(R.string.add_ativo_event_dialog_msg_title), context.getString(R.string.add_ativo_event_dialog_msg_error));
+				}
+				
+				listener.onClick(dialog, which);
+			}
+		});
+
+	    alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+	        public void onClick(DialogInterface dialog, int whichButton) {
+	            dialog.cancel();
+	        }
+	    });
+	    
+	    OnDateSetListener dateListener = new DatePickerDialog.OnDateSetListener() {
+
+			public void onDateSet(DatePicker view, int year, int monthOfYear,
+					int dayOfMonth) {
+				Calendar c = Calendar.getInstance();
+				c.set(Calendar.YEAR, year);
+				c.set(Calendar.MONTH, monthOfYear);
+				c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+				data.set(Calendar.YEAR, year);
+				data.set(Calendar.MONTH, monthOfYear);
+				data.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+				ViewUtil.adjustDateOnTextView(btnDate, data);
+
+			}
+		};
+
+		final DatePickerDialog dateDialog = new DatePickerDialog(context, dateListener, 
+				data.get(Calendar.YEAR), 
+				data.get(Calendar.MONTH), 
+				data.get(Calendar.DAY_OF_MONTH));
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
+			dateDialog.getDatePicker().setMaxDate(Calendar.getInstance().getTimeInMillis());
+		}
+
+		btnDate.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				dateDialog.show();				
+			}
+		});
 	    
 	    alert.show();        
 	}

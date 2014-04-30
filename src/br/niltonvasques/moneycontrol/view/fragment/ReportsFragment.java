@@ -24,6 +24,12 @@ import br.niltonvasques.moneycontrol.util.MessageUtils.MessageListener;
 
 public class ReportsFragment extends Fragment{
 	
+	private static final int REPORT_DESPESAS = 0;
+	private static final int REPORT_RECEITAS = 1;
+	private static final int REPORT_CATEGORIAS = 2;
+	private static final int REPORT_RECEITAS_X_DESPESAS_HISTORY = 3;
+	private static final int REPORT_APORTES_HISTORY = 4;
+	
 	private static final String TAG = "[CategoriasFragment]";
 	
 	private MoneyControlApp app;
@@ -40,6 +46,7 @@ public class ReportsFragment extends Fragment{
 		reports.add("Receitas por Categoria");
 		reports.add("Histórico por Categoria");
 		reports.add("Histórico Receitas X Despesas");
+		reports.add("Histórico Aportes");
 	}
 	
 	@Override
@@ -68,20 +75,21 @@ public class ReportsFragment extends Fragment{
 		listViewReports.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position,long arg3) {
+				
 				String item = (String)arg0.getItemAtPosition(position);
-				if(item.equals("Despesas por Categoria")){
+				if(item.equals(reports.get(REPORT_DESPESAS))){
 					Fragment fragment = new ReportByCategoriasFragment();
 					Bundle args = new Bundle();
 					args.putInt("TipoTransacao", 2);
 					fragment.setArguments(args);
 					((NVFragmentActivity)getActivity()).changeFragment(fragment);
-				}else if(item.equals("Receitas por Categoria")){
+				}else if(item.equals(reports.get(REPORT_RECEITAS))){
 					Fragment fragment = new ReportByCategoriasFragment();
 					Bundle args = new Bundle();
 					args.putInt("TipoTransacao", 1);
 					fragment.setArguments(args);
 					((NVFragmentActivity)getActivity()).changeFragment(fragment);
-				}else if(item.equals("Histórico por Categoria")){
+				}else if(item.equals(reports.get(REPORT_CATEGORIAS))){
 					MessageUtils.showCategoriasChooseDialog(getActivity(), ReportsFragment.this.inflater, db, new MessageListener() {
 						@Override
 						public void onMessage(int result, Object data) {
@@ -90,12 +98,14 @@ public class ReportsFragment extends Fragment{
 							startActivity(it);
 						}
 					} );
-				}else if(item.equals(reports.get(3))){
+				}else if(item.equals(reports.get(REPORT_RECEITAS_X_DESPESAS_HISTORY))){
 					Fragment fragment = new ReportReceitasDespesasFragment();
 					Bundle args = new Bundle();
 					args.putInt("TipoTransacao", 1);
 					fragment.setArguments(args);
 					((NVFragmentActivity)getActivity()).changeFragment(fragment);
+				}else if(item.equals(reports.get(REPORT_APORTES_HISTORY))){
+					((NVFragmentActivity)getActivity()).changeFragment(new ReportAportesFragment());
 				}
 			}
 		});

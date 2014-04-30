@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:descendantFocusability="blocksDescendants">
+    
+    <Button 
+		android:id="@+id/ativoListItemBtnNewEvent"
+		android:layout_width="40dp"
+		android:layout_height="40dp"
+		android:layout_alignParentRight="true"
+		android:layout_margin="10dp"
+		android:background="@drawable/ic_action_new_event"/>
+    
+    
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:padding="10dp"
+        android:orientation="vertical">
+        
+        <TextView 
+            android:id="@+id/transacaoListItemTxtData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:text="10/05/2013"/>
+        
+        <LinearLayout 
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            
+			<TextView 
+	            android:id="@+id/transacaoListItemTxtDescricao"
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="6"
+	            android:textSize="18sp"
+	            android:text="Banco do Brasil"/>
+	            
+            <TextView 
+                android:id="@+id/ativoListItemTxtPrice"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:textColor="@color/dark_green"
+                android:text="@string/default_currency_value"/>
+            
+            <TextView 
+                android:id="@+id/ativoListItemTxtProfit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:textColor="@color/dark_green"
+                android:text="@string/default_currency_value"/>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

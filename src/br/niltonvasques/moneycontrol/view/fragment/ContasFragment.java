@@ -28,7 +28,7 @@ import br.niltonvasques.moneycontrol.util.DateUtil;
 import br.niltonvasques.moneycontrol.util.MessageUtils;
 import br.niltonvasques.moneycontrol.view.adapter.ContaAdapter;
 
-public class MainFragment extends Fragment{
+public class ContasFragment extends Fragment{
 	
 	private static final String TAG = "[MainFragment]";
 	

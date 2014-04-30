@@ -22,7 +22,7 @@ import br.niltonvasques.moneycontrol.database.DatabaseHandler;
 import br.niltonvasques.moneycontrol.util.DateUtil;
 import br.niltonvasques.moneycontrol.view.fragment.CategoriasFragment;
 import br.niltonvasques.moneycontrol.view.fragment.InvestimentosFragment;
-import br.niltonvasques.moneycontrol.view.fragment.MainFragment;
+import br.niltonvasques.moneycontrol.view.fragment.ContasFragment;
 import br.niltonvasques.moneycontrol.view.fragment.ReportsFragment;
 import br.niltonvasques.moneycontrol.view.fragment.TransacoesFragment;
 
@@ -61,7 +61,7 @@ public class MainActivity extends NVFragmentActivity {
 		// Set the adapter for the list view
 		mDrawerList.setAdapter(new ArrayAdapter<String>(this,R.layout.drawer_list_item, mDrawerItens));
 
-		changeFragment( new MainFragment() );
+		changeFragment( new ContasFragment() );
 		getActionBar().setTitle(mDrawerItens[CONTAS_ITEM_MENU]);
 
 		mDrawerList.setOnItemClickListener(new OnItemClickListener() {
@@ -71,7 +71,7 @@ public class MainActivity extends NVFragmentActivity {
 				getActionBar().setTitle(mDrawerItens[position]);
 				
 				if(mDrawerItens[position].equals(mDrawerItens[CONTAS_ITEM_MENU])){
-					changeFragment( new MainFragment() );
+					changeFragment( new ContasFragment() );
 				}else if(mDrawerItens[position].equals(mDrawerItens[CATEGORIAS_ITEM_MENU])){
 					changeFragment(new CategoriasFragment());
 				}else if(mDrawerItens[position].equals(mDrawerItens[RELATORIOS_ITEM_MENU])){
@@ -85,13 +85,7 @@ public class MainActivity extends NVFragmentActivity {
 					fragment.setArguments(args);
 					changeFragment(fragment);
 				}else if(mDrawerItens[position].equals(mDrawerItens[INVESTIMENTOS_ITEM_MENU])){
-					GregorianCalendar dateRange = new GregorianCalendar();
-					dateRange.set(GregorianCalendar.DAY_OF_MONTH, 1);
-					Fragment fragment = new InvestimentosFragment();
-					Bundle args = new Bundle();
-					args.putString("range", DateUtil.sqlDateFormat().format(dateRange.getTime()));
-					fragment.setArguments(args);
-					changeFragment(fragment);
+					changeFragment(new InvestimentosFragment());
 				}
 				
 				mDrawerLayout.closeDrawer(mDrawerList);

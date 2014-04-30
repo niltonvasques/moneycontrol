@@ -238,6 +238,15 @@ public class QuerysUtil {
 				"AND c.nome not like 'Investimento'"+
 				"GROUP BY strftime(\"%m-%Y\", data)";
 	}
+	
+	public static final String reportInvestimentsHistory(){
+		return "SELECT SUM(valor) as total, " +
+				"strftime(\"%m-%Y\", data) as month " +
+				"FROM Transacao t " +
+				"INNER JOIN CategoriaTransacao c on c.id = t.id_CategoriaTransacao " +
+				"WHERE c.nome = 'Investimento' AND system = 1 " +
+				"GROUP BY strftime(\"%m-%Y\", data)";
+	}
 
 	public static String sumSaldoContas() {
 		return "SELECT SUM(saldo) FROM Conta";
@@ -247,6 +256,20 @@ public class QuerysUtil {
 		return "SELECT t.nome FROM Ativo a " +
 				"INNER JOIN TipoAtivo t on t.id = a.id_TipoAtivo " +
 				"WHERE a.id = "+id;
+	}
+	
+	public static String checkLastRentabilidadeAtivo(int id_Ativo, Date date) {
+		return  "SELECT valor FROM RentabilidadeAtivo r " +
+				"WHERE r.id_Ativo = "+id_Ativo+" " +
+				"AND data < date('" +DateUtil.sqlDateFormat().format(date)+"','+1 month') "+
+	   		   	"ORDER BY data DESC	" +
+	   		   	"LIMIT 1";
+	}
+	
+	public static String checkExistsRentabilidadeAtivo(int id_Ativo, Date date) {
+		return  "SELECT count(*) FROM RentabilidadeAtivo r " +
+				"WHERE r.id_Ativo = "+id_Ativo+" "+
+				"AND data < date('" +DateUtil.sqlDateFormat().format(date)+"','+1 month') ";
 	}
 
 	

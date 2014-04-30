@@ -1,8 +1,13 @@
 package br.niltonvasques.moneycontrol.view.fragment;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -17,28 +22,36 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.Button;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.TextView;
 import br.niltonvasques.moneycontrol.R;
-import br.niltonvasques.moneycontrol.activity.NVFragmentActivity;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
 import br.niltonvasques.moneycontrol.database.DatabaseHandler;
+import br.niltonvasques.moneycontrol.database.QuerysUtil;
 import br.niltonvasques.moneycontrol.database.bean.Ativo;
+import br.niltonvasques.moneycontrol.database.bean.CategoriaTransacao;
+import br.niltonvasques.moneycontrol.database.bean.Conta;
+import br.niltonvasques.moneycontrol.database.bean.RentabilidadeAtivo;
 import br.niltonvasques.moneycontrol.database.bean.Transacao;
 import br.niltonvasques.moneycontrol.util.DateUtil;
 import br.niltonvasques.moneycontrol.util.MessageUtils;
 import br.niltonvasques.moneycontrol.view.adapter.AtivoAdapter;
+import br.niltonvasques.moneycontrol.view.adapter.ExpandableListAdapter;
+import br.niltonvasques.moneycontrol.view.adapter.RentabilidadeAtivoAdapter;
+import br.niltonvasques.moneycontrol.view.adapter.TransacaoAdapter;
 
-public class InvestimentosFragment extends Fragment{
+public class RentabilidadesAtivoFragment extends Fragment{
 	
-	public static final String TAG = "[InvestimentosFragment]";
+	public static final String TAG = "[RentabilidadesAtivoFragment]";
 	
 	private DatabaseHandler db;
 	private MoneyControlApp app;
 	private LayoutInflater inflater;
 	
-	private List<Ativo> ativos;
+	private List<RentabilidadeAtivo> rentabilidades;
 	private GregorianCalendar dateRange;
 	
 	private View myFragmentView;
@@ -46,23 +59,31 @@ public class InvestimentosFragment extends Fragment{
     private Button	btnNextMonth;
     private Button btnPreviousMonth;
 	private ListView listViewAtivos;
-	private AtivoAdapter listAdapter;
+	private RentabilidadeAtivoAdapter listAdapter;
 	
-	
-	
+	private int id_Ativo;
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		
 		this.inflater = inflater;
 		
-		myFragmentView = inflater.inflate(R.layout.fragment_investimentos, null);
+		myFragmentView = inflater.inflate(R.layout.fragment_rentabilidades_ativo, null);
 		
 		app = (MoneyControlApp) getActivity().getApplication();
 		db = app.getDatabase();
 		
+		String range = getArguments().getString("range");
 		dateRange = new GregorianCalendar();
 		dateRange.set(GregorianCalendar.DAY_OF_MONTH, 1);
+		
+		id_Ativo = getArguments().getInt("id_Ativo");
+		
+		try {
+			dateRange.setTime(DateUtil.sqlDateFormat().parse(range));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 		
 		loadComponentsFromXml();
 		
@@ -85,39 +106,31 @@ public class InvestimentosFragment extends Fragment{
         btnPreviousMonth.setOnClickListener(mOnClick);
         btnNextMonth.setOnClickListener(mOnClick);
         
-		ativos = db.select(Ativo.class, " WHERE data < date('"+DateUtil.sqlDateFormat().format(dateRange.getTime())+"','+1 month')");
+		rentabilidades = db.select(RentabilidadeAtivo.class, "WHERE id_Ativo = "+id_Ativo);
 		
-		listAdapter = new AtivoAdapter(ativos, getActivity(), dateRange, inflater, app);
+		listAdapter = new RentabilidadeAtivoAdapter(rentabilidades, getActivity(), inflater, app);
 		listViewAtivos.setAdapter(listAdapter);
 		listViewAtivos.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position,long arg3) {
-				Ativo ativo = ativos.get(position);
+				RentabilidadeAtivo ativo = rentabilidades.get(position);
 //				MessageUtils.showEditAtivo(getActivity(), ativo, inflater, db, new OnClickListener() {
 //					@Override
 //					public void onClick(DialogInterface dialog, int which) {
 //						update();
 //					}
 //				});
-				Fragment fragment = new RentabilidadesAtivoFragment();
-				Bundle args = new Bundle();
-				args.putInt("id_Ativo", ativo.getId());
-				args.putString("range", DateUtil.sqlDateFormat().format(dateRange.getTime()));
-				fragment.setArguments(args);
-				((NVFragmentActivity)getActivity()).changeFragment(fragment);
 			}
 		});
 		
 		listViewAtivos.setOnItemLongClickListener(new OnItemLongClickListener() {
 			
 			public boolean onItemLongClick(android.widget.AdapterView<?> arg0, View arg1, final int position, long arg3) {
-				MessageUtils.showMessageYesNo(getActivity(), "Atenção!", "Deseja excluir este ativo?", new OnClickListener() {
+				MessageUtils.showMessageYesNo(getActivity(), "Atenção!", "Deseja excluir esta Rentabilidade?", new OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						Ativo at = ativos.get(position);
-						Transacao tr = db.select(Transacao.class, " WHERE id = "+at.getId_Transacao()).get(0);
+						RentabilidadeAtivo at = rentabilidades.get(position);
 						db.delete(at);
-						db.delete(tr);
 						update();
 					}
 				});
@@ -211,8 +224,8 @@ public class InvestimentosFragment extends Fragment{
 	
 	private void update(){
 		
-		ativos.clear();
-		ativos.addAll(db.select(Ativo.class, " WHERE data < date('"+DateUtil.sqlDateFormat().format(dateRange.getTime())+"','+1 month')"));
+		rentabilidades.clear();
+		rentabilidades.addAll(db.select(RentabilidadeAtivo.class, "WHERE id_Ativo = "+id_Ativo));
 		listAdapter.notifyDataSetChanged();
 		
 		float credito = 0;

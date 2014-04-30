@@ -1,6 +1,5 @@
 package br.niltonvasques.moneycontrol.view.adapter;
 
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import android.content.Context;
@@ -12,32 +11,31 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
 import br.niltonvasques.moneycontrol.database.bean.Ativo;
+import br.niltonvasques.moneycontrol.database.bean.RentabilidadeAtivo;
 
-public class AtivoAdapter extends BaseAdapter{
+public class RentabilidadeAtivoAdapter extends BaseAdapter{
 	
 	private MoneyControlApp app;
-	private List<Ativo> transacoes;
+	private List<RentabilidadeAtivo> rentabilidades;
 	private LayoutInflater inflater;
 	private Context context;
-	private GregorianCalendar dateRange;
 
-	public AtivoAdapter(List<Ativo> transacoes, Context context, GregorianCalendar dateRange, LayoutInflater inflater, MoneyControlApp app) {
-		this.transacoes = transacoes;
+	public RentabilidadeAtivoAdapter(List<RentabilidadeAtivo> transacoes, Context context, LayoutInflater inflater, MoneyControlApp app) {
+		this.rentabilidades = transacoes;
 		this.inflater = inflater;
 		this.app = app;
 		this.context = context;
-		this.dateRange = dateRange;
 	}
 	
 	@Override
 	public int getCount() {
-		if(transacoes != null) return transacoes.size();
+		if(rentabilidades != null) return rentabilidades.size();
 		return 0;		
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return transacoes.get(position);
+		return rentabilidades.get(position);
 	}
 
 	@Override
@@ -48,12 +46,12 @@ public class AtivoAdapter extends BaseAdapter{
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		
-		Ativo tr = (Ativo) getItem(position);
+		RentabilidadeAtivo tr = (RentabilidadeAtivo) getItem(position);
 		
-		return ViewFactory.createAtivoItemView(tr, context, dateRange.getTime(), app, inflater, new OnClickListener() {
+		return ViewFactory.createRentabilidadeAtivoItemView(tr, context, app, inflater, new OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				AtivoAdapter.this.notifyDataSetChanged();
+				RentabilidadeAtivoAdapter.this.notifyDataSetChanged();
 			}
 		});
 	}
