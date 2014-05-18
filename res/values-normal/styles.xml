@@ -1,0 +1,11 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="TextViewTitle">
+        <item name="android:textSize">20sp</item>
+    </style>
+    
+    <style name="TextViewBottomBar">
+        <item name="android:textSize">15sp</item>
+    </style>
+
+</resources>

@@ -61,7 +61,7 @@ public class MainActivity extends NVFragmentActivity {
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
 		// Set the adapter for the list view
-		mDrawerList.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, mDrawerItens));
+		mDrawerList.setAdapter(new ArrayAdapter<String>(this,R.layout.drawer_list_item, mDrawerItens));
 
 		changeFragment( new ContasFragment() );
 		getSupportActionBar().setTitle(mDrawerItens[CONTAS_ITEM_MENU]);
@@ -128,36 +128,6 @@ public class MainActivity extends NVFragmentActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		
-//		startSupportActionMode(new ActionMode.Callback() {
-//		    @Override
-//		    public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
-//		        // Inflate our menu from a resource file
-//		    	getMenuInflater().inflate(R.menu.main_activity_actions, menu);
-//
-//		        // Return true so that the action mode is shown
-//		        return true;
-//		    }
-//
-//		    @Override
-//		    public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
-//		        // As we do not need to modify the menu before displayed, we return false.
-//		        return false;
-//		    }
-//
-//		    @Override
-//		    public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
-//		        // Similar to menu handling in Activity.onOptionsItemSelected()
-//		    	onOptionsItemSelected(menuItem);
-//
-//		        return false;
-//		    }
-//
-//		    @Override
-//		    public void onDestroyActionMode(ActionMode actionMode) {
-//		        // Allows you to be notified when the action mode is dismissed
-//		    }
-//		});
 		
 	}
 

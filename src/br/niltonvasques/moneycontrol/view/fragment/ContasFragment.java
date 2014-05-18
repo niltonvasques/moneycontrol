@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -123,6 +125,11 @@ public class ContasFragment extends Fragment{
 		update();
 	}
 	
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		inflater.inflate(R.menu.main_activity_actions, menu);
+		super.onCreateOptionsMenu(menu, inflater);
+	}
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -139,12 +146,16 @@ public class ContasFragment extends Fragment{
 	            return true;
 	            
 	        case R.id.action_transfer:
-	        	MessageUtils.showTransferencia(getActivity(), inflater, db, new OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						update();
-					}
-				});
+	        	if(db.select(Conta.class).size() >= 2){
+		        	MessageUtils.showTransferencia(getActivity(), inflater, db, new OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							update();
+						}
+					});
+	        	}else{
+	        		MessageUtils.showMessage(getActivity(), getString(R.string.contas_fragment_message_dialog_atention_title), getString(R.string.contas_fragment_message_dialog_transfer_error_msg));
+	        	}
 	            return true;
 	        default:
 	            return super.onOptionsItemSelected(item);

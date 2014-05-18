@@ -31,6 +31,7 @@ import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import br.niltonvasques.moneycontrol.R;
+import br.niltonvasques.moneycontrol.activity.NVFragmentActivity;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
 import br.niltonvasques.moneycontrol.database.DatabaseHandler;
 import br.niltonvasques.moneycontrol.database.QuerysUtil;
@@ -77,7 +78,7 @@ public class TransacoesByContaFragment extends Fragment{
 		this.inflater = inflater;
 		
 		myFragmentView = inflater.inflate(R.layout.fragment_transacaoes, null);
-		getActivity().getActionBar().setTitle("Transações");
+		((NVFragmentActivity)getActivity()).getSupportActionBar().setTitle("Transações");
 		
 		app = (MoneyControlApp) getActivity().getApplication();
 		db = app.getDatabase();
@@ -111,14 +112,14 @@ public class TransacoesByContaFragment extends Fragment{
 	public void onResume() {
 		super.onResume();
 		update();
-		getActivity().getActionBar().setTitle(conta.getNome());
+		((NVFragmentActivity)getActivity()).getSupportActionBar().setTitle(conta.getNome());
 		updateIcon(conta);
 	}
 
 	@SuppressLint("NewApi")
 	private void updateIcon(Conta c) {
 		try {
-			getActivity().getActionBar().setIcon(AssetUtil.loadDrawableFromAsset(app, "icons/"+c.getIcon()));
+			((NVFragmentActivity)getActivity()).getSupportActionBar().setIcon(AssetUtil.loadDrawableFromAsset(app, "icons/"+c.getIcon()));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

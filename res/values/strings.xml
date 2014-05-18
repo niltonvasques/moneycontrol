@@ -140,4 +140,8 @@
     <string name="add_ativo_event_dialog_msg_error">Um erro inesperado aconteceu!</string>
     <string name="add_ativo_event_dialog_msg_title">Desculpe!</string>
     
+    <!-- ContasFragment -->
+    <string name="contas_fragment_message_dialog_atention_title">Atenção!</string>
+    <string name="contas_fragment_message_dialog_transfer_error_msg">Para realizar uma transferência é necessário ter pelo menos duas contas cadastradas.</string>
+    
 </resources>

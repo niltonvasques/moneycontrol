@@ -5,154 +5,159 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin">
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@android:color/white">
     
-    <LinearLayout 
+    <ScrollView 
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        
-	    <TextView 
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:gravity="center"
-	        style="@style/TextViewTitle"
-	        android:text="@string/add_transacao_dialog_title"/>
-	    
+        android:layout_height="wrap_content">
 	    <LinearLayout 
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        android:orientation="vertical"
-	        android:gravity="center">
+	        android:orientation="vertical">
 	        
-	        <LinearLayout 
-	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content"
-	            android:orientation="horizontal"
-	            android:gravity="center">
-	            
-	            <TextView
-	                android:layout_width="0dp"
-	                android:layout_height="wrap_content"
-	                android:layout_weight="3"
-	                android:text="@string/add_transacao_dialog_tipo"/>
-	            
-			    <Spinner 
-			        android:id="@+id/addTransacaoDialogSpinnerTipo"
-			        android:layout_width="0dp"
-			        android:layout_height="wrap_content"
-			        android:layout_weight="7"/>
-		    </LinearLayout>
-	        
-	        <LinearLayout 
-	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content"
-	            android:orientation="horizontal"
-	            android:gravity="center">
-	            
-	            <TextView
-	                android:layout_width="0dp"
-	                android:layout_height="wrap_content"
-	                android:layout_weight="3"
-	                android:text="@string/add_transacao_dialog_valor"/>
-			    <EditText 
-			        android:id="@+id/addTransacaoDialogEditTxtValor"
-			        android:layout_width="0dp"
-			        android:layout_height="wrap_content"
-			        android:layout_weight="7"
-			        android:gravity="center"
-			        android:inputType="numberDecimal"
-			        android:hint="@string/add_transacao_dialog_valor_hint"/>
-		    </LinearLayout>
+		    <TextView 
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:gravity="center"
+		        style="@style/TextViewTitle"
+		        android:text="@string/add_transacao_dialog_title"/>
 		    
 		    <LinearLayout 
-	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content"
-	            android:orientation="horizontal"
-	            android:gravity="center">
-	            
-	            <TextView
-	                android:layout_width="0dp"
-	                android:layout_height="wrap_content"
-	                android:layout_weight="3"
-	                android:text="@string/add_transacao_dialog_descricao"/>
-			    <EditText 
-			        android:id="@+id/addTransacaoDialogEditTxtDescrição"
-			        android:layout_width="0dp"
-			        android:layout_height="wrap_content"
-			        android:layout_weight="7"
-			        android:gravity="center"
-			        android:hint="@string/add_transacao_dialog_descricao_hint"/>
-		    </LinearLayout>
-		    
-   		    <LinearLayout 
-	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content"
-	            android:orientation="horizontal"
-	            android:gravity="center">
-	            
-	            <TextView
-	                android:layout_width="0dp"
-	                android:layout_height="wrap_content"
-	                android:layout_weight="3"
-	                android:text="@string/add_transacao_dialog_data"/>
-			    <Button 
-			        android:id="@+id/addTransacaoDialogBtnData"
-			        android:layout_width="0dp"
-			        android:layout_height="wrap_content"
-			        android:layout_weight="7"
-			        android:gravity="center"
-			        android:text="04/05/2014"/>
-		    </LinearLayout>
-		    
-  		    <LinearLayout 
-	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content"
-	            android:orientation="horizontal"
-	            android:gravity="center">
-	            
-	            <TextView
-	                android:layout_width="0dp"
-	                android:layout_height="wrap_content"
-	                android:layout_weight="3"
-	                android:text="@string/add_transacao_dialog_categoria"/>
-	            
-			    <Spinner 
-			        android:id="@+id/addTransacaoDialogSpinnerCategoria"
-			        android:layout_width="0dp"
-			        android:layout_height="wrap_content"
-			        android:layout_weight="6"/>
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:orientation="vertical"
+		        android:gravity="center">
+		        
+		        <LinearLayout 
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:orientation="horizontal"
+		            android:gravity="center">
+		            
+		            <TextView
+		                android:layout_width="0dp"
+		                android:layout_height="wrap_content"
+		                android:layout_weight="3"
+		                android:text="@string/add_transacao_dialog_tipo"/>
+		            
+				    <Spinner 
+				        android:id="@+id/addTransacaoDialogSpinnerTipo"
+				        android:layout_width="0dp"
+				        android:layout_height="wrap_content"
+				        android:layout_weight="7"/>
+			    </LinearLayout>
+		        
+		        <LinearLayout 
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:orientation="horizontal"
+		            android:gravity="center">
+		            
+		            <TextView
+		                android:layout_width="0dp"
+		                android:layout_height="wrap_content"
+		                android:layout_weight="3"
+		                android:text="@string/add_transacao_dialog_valor"/>
+				    <EditText 
+				        android:id="@+id/addTransacaoDialogEditTxtValor"
+				        android:layout_width="0dp"
+				        android:layout_height="wrap_content"
+				        android:layout_weight="7"
+				        android:gravity="center"
+				        android:inputType="numberDecimal"
+				        android:hint="@string/add_transacao_dialog_valor_hint"/>
+			    </LinearLayout>
 			    
-			    <Button 
-			        android:id="@+id/addTransacaoDialogBtnAddCategoria"
-			        android:layout_width="0dp"
-			        android:layout_height="wrap_content"
-			        android:layout_weight="1"
-			        android:background="@drawable/ic_action_new"/>
+			    <LinearLayout 
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:orientation="horizontal"
+		            android:gravity="center">
+		            
+		            <TextView
+		                android:layout_width="0dp"
+		                android:layout_height="wrap_content"
+		                android:layout_weight="3"
+		                android:text="@string/add_transacao_dialog_descricao"/>
+				    <EditText 
+				        android:id="@+id/addTransacaoDialogEditTxtDescrição"
+				        android:layout_width="0dp"
+				        android:layout_height="wrap_content"
+				        android:layout_weight="7"
+				        android:gravity="center"
+				        android:hint="@string/add_transacao_dialog_descricao_hint"/>
+			    </LinearLayout>
+			    
+	   		    <LinearLayout 
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:orientation="horizontal"
+		            android:gravity="center">
+		            
+		            <TextView
+		                android:layout_width="0dp"
+		                android:layout_height="wrap_content"
+		                android:layout_weight="3"
+		                android:text="@string/add_transacao_dialog_data"/>
+				    <Button 
+				        android:id="@+id/addTransacaoDialogBtnData"
+				        android:layout_width="0dp"
+				        android:layout_height="wrap_content"
+				        android:layout_weight="7"
+				        android:gravity="center"
+				        android:text="04/05/2014"/>
+			    </LinearLayout>
+			    
+	  		    <LinearLayout 
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:orientation="horizontal"
+		            android:gravity="center">
+		            
+		            <TextView
+		                android:layout_width="0dp"
+		                android:layout_height="wrap_content"
+		                android:layout_weight="3"
+		                android:text="@string/add_transacao_dialog_categoria"/>
+		            
+				    <Spinner 
+				        android:id="@+id/addTransacaoDialogSpinnerCategoria"
+				        android:layout_width="0dp"
+				        android:layout_height="wrap_content"
+				        android:layout_weight="6"/>
+				    
+				    <Button 
+				        android:id="@+id/addTransacaoDialogBtnAddCategoria"
+				        android:layout_width="0dp"
+				        android:layout_height="wrap_content"
+				        android:layout_weight="1"
+				        android:background="@drawable/ic_action_new"/>
+			    </LinearLayout>
+			    
+	  		    <LinearLayout 
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:orientation="horizontal"
+		            android:gravity="center">
+		            
+		            <TextView
+		                android:layout_width="0dp"
+		                android:layout_height="wrap_content"
+		                android:layout_weight="3"
+		                android:text="@string/add_transacao_dialog_conta"/>
+		            
+				    <Spinner 
+				        android:id="@+id/addTransacaoDialogSpinnerConta"
+				        android:layout_width="0dp"
+				        android:layout_height="wrap_content"
+				        android:layout_weight="7"/>
+			    </LinearLayout>
+			    
+			    
 		    </LinearLayout>
-		    
-  		    <LinearLayout 
-	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content"
-	            android:orientation="horizontal"
-	            android:gravity="center">
-	            
-	            <TextView
-	                android:layout_width="0dp"
-	                android:layout_height="wrap_content"
-	                android:layout_weight="3"
-	                android:text="@string/add_transacao_dialog_conta"/>
-	            
-			    <Spinner 
-			        android:id="@+id/addTransacaoDialogSpinnerConta"
-			        android:layout_width="0dp"
-			        android:layout_height="wrap_content"
-			        android:layout_weight="7"/>
-		    </LinearLayout>
-		    
 		    
 	    </LinearLayout>
-	    
-    </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>

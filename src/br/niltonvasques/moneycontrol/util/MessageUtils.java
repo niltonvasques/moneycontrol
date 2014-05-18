@@ -46,6 +46,7 @@ import br.niltonvasques.moneycontrol.database.bean.Transacao;
 import br.niltonvasques.moneycontrol.view.adapter.CategoriaChooseAdapter;
 import br.niltonvasques.moneycontrol.view.adapter.IconeAdapter;
 
+@SuppressLint("NewApi")
 public class MessageUtils {
 	
 	public interface MessageListener{
@@ -713,6 +714,7 @@ public class MessageUtils {
 	    alert.show();        
 	}
 	
+	@SuppressLint("NewApi")
 	public static void showTransferencia(final Context context, final LayoutInflater inflater, final DatabaseHandler db, final DialogInterface.OnClickListener listener){
 		final AlertDialog.Builder alert = new AlertDialog.Builder(context);
 		final View view = inflater.inflate(R.layout.transferencia_dialog, null);
