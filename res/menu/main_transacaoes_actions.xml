@@ -1,13 +1,17 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu
+    xmlns:moneycontrol="http://schemas.android.com/apk/res-auto"  
+    xmlns:android="http://schemas.android.com/apk/res/android" >
     
     <item android:id="@+id/action_investiment"
           android:title="@string/action_investment"
           android:icon="@drawable/ic_action_upload"
-          android:showAsAction="ifRoom" />
+          moneycontrol:actionProviderClass="android.support.v7.widget.ShareActionProvider"
+          moneycontrol:showAsAction="ifRoom" />
     
     <item android:id="@+id/action_group"
           android:title="@string/action_group"
           android:icon="@drawable/ic_action_view_as_list"
-          android:showAsAction="ifRoom" />
+          moneycontrol:actionProviderClass="android.support.v7.widget.ShareActionProvider"
+          moneycontrol:showAsAction="ifRoom" />
     
 </menu>

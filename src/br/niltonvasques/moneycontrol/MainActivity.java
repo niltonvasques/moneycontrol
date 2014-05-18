@@ -4,25 +4,27 @@ import java.util.GregorianCalendar;
 
 import android.annotation.SuppressLint;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.view.ActionMode;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import br.niltonvasques.moneycontrol.activity.NVFragmentActivity;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
 import br.niltonvasques.moneycontrol.database.DatabaseHandler;
 import br.niltonvasques.moneycontrol.util.DateUtil;
 import br.niltonvasques.moneycontrol.view.fragment.CategoriasFragment;
-import br.niltonvasques.moneycontrol.view.fragment.InvestimentosFragment;
 import br.niltonvasques.moneycontrol.view.fragment.ContasFragment;
+import br.niltonvasques.moneycontrol.view.fragment.InvestimentosFragment;
 import br.niltonvasques.moneycontrol.view.fragment.ReportsFragment;
 import br.niltonvasques.moneycontrol.view.fragment.TransacoesFragment;
 
@@ -59,16 +61,16 @@ public class MainActivity extends NVFragmentActivity {
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
 		// Set the adapter for the list view
-		mDrawerList.setAdapter(new ArrayAdapter<String>(this,R.layout.drawer_list_item, mDrawerItens));
+		mDrawerList.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, mDrawerItens));
 
 		changeFragment( new ContasFragment() );
-		getActionBar().setTitle(mDrawerItens[CONTAS_ITEM_MENU]);
+		getSupportActionBar().setTitle(mDrawerItens[CONTAS_ITEM_MENU]);
 
 		mDrawerList.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position,long arg3) {
-				getActionBar().setIcon(R.drawable.ic_launcher);
-				getActionBar().setTitle(mDrawerItens[position]);
+				getSupportActionBar().setIcon(R.drawable.ic_launcher);
+				getSupportActionBar().setTitle(mDrawerItens[position]);
 				
 				if(mDrawerItens[position].equals(mDrawerItens[CONTAS_ITEM_MENU])){
 					changeFragment( new ContasFragment() );
@@ -101,22 +103,62 @@ public class MainActivity extends NVFragmentActivity {
 			public void onDrawerClosed(View view) {
 				super.onDrawerClosed(view);
 				//                getActionBar().setTitle(mTitle);
-				invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+				if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
+					//                	getActionBar().setTitle(mDrawerTitle);
+					invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+				}
 			}
 
 			/** Called when a drawer has settled in a completely open state. */
 			public void onDrawerOpened(View drawerView) {
 				super.onDrawerOpened(drawerView);
-				//                getActionBar().setTitle(mDrawerTitle);
-				invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+				if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
+					//                	getActionBar().setTitle(mDrawerTitle);
+					invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+				}
 			}
 		};
 
 		// Set the drawer toggle as the DrawerListener
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
-		getActionBar().setDisplayHomeAsUpEnabled(true);
-		getActionBar().setHomeButtonEnabled(true);
-
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setHomeButtonEnabled(true);
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		
+//		startSupportActionMode(new ActionMode.Callback() {
+//		    @Override
+//		    public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+//		        // Inflate our menu from a resource file
+//		    	getMenuInflater().inflate(R.menu.main_activity_actions, menu);
+//
+//		        // Return true so that the action mode is shown
+//		        return true;
+//		    }
+//
+//		    @Override
+//		    public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+//		        // As we do not need to modify the menu before displayed, we return false.
+//		        return false;
+//		    }
+//
+//		    @Override
+//		    public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
+//		        // Similar to menu handling in Activity.onOptionsItemSelected()
+//		    	onOptionsItemSelected(menuItem);
+//
+//		        return false;
+//		    }
+//
+//		    @Override
+//		    public void onDestroyActionMode(ActionMode actionMode) {
+//		        // Allows you to be notified when the action mode is dismissed
+//		    }
+//		});
+		
 	}
 
 	@Override
@@ -134,6 +176,7 @@ public class MainActivity extends NVFragmentActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		Log.d(TAG, "onCreateOptionsMenu");
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main_activity_actions, menu);
 		return super.onCreateOptionsMenu(menu);
@@ -141,6 +184,7 @@ public class MainActivity extends NVFragmentActivity {
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
+		Log.d(TAG, "onPrepareOptionsMenu");
 		// If the nav drawer is open, hide action items related to the content view
 		boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
 		menu.findItem(R.id.action_add).setVisible(!drawerOpen);
@@ -150,6 +194,7 @@ public class MainActivity extends NVFragmentActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		Log.d(TAG, "onOptionsItemSelected");
 		if (mDrawerToggle.onOptionsItemSelected(item)) {
 			return true;
 		}

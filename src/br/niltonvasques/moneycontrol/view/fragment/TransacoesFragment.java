@@ -22,17 +22,17 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import br.niltonvasques.moneycontrol.R;
+import br.niltonvasques.moneycontrol.activity.NVFragmentActivity;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
 import br.niltonvasques.moneycontrol.database.DatabaseHandler;
 import br.niltonvasques.moneycontrol.database.QuerysUtil;
 import br.niltonvasques.moneycontrol.database.bean.CategoriaTransacao;
-import br.niltonvasques.moneycontrol.database.bean.Conta;
 import br.niltonvasques.moneycontrol.database.bean.Transacao;
 import br.niltonvasques.moneycontrol.util.DateUtil;
 import br.niltonvasques.moneycontrol.util.MessageUtils;
@@ -71,7 +71,7 @@ public class TransacoesFragment extends Fragment{
 		this.inflater = inflater;
 		
 		myFragmentView = inflater.inflate(R.layout.fragment_transacaoes, null);
-		getActivity().getActionBar().setTitle("Transações");
+		((NVFragmentActivity)getActivity()).getSupportActionBar().setTitle("Transações");
 		
 		app = (MoneyControlApp) getActivity().getApplication();
 		db = app.getDatabase();

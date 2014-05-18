@@ -4,10 +4,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.view.Menu;
+import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 
-public abstract class NVFragmentActivity extends FragmentActivity{
+public abstract class NVFragmentActivity extends ActionBarActivity{
 
 	private Fragment overFragment;
 
@@ -30,6 +30,13 @@ public abstract class NVFragmentActivity extends FragmentActivity{
 			ft.commit();
 			overFragment = null;
 		}
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if(overFragment != null)
+			overFragment.onOptionsItemSelected(item);
+		return true;
 	}
 	
 	public abstract int getFragmentContentID();

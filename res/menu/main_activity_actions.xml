@@ -1,13 +1,17 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu
+    xmlns:moneycontrol="http://schemas.android.com/apk/res-auto" 
+    xmlns:android="http://schemas.android.com/apk/res/android" >
     
     <item android:id="@+id/action_transfer"
           android:title="@string/action_transfer"
           android:icon="@drawable/ic_action_import_export"
-          android:showAsAction="ifRoom" />
+          moneycontrol:actionProviderClass="android.support.v7.widget.ShareActionProvider"
+          moneycontrol:showAsAction="ifRoom" />
     
     <item android:id="@+id/action_add"
           android:title="@string/action_add"
           android:icon="@drawable/ic_action_new_holo_dark"
-          android:showAsAction="ifRoom" />
+          moneycontrol:actionProviderClass="android.support.v7.widget.ShareActionProvider"
+          moneycontrol:showAsAction="ifRoom" />
     
 </menu>
