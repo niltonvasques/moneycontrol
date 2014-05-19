@@ -235,7 +235,7 @@ public class TransacoesByContaFragment extends Fragment{
 	        	return true;
 	        	
 	        case R.id.action_investiment:
-	        	MessageUtils.showAddAtivo(getActivity(), inflater, db, idConta, new OnClickListener() {
+	        	MessageUtils.showAddMovimentacaoAtivo(getActivity(), inflater, db, idConta, new OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						update();

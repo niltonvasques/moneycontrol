@@ -29,6 +29,7 @@ public class ReportsFragment extends Fragment{
 	private static final int REPORT_CATEGORIAS = 2;
 	private static final int REPORT_RECEITAS_X_DESPESAS_HISTORY = 3;
 	private static final int REPORT_APORTES_HISTORY = 4;
+	private static final int REPORT_ASSET_ALLOCATION = 5;
 	
 	private static final String TAG = "[CategoriasFragment]";
 	
@@ -47,6 +48,7 @@ public class ReportsFragment extends Fragment{
 		reports.add("Histórico por Categoria");
 		reports.add("Histórico Receitas X Despesas");
 		reports.add("Histórico Aportes");
+		reports.add("Alocação dos ativos");
 	}
 	
 	@Override
@@ -106,7 +108,10 @@ public class ReportsFragment extends Fragment{
 					((NVFragmentActivity)getActivity()).changeFragment(fragment);
 				}else if(item.equals(reports.get(REPORT_APORTES_HISTORY))){
 					((NVFragmentActivity)getActivity()).changeFragment(new ReportAportesFragment());
+				}else if(item.equals(reports.get(REPORT_ASSET_ALLOCATION))){
+					((NVFragmentActivity)getActivity()).changeFragment(new ReportByAtivosFragment());
 				}
+				
 			}
 		});
 		

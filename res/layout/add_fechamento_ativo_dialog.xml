@@ -18,7 +18,7 @@
 	        android:layout_height="wrap_content"
 	        android:gravity="center"
 	        style="@style/TextViewTitle"
-	        android:text="@string/add_ativo_dialog_title"/>
+	        android:text="@string/add_fechamento_ativo_dialog_title"/>
 	    
 	    <LinearLayout 
 	        android:layout_width="match_parent"
@@ -45,26 +45,6 @@
 			        android:layout_weight="7"/>
 		    </LinearLayout>
 		    
-   	        <LinearLayout 
-	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content"
-	            android:orientation="horizontal"
-	            android:gravity="center">
-	            
-	            <TextView
-	                android:layout_width="0dp"
-	                android:layout_height="wrap_content"
-	                android:layout_weight="3"
-	                android:text="@string/add_ativo_dialog_valor"/>
-			    <EditText 
-			        android:id="@+id/addAtivoDialogEditTxtMovimentacao"
-			        android:layout_width="0dp"
-			        android:layout_height="wrap_content"
-			        android:layout_weight="7"
-			        android:gravity="center"
-			        android:inputType="numberDecimal|numberSigned"
-			        android:hint="@string/add_transacao_dialog_valor_hint"/>
-		    </LinearLayout>
 		    
   	        <LinearLayout 
 	            android:layout_width="match_parent"
@@ -76,9 +56,9 @@
 	                android:layout_width="0dp"
 	                android:layout_height="wrap_content"
 	                android:layout_weight="3"
-	                android:text="@string/add_ativo_dialog_financeiro"/>
+	                android:text="@string/add_fechamento_ativo_dialog_fechamento"/>
 			    <EditText 
-			        android:id="@+id/addAtivoDialogEditTxtFinanceiro"
+			        android:id="@+id/addFechamentoAtivoDialogEditTxtFechamento"
 			        android:layout_width="0dp"
 			        android:layout_height="wrap_content"
 			        android:layout_weight="7"

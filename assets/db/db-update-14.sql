@@ -1,0 +1,49 @@
+DROP TABLE Ativo;
+DROP TABLE TipoAtivo;
+DROP TABLE RentabilidadeAtivo;
+
+
+CREATE TABLE Ativo (
+id INTEGER DEFAULT NULL PRIMARY KEY AUTOINCREMENT,
+nome VARCHAR DEFAULT NULL
+);
+
+CREATE TABLE MovimentacaoAtivo (
+id INTEGER NOT NULL  DEFAULT NULL PRIMARY KEY AUTOINCREMENT,
+data DATE NOT NULL  DEFAULT 'NULL',
+financeiro DECIMAL DEFAULT NULL,
+movimentacao DECIMAL DEFAULT NULL,
+id_Ativo INTEGER DEFAULT NULL REFERENCES Ativo (id),
+patrimonio DECIMAL DEFAULT NULL,
+cotas DECIMAL DEFAULT NULL,
+cotas_emitidas DECIMAL DEFAULT NULL,
+id_Transacao INTEGER DEFAULT NULL REFERENCES Transacao (id)
+);
+
+CREATE TABLE DespesasFuturas (
+id INTEGER NOT NULL  DEFAULT NULL PRIMARY KEY AUTOINCREMENT,
+valor DECIMAL DEFAULT NULL,
+data DATE NOT NULL  DEFAULT 'NULL',
+descricao VARCHAR NOT NULL  DEFAULT 'NULL',
+status BINARY NOT NULL  DEFAULT '0',
+id_CategoriaTransacao INTEGER DEFAULT NULL REFERENCES CategoriaTransacao (id)
+);
+
+CREATE TABLE Orcamento (
+id INTEGER DEFAULT NULL PRIMARY KEY AUTOINCREMENT,
+mes DATE NOT NULL  DEFAULT 'NULL',
+id_CategoriaTransacao INTEGER DEFAULT NULL REFERENCES CategoriaTransacao (id),
+valor DECIMAL NOT NULL  DEFAULT NULL
+);
+
+
+INSERT INTO Ativo (id, nome) VALUES(1, 'Ações');
+INSERT INTO Ativo (id, nome) VALUES(2, 'Tesouro Direto');
+INSERT INTO Ativo (id, nome) VALUES(3, 'CDB');
+INSERT INTO Ativo (id, nome) VALUES(4, 'Debênture');
+INSERT INTO Ativo (id, nome) VALUES(5, 'LCI');
+INSERT INTO Ativo (id, nome) VALUES(6, 'LCA');
+INSERT INTO Ativo (id, nome) VALUES(7, 'Poupança');
+INSERT INTO Ativo (id, nome) VALUES(8, 'Fundos Imobiliários');
+INSERT INTO Ativo (id, nome) VALUES(9, 'Câmbio');
+INSERT INTO Ativo (id, nome) VALUES(10, 'Commodities');

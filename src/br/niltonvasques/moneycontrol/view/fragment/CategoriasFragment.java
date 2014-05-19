@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,7 +61,17 @@ public class CategoriasFragment extends Fragment{
 		setHasOptionsMenu(true);
 	}
 	
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		inflater.inflate(R.menu.main_activity_actions, menu);
+		super.onCreateOptionsMenu(menu, inflater);
+	}
 	
+	@Override
+	public void onPrepareOptionsMenu(Menu menu) {
+		menu.findItem(R.id.action_transfer).setVisible(false);
+		super.onPrepareOptionsMenu(menu);
+	}
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {

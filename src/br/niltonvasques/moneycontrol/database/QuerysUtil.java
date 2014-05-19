@@ -240,11 +240,20 @@ public class QuerysUtil {
 	}
 	
 	public static final String reportInvestimentsHistory(){
-		return "SELECT SUM(valor) as total, " +
-				"strftime(\"%m-%Y\", data) as month " +
+		return 	"SELECT (SUM(valor) - "+ 
+				"COALESCE((SELECT SUM(valor) "+ 
+				"			FROM Transacao t1 "+ 
+				"			INNER JOIN CategoriaTransacao c1 on c1.id = t1.id_CategoriaTransacao "+ 
+				" 			WHERE strftime(\"%m-%Y\", t1.data) = strftime(\"%m-%Y\", t.data) " +
+				"				AND c1.id_TipoTransacao = 1 AND c1.nome = 'Investimento' "+ 
+				"				AND c1.system = 1  ),0 ) "+
+				") as total "+
+				", strftime(\"%m-%Y\", data) as month " +
 				"FROM Transacao t " +
-				"INNER JOIN CategoriaTransacao c on c.id = t.id_CategoriaTransacao " +
-				"WHERE c.nome = 'Investimento' AND system = 1 " +
+				"INNER JOIN CategoriaTransacao c on c.id = t.id_CategoriaTransacao "+ 
+				"WHERE c.nome = 'Investimento' "+ 
+				"	AND system = 1 "+ 
+				" 	AND id_TipoTransacao = 2 "+
 				"GROUP BY strftime(\"%m-%Y\", data)";
 	}
 
@@ -258,18 +267,52 @@ public class QuerysUtil {
 				"WHERE a.id = "+id;
 	}
 	
-	public static String checkLastRentabilidadeAtivo(int id_Ativo, Date date) {
-		return  "SELECT valor FROM RentabilidadeAtivo r " +
+	public static String checkLastPatrimonioAtivo(int id_Ativo, Date date) {
+		return  "SELECT patrimonio FROM MovimentacaoAtivo r " +
 				"WHERE r.id_Ativo = "+id_Ativo+" " +
 				"AND data < date('" +DateUtil.sqlDateFormat().format(date)+"','+1 month') "+
 	   		   	"ORDER BY data DESC	" +
 	   		   	"LIMIT 1";
 	}
 	
-	public static String checkExistsRentabilidadeAtivo(int id_Ativo, Date date) {
-		return  "SELECT count(*) FROM RentabilidadeAtivo r " +
+	public static String whereLastMovimentacaoAtivo(int id_Ativo, Date date){
+		return "WHERE id_Ativo = "+id_Ativo+" " +
+				"AND data < date('" +DateUtil.sqlDateFormat().format(date)+"','+1 month') "+
+	   		   	"ORDER BY data DESC	" +
+	   		   	"LIMIT 1";
+	}
+	
+	public static String whereLastMovimentacoesAtivoOrderByDateDesc(int id_Ativo, Date date){
+		return "WHERE id_Ativo = "+id_Ativo+" " +
+				"AND data < date('" +DateUtil.sqlDateFormat().format(date)+"','+1 month') "+
+	   		   	"ORDER BY data DESC	";
+	}
+	
+	public static String checkExistsMovimentacaoAtivo(int id_Ativo, Date date) {
+		return  "SELECT count(*) FROM MovimentacaoAtivo r " +
 				"WHERE r.id_Ativo = "+id_Ativo+" "+
 				"AND data < date('" +DateUtil.sqlDateFormat().format(date)+"','+1 month') ";
+	}
+	
+	public static String reportByAtivos(Date date){
+		return 	"SELECT MAX(a.nome) AS Categoria, "+ 
+					"SUM(patrimonio)  as Total, "+
+					"(SUM(patrimonio)/(SELECT SUM(patrimonio) " +
+					"					FROM (SELECT patrimonio " +
+					"							FROM ( SELECT * 	" +
+					"									FROM MovimentacaoAtivo WHERE data  < date('" +DateUtil.sqlDateFormat().format(date)+"','+1 month')  " +
+					"									ORDER BY data ASC) " +
+					"					GROUP BY id_Ativo))" +
+					") as Percentual "+
+					"FROM (SELECT * " +
+					"		FROM ( SELECT * " +
+					"				FROM MovimentacaoAtivo " +
+					"				WHERE data < date('" +DateUtil.sqlDateFormat().format(date)+"', '+1 month')  " +
+					"				ORDER BY data ASC)  " +
+					"		GROUP BY id_Ativo ) m "+
+					"INNER JOIN Ativo a on m.id_Ativo = a.id "+
+					"GROUP BY id_Ativo "+
+					"ORDER BY Max(a.nome)";
 	}
 
 	

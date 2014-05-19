@@ -47,31 +47,33 @@
 	        <LinearLayout 
 	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content"
-	            android:padding="10dp"
 	            android:orientation="horizontal">
 	            
 	            <TextView
 	                android:id="@+id/contaListItemTxtDebitos" 
 	                android:layout_width="0dp"
-	                android:layout_height="wrap_content"
+	                android:layout_height="match_parent"
 	                android:layout_weight="1"
 	                android:textColor="#ff0000"
-	                android:text="@string/default_currency_value" />
+	                android:text="@string/default_currency_value" 
+	                android:maxLines="2"/>
 	            
 	            <TextView
 	                android:id="@+id/contaListItemTxtCreditos" 
 	                android:layout_width="0dp"
-	                android:layout_height="wrap_content"
+	                android:layout_height="match_parent"
 	                android:layout_weight="1"
 	                android:textColor="@color/dark_green"
-	                android:text="@string/default_currency_value"/>
+	                android:text="@string/default_currency_value"
+	                android:maxLines="2"/>
 	            
 	            <TextView 
 	                android:id="@+id/contaListItemTxtSaldo"
 	                android:layout_width="0dp"
-	                android:layout_height="wrap_content"
+	                android:layout_height="match_parent"
 	                android:layout_weight="1"
-	                android:text="@string/default_currency_value"/>
+	                android:text="@string/default_currency_value"
+	                android:maxLines="2"/>
 	        </LinearLayout>
 	    </LinearLayout>
 	</LinearLayout>

@@ -1,6 +1,5 @@
 package br.niltonvasques.moneycontrol.view.adapter;
 
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import android.content.Context;
@@ -11,33 +10,31 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
-import br.niltonvasques.moneycontrol.database.bean.Ativo;
+import br.niltonvasques.moneycontrol.database.bean.MovimentacaoAtivo;
 
-public class AtivoAdapter extends BaseAdapter{
+public class MovimentacaoAtivoAdapter extends BaseAdapter{
 	
 	private MoneyControlApp app;
-	private List<Ativo> ativos;
+	private List<MovimentacaoAtivo> movimentacoes;
 	private LayoutInflater inflater;
 	private Context context;
-	private GregorianCalendar dateRange;
 
-	public AtivoAdapter(List<Ativo> ativos, Context context, GregorianCalendar dateRange, LayoutInflater inflater, MoneyControlApp app) {
-		this.ativos = ativos;
+	public MovimentacaoAtivoAdapter(List<MovimentacaoAtivo> transacoes, Context context, LayoutInflater inflater, MoneyControlApp app) {
+		this.movimentacoes = transacoes;
 		this.inflater = inflater;
 		this.app = app;
 		this.context = context;
-		this.dateRange = dateRange;
 	}
 	
 	@Override
 	public int getCount() {
-		if(ativos != null) return ativos.size();
+		if(movimentacoes != null) return movimentacoes.size();
 		return 0;		
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return ativos.get(position);
+		return movimentacoes.get(position);
 	}
 
 	@Override
@@ -48,12 +45,12 @@ public class AtivoAdapter extends BaseAdapter{
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		
-		Ativo tr = (Ativo) getItem(position);
+		MovimentacaoAtivo tr = (MovimentacaoAtivo) getItem(position);
 		
-		return ViewFactory.createAtivoItemView(tr, context, dateRange.getTime(), app, inflater, new OnClickListener() {
+		return ViewFactory.createMovimentacaoAtivoItemView(tr, context, app, inflater, new OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				AtivoAdapter.this.notifyDataSetChanged();
+				MovimentacaoAtivoAdapter.this.notifyDataSetChanged();
 			}
 		});
 	}

@@ -3,6 +3,7 @@ package br.niltonvasques.moneycontrol.view.adapter;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -17,7 +18,7 @@ import br.niltonvasques.moneycontrol.app.MoneyControlApp;
 import br.niltonvasques.moneycontrol.database.QuerysUtil;
 import br.niltonvasques.moneycontrol.database.bean.Ativo;
 import br.niltonvasques.moneycontrol.database.bean.CategoriaTransacao;
-import br.niltonvasques.moneycontrol.database.bean.RentabilidadeAtivo;
+import br.niltonvasques.moneycontrol.database.bean.MovimentacaoAtivo;
 import br.niltonvasques.moneycontrol.database.bean.Transacao;
 import br.niltonvasques.moneycontrol.util.DateUtil;
 import br.niltonvasques.moneycontrol.util.MessageUtils;
@@ -63,46 +64,56 @@ public class ViewFactory {
 		TextView txtNome = (TextView) view.findViewById(R.id.transacaoListItemTxtDescricao);
 		TextView txtValor = (TextView) view.findViewById(R.id.ativoListItemTxtPrice);
 		TextView txtProfit = (TextView) view.findViewById(R.id.ativoListItemTxtProfit);
-		TextView txtData = (TextView) view.findViewById(R.id.transacaoListItemTxtData);
+//		TextView txtData = (TextView) view.findViewById(R.id.transacaoListItemTxtData);
 		Button btnNewEvent = (Button) view.findViewById(R.id.ativoListItemBtnNewEvent);
 		
-		String tipo = app.getDatabase().runQuery(QuerysUtil.checkTipoAtivo(ativo.getId()));
 		
-		if( ! app.getDatabase().runQuery(QuerysUtil.checkExistsRentabilidadeAtivo(ativo.getId(),dateRange)).equals("0")){
-			String valorStr = app.getDatabase().runQuery(QuerysUtil.checkLastRentabilidadeAtivo(ativo.getId(),dateRange));
+//		String tipo = app.getDatabase().runQuery(QuerysUtil.checkTipoAtivo(ativo.getId()));
+		
+		List<MovimentacaoAtivo> movimentacoes = app.getDatabase().select(MovimentacaoAtivo.class, QuerysUtil.whereLastMovimentacoesAtivoOrderByDateDesc(ativo.getId(), dateRange));
+		
+		if( ! movimentacoes.isEmpty()){
+			MovimentacaoAtivo lastMovimentacao = movimentacoes.get(0);
 			try {
-				float valor = Float.valueOf(valorStr);
-				float profit = ((valor - ativo.getValor())/ativo.getValor())*100;
-				valor *= ativo.getQuantidade();
-				txtValor.setText("R$ "+String.format("%.2f",valor));
-				txtProfit.setText(String.format("%.2f",profit)+" %");
+				float profit = 0;
+					
+				float lastValorCota = 1, penultValorCota = 1;
 				
+				if(lastMovimentacao.getCotas() != 0)
+					lastValorCota = (lastMovimentacao.getPatrimonio()/lastMovimentacao.getCotas());
+				
+				profit = ((lastValorCota/penultValorCota)-1)*100;
+				
+				txtValor.setText("R$ "+String.format("%.2f",lastMovimentacao.getPatrimonio()));
+				txtProfit.setText(String.format("%.2f",profit)+" %");
+
 				if(profit < 0){
 					txtProfit.setTextColor(Color.RED);
 				}
-				
+
 			} catch (Exception e) {
-				// TODO: handle exception
+				
 			}
+
 		}else{
-			txtValor.setText("R$ "+String.format("%.2f", ativo.getValor()*ativo.getQuantidade()));
+			txtValor.setText("R$ "+String.format("%.2f", 0f));
 			txtProfit.setText("0.00 %");
 		}
-		
+//		
 		txtNome.setText(ativo.getNome());
-		try {
-			GregorianCalendar g = new GregorianCalendar();
-			g.setTime(DateUtil.sqlDateFormat().parse(ativo.getData()));
-			ViewUtil.adjustDateOnTextView(txtData,g);
-			txtData.setText(txtData.getText().toString()+" - "+tipo); 
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		
+//		try {
+//			GregorianCalendar g = new GregorianCalendar();
+//			g.setTime(DateUtil.sqlDateFormat().parse(ativo.getData()));
+//			ViewUtil.adjustDateOnTextView(txtData,g);
+//			txtData.setText(txtData.getText().toString()+" - "+tipo); 
+//		} catch (ParseException e) {
+//			e.printStackTrace();
+//		}
+//		
 		btnNewEvent.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				MessageUtils.showAddAtivoRentabilidade(context, ativo, inflater, app.getDatabase(), listener);
+				MessageUtils.showAddAtivoFechamento(context, ativo, inflater, app.getDatabase(), listener);
 			}
 		});
 		
@@ -110,14 +121,14 @@ public class ViewFactory {
 		return view;
 	}
 	
-	public static View createRentabilidadeAtivoItemView(final RentabilidadeAtivo ativo, final Context context, final MoneyControlApp app,
+	public static View createMovimentacaoAtivoItemView(final MovimentacaoAtivo ativo, final Context context, final MoneyControlApp app,
 			final LayoutInflater inflater, final DialogInterface.OnClickListener listener) {
 		View view = inflater.inflate(R.layout.rentabilidade_ativo_list_item, null);
 		
 		TextView txtValor = (TextView) view.findViewById(R.id.ativoListItemTxtPrice);
 		TextView txtData = (TextView) view.findViewById(R.id.transacaoListItemTxtData);
 		
-		txtValor.setText("R$ "+String.format("%.2f", ativo.getValor()));
+		txtValor.setText("R$ "+String.format("%.2f", ativo.getPatrimonio()));
 		
 		try {
 			GregorianCalendar g = new GregorianCalendar();

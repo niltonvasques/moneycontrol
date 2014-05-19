@@ -15,17 +15,16 @@ INSERT INTO CategoriaTransacao (id, nome, id_TipoTransacao, system) VALUES(2, 'S
 INSERT INTO CategoriaTransacao (nome, id_TipoTransacao, system) VALUES ('Transferência',1,1);
 INSERT INTO CategoriaTransacao (nome, id_TipoTransacao, system) VALUES ('Transferência',2,1);
 INSERT INTO CategoriaTransacao (nome, id_TipoTransacao, system) VALUES ('Investimento',2,1);
+INSERT INTO CategoriaTransacao (nome, id_TipoTransacao, system) VALUES ('Investimento',1,1);
 
-INSERT INTO TipoAtivo (id, nome) VALUES(1, 'Ações');
-INSERT INTO TipoAtivo (id, nome) VALUES(2, 'Tesouro Direto');
-INSERT INTO TipoAtivo (id, nome) VALUES(3, 'CDB');
-INSERT INTO TipoAtivo (id, nome) VALUES(4, 'Debênture');
-INSERT INTO TipoAtivo (id, nome) VALUES(5, 'LCI');
-INSERT INTO TipoAtivo (id, nome) VALUES(6, 'LCA');
-INSERT INTO TipoAtivo (id, nome) VALUES(7, 'Poupança');
-INSERT INTO TipoAtivo (id, nome) VALUES(8, 'Fundos Imobiliários');
+INSERT INTO Ativo (id, nome) VALUES(1, 'Ações');
+INSERT INTO Ativo (id, nome) VALUES(2, 'Tesouro Direto');
+INSERT INTO Ativo (id, nome) VALUES(3, 'CDB');
+INSERT INTO Ativo (id, nome) VALUES(4, 'Debênture');
+INSERT INTO Ativo (id, nome) VALUES(5, 'LCI');
+INSERT INTO Ativo (id, nome) VALUES(6, 'LCA');
+INSERT INTO Ativo (id, nome) VALUES(7, 'Poupança');
+INSERT INTO Ativo (id, nome) VALUES(8, 'Fundos Imobiliários');
 
-INSERT INTO TipoEventoAtivo (id, nome) VALUES(1,'Compra');
-INSERT INTO TipoEventoAtivo (id, nome) VALUES(2,'Venda');
 
 

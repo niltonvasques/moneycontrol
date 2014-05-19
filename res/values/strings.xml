@@ -114,10 +114,13 @@
     <string name="report_receita_x_despesas_axis_category">Meses</string>
     <string name="report_receita_x_despesas_axis_value">Valor(R$)</string>
     
+    <string name="report_by_ativos_chart_title">Alocação de ativos</string>
+    
     <!-- add_transacao_dialog.xml -->
-    <string name="add_ativo_dialog_title">Adicionar Ativo</string>
-    <string name="add_ativo_dialog_tipo">Tipo:</string>
-    <string name="add_ativo_dialog_valor">Valor:</string>
+    <string name="add_ativo_dialog_title">Movimentação Ativo</string>
+    <string name="add_ativo_dialog_tipo">Ativo:</string>
+    <string name="add_ativo_dialog_valor">Movimentação:</string>
+    <string name="add_ativo_dialog_financeiro">Financeiro:</string>
     <string name="add_ativo_dialog_valor_hint">informe o valor</string>
     <string name="add_ativo_dialog_descricao">Nome:</string>
     <string name="add_ativo_dialog_descricao_hint">informe o nome do ativo</string>
@@ -126,6 +129,10 @@
     <string name="add_ativo_dialog_vencimento">Vencimento:</string>
     <string name="add_ativo_dialog_conta">Conta:</string>
     <string name="add_ativo_dialog_quantidade">Quantidade:</string>
+    
+     <!-- add_fechamento_ativo_dialog.xml -->
+    <string name="add_fechamento_ativo_dialog_title">Movimentação Ativo</string>
+    <string name="add_fechamento_ativo_dialog_fechamento">Fechamento:</string>
     
     <!-- ReportAportesFragment.java -->
     <string name="report_aportes_title">"Histórico de Aportes"</string>
@@ -143,5 +150,7 @@
     <!-- ContasFragment -->
     <string name="contas_fragment_message_dialog_atention_title">Atenção!</string>
     <string name="contas_fragment_message_dialog_transfer_error_msg">Para realizar uma transferência é necessário ter pelo menos duas contas cadastradas.</string>
+    
+    
     
 </resources>

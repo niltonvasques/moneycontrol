@@ -132,7 +132,7 @@ public class ContaAdapter extends BaseAdapter{
 			
 			txtCreditos.setText("limite: R$ "+String.format("%.2f",limite));
 			txtDebitos.setText("fatura: R$ "+String.format("%.2f",fatura));
-			txtSaldo.setText(pagsF > 0 ? "paga" : "pendente");
+			txtSaldo.setText((pagsF > 0) || (fatura <= 0) ? "paga" : "pendente");
 		}else{
 			txtCreditos.setText("R$ "+String.format("%.2f",creditoSum));
 			txtDebitos.setText("R$ "+String.format("%.2f",debitoSum));
