@@ -2,6 +2,11 @@
     xmlns:moneycontrol="http://schemas.android.com/apk/res-auto"  
     xmlns:android="http://schemas.android.com/apk/res/android" >
     
+        <item android:id="@+id/action_add"
+          android:title="@string/action_add"
+          android:icon="@drawable/ic_action_new_holo_dark"
+          moneycontrol:showAsAction="ifRoom" />
+    
     <item android:id="@+id/action_investiment"
           android:title="@string/action_investment"
           android:icon="@drawable/ic_action_upload"

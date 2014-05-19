@@ -202,13 +202,6 @@ public class TransacoesByContaFragment extends Fragment{
 	}
 	
 	@Override
-	public void onPrepareOptionsMenu(Menu menu) {
-		menu.findItem(R.id.action_transfer).setVisible(false);
-		super.onPrepareOptionsMenu(menu);
-	}
-	
-	
-	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    // Handle presses on the action bar items
 	    switch (item.getItemId()) {
