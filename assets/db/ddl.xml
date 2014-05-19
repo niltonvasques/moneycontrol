@@ -37,7 +37,7 @@
 		<type label="SET" length="1" sql="SET" quote=""/>
 		<type label="Bit" length="0" sql="bit" quote=""/>
 	</group>
-</datatypes><table x="1223" y="191" name="Bem">
+</datatypes><table x="1146" y="288" name="Bem">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -52,7 +52,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="540" y="81" name="Conta">
+<table x="463" y="178" name="Conta">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -73,7 +73,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="871" y="132" name="Transacao">
+<table x="794" y="229" name="Transacao">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -102,7 +102,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="1552" y="468" name="TipoTransacao">
+<table x="1475" y="565" name="TipoTransacao">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -113,7 +113,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="1428" y="272" name="TipoBem">
+<table x="1351" y="369" name="TipoBem">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -125,7 +125,7 @@
 </key>
 <comment>O bem pode ser do tipo passivo ou ativo.</comment>
 </table>
-<table x="400" y="175" name="TipoConta">
+<table x="266" y="361" name="TipoConta">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -137,7 +137,7 @@
 </key>
 <comment>Conta Corrente, Poupança, Cartão de Crédito e etc.</comment>
 </table>
-<table x="1253" y="498" name="CategoriaTransacao">
+<table x="1176" y="595" name="CategoriaTransacao">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -156,7 +156,7 @@
 </key>
 <comment>Saúde, Moradia, Alimentação e etc.</comment>
 </table>
-<table x="179" y="52" name="CartaoCredito">
+<table x="102" y="149" name="CartaoCredito">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -177,7 +177,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="303" y="345" name="Ativo">
+<table x="1438" y="90" name="Ativo">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -188,7 +188,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="523" y="325" name="MovimentacaoAtivo">
+<table x="1057" y="19" name="MovimentacaoAtivo">
 <row name="id" null="0" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -222,7 +222,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="875" y="400" name="DespesasFuturas">
+<table x="798" y="497" name="DespesasFuturas">
 <row name="id" null="0" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -246,7 +246,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="893" y="672" name="Orcamento">
+<table x="816" y="769" name="Orcamento">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>

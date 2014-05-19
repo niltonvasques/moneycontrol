@@ -118,12 +118,5 @@ public class ReportsFragment extends Fragment{
 		return myFragmentView;
 	}
 	
-	@Override
-	public void onPrepareOptionsMenu(Menu menu) {
-		menu.findItem(R.id.action_add).setVisible(false);
-		menu.findItem(R.id.action_transfer).setVisible(false);
-		super.onPrepareOptionsMenu(menu);
-	}
-	
 
 }

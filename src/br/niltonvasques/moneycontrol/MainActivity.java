@@ -145,20 +145,14 @@ public class MainActivity extends NVFragmentActivity {
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		Log.d(TAG, "onCreateOptionsMenu");
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main_activity_actions, menu);
-		return super.onCreateOptionsMenu(menu);
-	}
-
-	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		Log.d(TAG, "onPrepareOptionsMenu");
 		// If the nav drawer is open, hide action items related to the content view
+		try{
 		boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
 		menu.findItem(R.id.action_add).setVisible(!drawerOpen);
 		menu.findItem(R.id.action_transfer).setVisible(!drawerOpen);
+		}catch(Exception e){}
 		return super.onPrepareOptionsMenu(menu);
 	}
 
