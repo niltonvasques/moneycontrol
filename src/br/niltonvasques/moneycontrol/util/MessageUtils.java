@@ -713,6 +713,56 @@ public class MessageUtils {
 	    alert.show();        
 	}
 	
+	public static void showEditCategoria(final Context context, final CategoriaTransacao c, final LayoutInflater inflater, final DatabaseHandler db, final DialogInterface.OnClickListener listener){
+		final AlertDialog.Builder alert = new AlertDialog.Builder(context);
+		final View view = inflater.inflate(R.layout.add_categoria_dialog, null);
+	    alert.setView(view);
+	    
+	    Log.d(TAG, TipoConta.class.getSimpleName());
+	    
+	    List<TipoTransacao> tipos = db.select(TipoTransacao.class);
+	    
+	    int startTipos = 0;
+	    for(int i = 0; i < tipos.size(); i++){
+	    	if(tipos.get(i).getId() == c.getId_TipoTransacao()){
+	    		startTipos = i;
+	    		break;
+	    	}
+	    }
+	    
+	    final Spinner spinnerTipos = (Spinner) view.findViewById(R.id.addCategoriaDialogSpinnerTipo);
+	    spinnerTipos.setAdapter(new ArrayAdapter<TipoTransacao>(context, android.R.layout.simple_list_item_1, tipos));
+	    spinnerTipos.setSelection(startTipos);
+	    
+	    final EditText editNome = (EditText) view.findViewById(R.id.addCategoriaDialogEditTxtDescrição);
+	    
+	    editNome.setText(c.getNome());
+	    
+	    alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				
+				c.setNome(editNome.getText().toString());
+				
+				TipoTransacao t = (TipoTransacao)spinnerTipos.getSelectedItem();
+				c.setId_TipoTransacao(t.getId());
+				
+				db.update(c);				
+				
+				listener.onClick(dialog, which);
+			}
+		});
+
+	    alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+	        public void onClick(DialogInterface dialog, int whichButton) {
+	            dialog.cancel();
+	        }
+	    });
+	    
+	    alert.show();        
+	}
+	
 	@SuppressLint("NewApi")
 	public static void showTransferencia(final Context context, final LayoutInflater inflater, final DatabaseHandler db, final DialogInterface.OnClickListener listener){
 		final AlertDialog.Builder alert = new AlertDialog.Builder(context);

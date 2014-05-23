@@ -13,6 +13,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import br.niltonvasques.moneycontrol.R;
@@ -51,6 +53,17 @@ public class CategoriasFragment extends Fragment{
 		
 		listViewContas = (ListView) myFragmentView.findViewById(R.id.categoriaFragmentListViewCategorias);
 		listViewContas.setAdapter(new ArrayAdapter<CategoriaTransacao>(getActivity(), android.R.layout.simple_list_item_1, categorias));
+		listViewContas.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+				MessageUtils.showEditCategoria(getActivity(), categorias.get(position), CategoriasFragment.this.inflater, db, new OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						update();
+					}
+				});
+			}
+		});
 		
 		return myFragmentView;
 	}
