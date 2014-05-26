@@ -1,6 +1,7 @@
 package br.niltonvasques.moneycontrol.util;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -19,6 +20,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.webkit.WebChromeClient.CustomViewCallback;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -39,6 +41,7 @@ import br.niltonvasques.moneycontrol.database.bean.CartaoCredito;
 import br.niltonvasques.moneycontrol.database.bean.CategoriaTransacao;
 import br.niltonvasques.moneycontrol.database.bean.Conta;
 import br.niltonvasques.moneycontrol.database.bean.MovimentacaoAtivo;
+import br.niltonvasques.moneycontrol.database.bean.Orcamento;
 import br.niltonvasques.moneycontrol.database.bean.TipoConta;
 import br.niltonvasques.moneycontrol.database.bean.TipoTransacao;
 import br.niltonvasques.moneycontrol.database.bean.Transacao;
@@ -1161,6 +1164,215 @@ public class MessageUtils {
 		});
 		
 	    alert.show();       
+	}
+	
+	public static void showAddOrcamento(final Context context, final LayoutInflater inflater, final DatabaseHandler db, final DialogInterface.OnClickListener listener){
+		final AlertDialog.Builder alert = new AlertDialog.Builder(context);
+		final View view = inflater.inflate(R.layout.add_orcamento_dialog, null);
+	    alert.setView(view);
+	    
+	    final GregorianCalendar value = new GregorianCalendar();
+	    final Button btnDate = (Button)view.findViewById(R.id.orcamentoDialogBtnData);
+	    ViewUtil.adjustMonthTextView(btnDate, value);
+	    
+	    Log.d(TAG, TipoConta.class.getSimpleName());
+	    
+	    List<CategoriaTransacao> tipos = db.select(CategoriaTransacao.class, "WHERE id_TipoTransacao = 2");
+	    
+	    final Spinner spinnerTipos = (Spinner) view.findViewById(R.id.addOrcamentoDialogSpinnerTipo);
+	    spinnerTipos.setAdapter(new ArrayAdapter<CategoriaTransacao>(context, android.R.layout.simple_list_item_1, tipos));
+	    
+	    
+	    alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+				EditText editNome = (EditText) view.findViewById(R.id.addOrcamentoDialogEditTxtValor);
+				
+				Orcamento c = new Orcamento();
+				
+				try{
+					float valor = Float.valueOf(editNome.getText().toString());
+					c.setValor(valor);
+				}catch(Exception e){
+				}
+				
+				c.setMes(format.format(value.getTime()));
+				
+				CategoriaTransacao t = (CategoriaTransacao)spinnerTipos.getSelectedItem();
+				c.setId_CategoriaTransacao(t.getId());
+				
+				if(db.runQuery(QuerysUtil.checkExistsOrcamentoOnMonth(t.getId(), value.getTime())).equals("0") ){
+					db.insert(c);				
+				}else{
+					MessageUtils.showMessage(context, context.getString(R.string.orcamento_dialog_error_message_title), context.getString(R.string.orcamento_dialog_error_message_message));
+				}
+				
+				listener.onClick(dialog, which);
+			}
+		});
+
+	    alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+	        public void onClick(DialogInterface dialog, int whichButton) {
+	            dialog.cancel();
+	        }
+	    });
+	    
+	    OnDateSetListener dateListener = new DatePickerDialog.OnDateSetListener() {
+
+			public void onDateSet(DatePicker view, int year, int monthOfYear,
+					int dayOfMonth) {
+				Calendar c = Calendar.getInstance();
+				c.set(Calendar.YEAR, year);
+				c.set(Calendar.MONTH, monthOfYear);
+				c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+				value.set(Calendar.YEAR, year);
+				value.set(Calendar.MONTH, monthOfYear);
+				value.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+				ViewUtil.adjustMonthTextView(btnDate, value);
+
+			}
+		};
+
+		final DatePickerDialog dateDialog = customDatePicker(context, dateListener, 
+				value.get(Calendar.YEAR), 
+				value.get(Calendar.MONTH), 
+				value.get(Calendar.DAY_OF_MONTH));
+
+		btnDate.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				dateDialog.show();				
+			}
+		});
+	    
+	    alert.show();        
+	}
+	
+	public static void showEditOrcamento(final Context context, final Orcamento c, final LayoutInflater inflater, final DatabaseHandler db, final DialogInterface.OnClickListener listener){
+		final AlertDialog.Builder alert = new AlertDialog.Builder(context);
+		final View view = inflater.inflate(R.layout.add_orcamento_dialog, null);
+	    alert.setView(view);
+	    
+	    final GregorianCalendar value = new GregorianCalendar();
+	    try {
+			Date date = DateUtil.sqlDateFormat().parse(c.getMes());
+			value.setTime(date);
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+		}
+	    final Button btnDate = (Button)view.findViewById(R.id.orcamentoDialogBtnData);
+	    ViewUtil.adjustMonthTextView(btnDate, value);
+	    
+	    Log.d(TAG, TipoConta.class.getSimpleName());
+	    
+	    List<CategoriaTransacao> tipos = db.select(CategoriaTransacao.class, "WHERE id_TipoTransacao = 2");
+	    
+	    int startCat = 0;
+	    for(int i = 0; i < tipos.size(); i++){
+	    	if(tipos.get(i).getId() == c.getId_CategoriaTransacao()) {
+	    		startCat = i;
+	    		break;
+	    	}
+	    }
+	    
+	    final Spinner spinnerTipos = (Spinner) view.findViewById(R.id.addOrcamentoDialogSpinnerTipo);
+	    spinnerTipos.setAdapter(new ArrayAdapter<CategoriaTransacao>(context, android.R.layout.simple_list_item_1, tipos));
+	    spinnerTipos.setSelection(startCat);
+	    
+	    final EditText editNome = (EditText) view.findViewById(R.id.addOrcamentoDialogEditTxtValor);
+	    editNome.setText(c.getValor()+"");
+	    
+	    
+	    alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+				
+				try{
+					float valor = Float.valueOf(editNome.getText().toString());
+					c.setValor(valor);
+				}catch(Exception e){
+				}
+				
+				c.setMes(format.format(value.getTime()));
+				
+				CategoriaTransacao t = (CategoriaTransacao)spinnerTipos.getSelectedItem();
+				c.setId_CategoriaTransacao(t.getId());
+				
+					db.update(c);
+					
+				listener.onClick(dialog, which);
+			}
+		});
+
+	    alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+	        public void onClick(DialogInterface dialog, int whichButton) {
+	            dialog.cancel();
+	        }
+	    });
+	    
+	    OnDateSetListener dateListener = new DatePickerDialog.OnDateSetListener() {
+
+			public void onDateSet(DatePicker view, int year, int monthOfYear,
+					int dayOfMonth) {
+				Calendar c = Calendar.getInstance();
+				c.set(Calendar.YEAR, year);
+				c.set(Calendar.MONTH, monthOfYear);
+				c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+				value.set(Calendar.YEAR, year);
+				value.set(Calendar.MONTH, monthOfYear);
+				value.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+				ViewUtil.adjustMonthTextView(btnDate, value);
+
+			}
+		};
+
+		final DatePickerDialog dateDialog = customDatePicker(context, dateListener, 
+				value.get(Calendar.YEAR), 
+				value.get(Calendar.MONTH), 
+				value.get(Calendar.DAY_OF_MONTH));
+
+		btnDate.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				dateDialog.show();				
+			}
+		});
+	    
+	    alert.show();        
+	}
+	
+	private static DatePickerDialog customDatePicker(Context context, OnDateSetListener dateSetListener, int year, int month, int day) {
+		DatePickerDialog dpd = new DatePickerDialog(context, dateSetListener,year, month, day);
+		try {
+
+			Field[] datePickerDialogFields = dpd.getClass().getDeclaredFields();
+			for (Field datePickerDialogField : datePickerDialogFields) {
+				if (datePickerDialogField.getName().equals("mDatePicker")) {
+					datePickerDialogField.setAccessible(true);
+					DatePicker datePicker = (DatePicker) datePickerDialogField
+							.get(dpd);
+					Field datePickerFields[] = datePickerDialogField.getType()
+							.getDeclaredFields();
+					for (Field datePickerField : datePickerFields) {
+						if ("mDayPicker".equals(datePickerField.getName())
+								|| "mDaySpinner".equals(datePickerField
+										.getName())) {
+							datePickerField.setAccessible(true);
+							Object dayPicker = new Object();
+							dayPicker = datePickerField.get(datePicker);
+							((View) dayPicker).setVisibility(View.GONE);
+						}
+					}
+				}
+
+			}
+		} catch (Exception ex) {
+		}
+		return dpd;
 	}
 	
 }

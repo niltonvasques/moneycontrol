@@ -3,6 +3,7 @@ package br.niltonvasques.moneycontrol.util;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 
 import android.content.Context;
 import android.widget.ArrayAdapter;
@@ -49,6 +50,15 @@ public class ViewUtil {
 				.append(date.get(Calendar.DAY_OF_MONTH)).append("/")
 				.append(date.get(Calendar.MONTH) + 1).append("/")				
 				.append(date.get(Calendar.YEAR)).append(" "));
+	}
+	
+	public static void adjustMonthTextView(TextView view, GregorianCalendar date){
+		view.setText(
+				new StringBuilder()
+				// Month is 0 based so add 1
+				.append(date.getDisplayName(Calendar.MONDAY,Calendar.LONG, Locale.getDefault())).append("/")				
+				.append(date.get(Calendar.YEAR)).append(" "));
+		
 	}
 	
 	public static void adjustTimeOnTextView(TextView view, GregorianCalendar date){

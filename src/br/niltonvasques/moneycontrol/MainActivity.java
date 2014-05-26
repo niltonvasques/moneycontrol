@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import br.niltonvasques.moneycontrol.activity.NVFragmentActivity;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
@@ -25,18 +26,20 @@ import br.niltonvasques.moneycontrol.util.DateUtil;
 import br.niltonvasques.moneycontrol.view.fragment.CategoriasFragment;
 import br.niltonvasques.moneycontrol.view.fragment.ContasFragment;
 import br.niltonvasques.moneycontrol.view.fragment.InvestimentosFragment;
+import br.niltonvasques.moneycontrol.view.fragment.OrcamentoFragment;
 import br.niltonvasques.moneycontrol.view.fragment.ReportsFragment;
 import br.niltonvasques.moneycontrol.view.fragment.TransacoesFragment;
 
 @SuppressLint("NewApi")
 public class MainActivity extends NVFragmentActivity {
 	
-	private static final int CONTAS_ITEM_MENU = 0;
-	private static final int TRANSACOES_ITEM_MENU = 1;
-	private static final int CATEGORIAS_ITEM_MENU = 2;
-	private static final int INVESTIMENTOS_ITEM_MENU = 3;
-	private static final int RELATORIOS_ITEM_MENU = 4;
-	private static final int SOBRE_ITEM_MENU = 5;
+	private static final int CONTAS_ITEM_MENU 			= 0;
+	private static final int TRANSACOES_ITEM_MENU 		= 1;
+	private static final int ORCAMENTO_ITEM_MENU 		= 2;
+	private static final int CATEGORIAS_ITEM_MENU 		= 3;
+	private static final int INVESTIMENTOS_ITEM_MENU 	= 4;
+	private static final int RELATORIOS_ITEM_MENU 		= 5;
+	private static final int SOBRE_ITEM_MENU 			= 6;
 
 	private static final String TAG = "[MainActivity]";
 
@@ -88,6 +91,8 @@ public class MainActivity extends NVFragmentActivity {
 					changeFragment(fragment);
 				}else if(mDrawerItens[position].equals(mDrawerItens[INVESTIMENTOS_ITEM_MENU])){
 					changeFragment(new InvestimentosFragment());
+				}else if(mDrawerItens[position].equals(mDrawerItens[ORCAMENTO_ITEM_MENU])){
+					changeFragment(new OrcamentoFragment());
 				}
 				
 				mDrawerLayout.closeDrawer(mDrawerList);

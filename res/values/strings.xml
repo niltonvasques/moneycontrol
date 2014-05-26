@@ -6,8 +6,9 @@
     <string name="hello_world">Hello world!</string>
     
     <string-array name="menu_array">
-        <item>Contas</item>
+        <item>Capital</item>
         <item>Transações</item>
+        <item>Orçamento</item>
         <item>Categorias</item>
         <item>Investimentos</item>
         <item>Relatórios</item>
@@ -33,6 +34,14 @@
     <string name="categoria_dialog_tipo">Tipo:</string>
     <string name="categoria_dialog_descricao">Descrição:</string>
     <string name="categoria_dialog_descricao_hint">informe uma descrição</string>
+    
+    <!-- add_orcamento_dialog.xml -->
+    <string name="orcamento_dialog_title">Adicionar Orçamento</string>
+    <string name="orcamento_dialog_tipo">Categoria:</string>
+    <string name="orcamento_dialog_descricao">Valor:</string>
+    <string name="orcamento_dialog_descricao_hint">informe um valor</string>
+    <string name="orcamento_dialog_error_message_title">Atenção!</string>
+    <string name="orcamento_dialog_error_message_message">Só é possível adicionar um orçamento para cada categoria no mês!</string>
     
     <!-- add_conta_dialog.xml -->
     <string name="add_conta_dialog_title">Adicionar Conta</string>

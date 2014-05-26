@@ -240,9 +240,9 @@ public class InvestimentosFragment extends Fragment{
 		String sumStr = db.runQuery("SELECT SUM(patrimonio) " +
 									"FROM (SELECT patrimonio " +
 											"FROM ( SELECT * FROM MovimentacaoAtivo " +
-											"WHERE data  < date('"+DateUtil.sqlDateFormat().format(dateRange.getTime())+"','+1 month') "+
-											" ORDER BY data ASC) "+
-									"GROUP BY id_Ativo)");
+													"WHERE data  < date('"+DateUtil.sqlDateFormat().format(dateRange.getTime())+"','+1 month') "+
+													" ORDER BY data ASC) "+
+										   "GROUP BY id_Ativo)");
 		
 		float sum = 0;
 		try{

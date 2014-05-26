@@ -285,7 +285,7 @@ public class QuerysUtil {
 	public static String whereLastMovimentacoesAtivoOrderByDateDesc(int id_Ativo, Date date){
 		return "WHERE id_Ativo = "+id_Ativo+" " +
 				"AND data < date('" +DateUtil.sqlDateFormat().format(date)+"','+1 month') "+
-	   		   	"ORDER BY data DESC	";
+	   		   	"ORDER BY data DESC, id	DESC";
 	}
 	
 	public static String checkExistsMovimentacaoAtivo(int id_Ativo, Date date) {
@@ -313,6 +313,20 @@ public class QuerysUtil {
 					"INNER JOIN Ativo a on m.id_Ativo = a.id "+
 					"GROUP BY id_Ativo "+
 					"ORDER BY Max(a.nome)";
+	}
+
+	public static String checkExistsOrcamentoOnMonth(int id_CategoriaTransacao, Date date) {
+		return  "SELECT count(*) FROM Orcamento r " +
+				"WHERE r.id_CategoriaTransacao = "+id_CategoriaTransacao+" "+
+				"AND strftime(\"%m-%Y\", mes) = strftime(\"%m-%Y\", '" +DateUtil.sqlDateFormat().format(date)+"') ";
+	}
+	
+	public static final String whereOrcamentoOnMonth(Date date){
+		return "WHERE strftime(\"%m-%Y\", mes) = strftime(\"%m-%Y\", '" +DateUtil.sqlDateFormat().format(date)+"') ";
+	}
+	
+	public static final String sumOrcamentoOnMonth(Date date){
+		return "SELECT SUM(valor) FROM Orcamento "+whereOrcamentoOnMonth(date);
 	}
 
 	

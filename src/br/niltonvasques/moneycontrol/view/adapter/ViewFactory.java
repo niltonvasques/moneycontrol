@@ -1,17 +1,22 @@
 package br.niltonvasques.moneycontrol.view.adapter;
 
 import java.text.ParseException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.PorterDuff.Mode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import br.niltonvasques.moneycontrol.R;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
@@ -19,6 +24,7 @@ import br.niltonvasques.moneycontrol.database.QuerysUtil;
 import br.niltonvasques.moneycontrol.database.bean.Ativo;
 import br.niltonvasques.moneycontrol.database.bean.CategoriaTransacao;
 import br.niltonvasques.moneycontrol.database.bean.MovimentacaoAtivo;
+import br.niltonvasques.moneycontrol.database.bean.Orcamento;
 import br.niltonvasques.moneycontrol.database.bean.Transacao;
 import br.niltonvasques.moneycontrol.util.DateUtil;
 import br.niltonvasques.moneycontrol.util.MessageUtils;
@@ -138,6 +144,47 @@ public class ViewFactory {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
+		
+		return view;
+	}
+	
+	public static View createOrcamentoItemView(Orcamento tr, MoneyControlApp app, LayoutInflater inflater){
+		View view = inflater.inflate(R.layout.orcamento_list_item, null);
+		
+		TextView txtNome = (TextView) view.findViewById(R.id.orcamentoListItemTxtCategoria);
+		EditText txtSaldo = (EditText) view.findViewById(R.id.orcamentoListItemTxtValorPlanejado);
+		EditText txtRealizado = (EditText) view.findViewById(R.id.orcamentoListItemTxtValorRealizado);
+		EditText txtRestante = (EditText) view.findViewById(R.id.orcamentoListItemTxtValorRestante);
+		ProgressBar progress = (ProgressBar) view.findViewById(R.id.orcamentoListItemProgressBar);
+		progress.getProgressDrawable().setColorFilter(Color.RED, Mode.MULTIPLY);
+		
+//		String tipo = app.getDatabase().runQuery(QuerysUtil.checkTipoTransacao(tr.getId()));
+		
+		CategoriaTransacao c = app.getCategoriasTransacao().get(tr.getId_CategoriaTransacao());
+		
+		try {
+			GregorianCalendar g = new GregorianCalendar();
+			g.setTime(DateUtil.sqlDateFormat().parse(tr.getMes()));
+			Cursor cur = app.getDatabase().runQueryCursor(QuerysUtil.reportCategoriaWithDateInterval(tr.getId_CategoriaTransacao(), g.get(Calendar.MONTH)+1, g.get(Calendar.YEAR)));
+			if(cur.moveToFirst()){
+				float total = cur.getFloat(0);
+				float restante = tr.getValor()-total;
+				txtRealizado.setText("R$ "+String.format("%.2f", total));
+				txtRestante.setText("R$ "+String.format("%.2f", restante));
+				if(restante < 0){
+					txtRestante.setTextColor(Color.RED);
+				}
+				int progressSize = (int) (total/tr.getValor()* 100);
+				progress.setProgress(progressSize);
+			}
+			cur.close();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		
+		txtNome.setText(c.getNome());
+		txtSaldo.setText("R$ "+String.format("%.2f", tr.getValor()));
 		
 		return view;
 	}

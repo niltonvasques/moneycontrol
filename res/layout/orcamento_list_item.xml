@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:descendantFocusability="blocksDescendants">
+    
+    
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:padding="10dp"
+        android:orientation="vertical">
+        
+        <LinearLayout 
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            
+			<TextView 
+	            android:id="@+id/orcamentoListItemTxtCategoria"
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="6"
+	            android:textSize="18sp"
+	            android:text="Mercado"/>
+
+			<LinearLayout 
+			    android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:orientation="vertical"
+                >  
+                <LinearLayout 
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView 
+			            android:layout_width="0dp"
+			            android:layout_height="wrap_content"
+			            android:layout_weight="1"
+			            android:textSize="18sp"
+			            android:text=""/>
+		            <EditText 
+		                android:id="@+id/orcamentoListItemTxtValorPlanejado"
+		                android:layout_width="0dp"
+		                android:layout_height="wrap_content"
+		                android:layout_weight="5"
+		                android:textColor="@color/dark_green"
+		                android:text="@string/default_currency_value"/>
+	            </LinearLayout>
+	            
+                <LinearLayout 
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView 
+			            android:layout_width="0dp"
+			            android:layout_height="wrap_content"
+			            android:layout_weight="1"
+			            android:textSize="18sp"
+			            android:text="-"/>
+		            <EditText 
+		                android:id="@+id/orcamentoListItemTxtValorRealizado"
+		                android:layout_width="0dp"
+		                android:layout_height="wrap_content"
+		                android:layout_weight="5"
+		                android:textColor="#ff0000"
+		                android:text="@string/default_currency_value"/>
+	            </LinearLayout>
+	            
+                <LinearLayout 
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView 
+			            android:layout_width="0dp"
+			            android:layout_height="wrap_content"
+			            android:layout_weight="1"
+			            android:textSize="18sp"
+			            android:text="="/>
+		            <EditText 
+		                android:id="@+id/orcamentoListItemTxtValorRestante"
+		                android:layout_width="0dp"
+		                android:layout_height="wrap_content"
+		                android:layout_weight="5"
+		                android:textColor="@color/dark_green"
+		                android:text="@string/default_currency_value"/>
+	            </LinearLayout>
+            </LinearLayout>	          
+        </LinearLayout>
+        
+        <ProgressBar 
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:id="@+id/orcamentoListItemProgressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:progress="50"
+            android:max="100"/>
+    </LinearLayout>
+</RelativeLayout>

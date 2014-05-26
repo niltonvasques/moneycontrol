@@ -147,12 +147,6 @@ public class MovimentacaoAtivoFragment extends Fragment{
 		super.onCreateOptionsMenu(menu, inflater);
 	}
 	
-	@Override
-	public void onPrepareOptionsMenu(Menu menu) {
-		menu.findItem(R.id.action_transfer).setVisible(false);
-		super.onPrepareOptionsMenu(menu);
-	}
-	
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {

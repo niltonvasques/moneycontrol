@@ -8,7 +8,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".transacoesActivity" >
     
-        <RelativeLayout
+    <RelativeLayout
         android:id="@+id/transacoesFragmentLayDateRange"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -32,12 +32,68 @@
             android:background="@drawable/ic_action_next_item"
             android:layout_alignParentRight="true"/>
     </RelativeLayout>
+    
+    <RelativeLayout 
+        android:id="@+id/investimentosFragmentLayHeader"
+	    android:layout_width="match_parent"
+	    android:layout_height="40dp"
+	    android:descendantFocusability="blocksDescendants"
+	    android:layout_below="@id/transacoesFragmentLayDateRange"
+	    android:gravity="center_vertical">
+    
+        <LinearLayout 
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:orientation="horizontal">
+            
+			<TextView 
+	            android:id="@+id/transacaoListItemTxtDescricao"
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="4"
+	            android:layout_gravity="center_vertical"
+	            android:text="NOME"/>
+	            
+            <TextView 
+                android:id="@+id/ativoListItemTxtPrice"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:layout_gravity="center_vertical"
+                android:text="VALOR"/>
+            
+            <TextView 
+                android:id="@+id/ativoListItemTxtMonthProfit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:layout_gravity="center_vertical"
+                android:text="% MENSAL"/>
+            
+            <TextView 
+                android:id="@+id/ativoListItemTxtYearProfit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:layout_gravity="center_vertical"
+                android:text="% ANUAL"/>
+            
+            <TextView 
+                android:id="@+id/ativoListItemTxtProfit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:layout_gravity="center_vertical"
+                android:text="% HISTÓRICA"/>
+        </LinearLayout>
+	</RelativeLayout>
 
 	<ListView 
 	    android:id="@+id/transacoesActivityListViewTransacoes"
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
-	    android:layout_below="@id/transacoesFragmentLayDateRange"
+	    android:layout_below="@id/investimentosFragmentLayHeader"
 	    android:layout_above="@+id/transacoesActivityBottomBar"></ListView>
 	
 	<ExpandableListView
