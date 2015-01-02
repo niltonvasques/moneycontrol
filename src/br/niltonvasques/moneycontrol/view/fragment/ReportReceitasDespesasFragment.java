@@ -16,6 +16,7 @@ import br.niltonvasques.moneycontrol.app.MoneyControlApp;
 import br.niltonvasques.moneycontrol.database.DatabaseHandler;
 import br.niltonvasques.moneycontrol.database.QuerysUtil;
 import br.niltonvasques.moneycontrol.view.chart.BarChartView;
+import br.niltonvasques.moneycontrol.view.custom.ChangeMonthView;
 import br.niltonvasques.moneycontrol.view.custom.SquareLayout;
 
 public class ReportReceitasDespesasFragment extends Fragment{
@@ -27,6 +28,7 @@ public class ReportReceitasDespesasFragment extends Fragment{
 	
 	
 	private View myFragmentView;
+	private ChangeMonthView changeMonth;
     private BarChartView barChartView;
 
 	
