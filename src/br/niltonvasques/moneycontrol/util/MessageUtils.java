@@ -4,10 +4,13 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -132,6 +135,9 @@ public class MessageUtils {
 				});
 			}
 		});
+	    
+	    HashMap<String, String> teste = new HashMap<String, String>();
+	    ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String, String>>();
 	    
 	    Log.d(TAG, TipoConta.class.getSimpleName());
 	    
@@ -487,9 +493,6 @@ public class MessageUtils {
 				value.get(Calendar.YEAR), 
 				value.get(Calendar.MONTH), 
 				value.get(Calendar.DAY_OF_MONTH));
-		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
-			dateDialog.getDatePicker().setMaxDate(Calendar.getInstance().getTimeInMillis());
-		}
 
 		btnDate.setOnClickListener(new OnClickListener() {
 			@Override
@@ -659,9 +662,6 @@ public class MessageUtils {
 				value.get(Calendar.YEAR), 
 				value.get(Calendar.MONTH), 
 				value.get(Calendar.DAY_OF_MONTH));
-		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
-			dateDialog.getDatePicker().setMaxDate(Calendar.getInstance().getTimeInMillis());
-		}
 
 		btnDate.setOnClickListener(new OnClickListener() {
 			@Override

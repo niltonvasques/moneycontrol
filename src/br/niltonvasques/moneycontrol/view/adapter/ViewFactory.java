@@ -152,11 +152,11 @@ public class ViewFactory {
 		View view = inflater.inflate(R.layout.orcamento_list_item, null);
 		
 		TextView txtNome = (TextView) view.findViewById(R.id.orcamentoListItemTxtCategoria);
-		EditText txtSaldo = (EditText) view.findViewById(R.id.orcamentoListItemTxtValorPlanejado);
-		EditText txtRealizado = (EditText) view.findViewById(R.id.orcamentoListItemTxtValorRealizado);
-		EditText txtRestante = (EditText) view.findViewById(R.id.orcamentoListItemTxtValorRestante);
+		TextView txtSaldo = (TextView) view.findViewById(R.id.orcamentoListItemTxtValorPlanejado);
+		TextView txtRealizado = (TextView) view.findViewById(R.id.orcamentoListItemTxtValorRealizado);
+		TextView txtRestante = (TextView) view.findViewById(R.id.orcamentoListItemTxtValorRestante);
 		ProgressBar progress = (ProgressBar) view.findViewById(R.id.orcamentoListItemProgressBar);
-		progress.getProgressDrawable().setColorFilter(Color.RED, Mode.MULTIPLY);
+//		progress.getProgressDrawable().setColorFilter(Color.RED, Mode.MULTIPLY);
 		
 //		String tipo = app.getDatabase().runQuery(QuerysUtil.checkTipoTransacao(tr.getId()));
 		
