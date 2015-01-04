@@ -1,6 +1,8 @@
 package br.niltonvasques.moneycontrol.view.fragment;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import org.afree.data.category.DefaultCategoryDataset;
 
@@ -21,7 +23,7 @@ import br.niltonvasques.moneycontrol.view.chart.BarChartView;
 import br.niltonvasques.moneycontrol.view.custom.ChangeMonthView;
 import br.niltonvasques.moneycontrol.view.custom.ChangeMonthView.ChangeMonthListener;
 import br.niltonvasques.moneycontrol.view.custom.SquareLayout;
-import br.niltonvasques.moneycontrol2.R;
+import br.niltonvasques.moneycontrol.R;
 
 public class ReportReceitasDespesasFragment extends Fragment{
 	
@@ -49,6 +51,8 @@ public class ReportReceitasDespesasFragment extends Fragment{
 			@Override
 			public void onMonthChange(Date time) {
 				Toast.makeText(getActivity(), "Change Year", Toast.LENGTH_LONG).show();
+				barChartView.setDataset(createDataset(app));
+				barChartView.update();
 			}
 		});
 		
@@ -88,7 +92,7 @@ public class ReportReceitasDespesasFragment extends Fragment{
      * Creates a sample dataset.
      * @return a sample dataset.
      */
-    private static DefaultCategoryDataset createDataset(MoneyControlApp app) {
+    private DefaultCategoryDataset createDataset(MoneyControlApp app) {
     	
     	// row keys...
         String series1 = "Receitas";
@@ -96,8 +100,10 @@ public class ReportReceitasDespesasFragment extends Fragment{
 
         // create the dataset...
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        
+        String year = changeMonth.getDateRange().get(GregorianCalendar.YEAR)+"";
 
-        Cursor c2 = app.getDatabase().runQueryCursor(QuerysUtil.reportHistoryDespesas());
+        Cursor c2 = app.getDatabase().runQueryCursor(QuerysUtil.reportHistoryDespesasByYear(year));
         if (c2.moveToFirst()) {
         	do {
         		float valor = c2.getFloat(0);
@@ -106,7 +112,7 @@ public class ReportReceitasDespesasFragment extends Fragment{
         	} while (c2.moveToNext());
         }
         
-    	Cursor c1 = app.getDatabase().runQueryCursor(QuerysUtil.reportHistoryReceitas());
+    	Cursor c1 = app.getDatabase().runQueryCursor(QuerysUtil.reportHistoryReceitasByYear(year));
     	if (c1.moveToFirst()) {
 			do {
 				float valor = c1.getFloat(0);
@@ -115,8 +121,6 @@ public class ReportReceitasDespesasFragment extends Fragment{
 			} while (c1.moveToNext());
 		}
     	c1.close();
-    	
-    	
     	
         return dataset;
     }

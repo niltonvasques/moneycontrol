@@ -28,7 +28,7 @@ import br.niltonvasques.moneycontrol.util.MessageUtils;
 import br.niltonvasques.moneycontrol.view.adapter.ContaAdapter;
 import br.niltonvasques.moneycontrol.view.custom.ChangeMonthView;
 import br.niltonvasques.moneycontrol.view.custom.ChangeMonthView.ChangeMonthListener;
-import br.niltonvasques.moneycontrol2.R;
+import br.niltonvasques.moneycontrol.R;
 
 public class ContasFragment extends Fragment{
 	

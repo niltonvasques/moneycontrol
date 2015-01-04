@@ -56,7 +56,7 @@ import br.niltonvasques.moneycontrol.app.MoneyControlApp;
 import br.niltonvasques.moneycontrol.database.QuerysUtil;
 import br.niltonvasques.moneycontrol.database.bean.CategoriaTransacao;
 import br.niltonvasques.moneycontrol.view.chart.TimeSeriesChartView;
-import br.niltonvasques.moneycontrol2.R;
+import br.niltonvasques.moneycontrol.R;
 
 /**
  * TimeSeriesChartDemo01Activity

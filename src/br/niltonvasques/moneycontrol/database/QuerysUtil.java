@@ -239,6 +239,23 @@ public class QuerysUtil {
 				"GROUP BY strftime(\"%m-%Y\", data)";
 	}
 	
+	public static final String reportHistoryReceitasByYear(String year){
+		return reportHistoryByYear(1, year);
+	}
+	
+	public static final String reportHistoryDespesasByYear(String year){
+		return reportHistoryByYear(2, year);
+	}
+	
+	public static final String reportHistoryByYear(int tipoTransacao, String year){
+		return "SELECT SUM(valor) as total, strftime(\"%m-%Y\", data) as month " +
+				"FROM Transacao t " +
+				"INNER JOIN CategoriaTransacao c on c.id = t.id_CategoriaTransacao " +
+				"WHERE c.id_TipoTransacao = "+tipoTransacao+" AND c.nome not like 'Transferência' AND c.nome not like 'Investimento'\n" + 
+				"AND strftime(\"%Y\", data) = '"+year+"'\n" + 
+				"GROUP BY strftime(\"%m-%Y\", data)\n";
+	}
+	
 	public static final String reportInvestimentsHistory(){
 		return 	"SELECT (SUM(valor) - "+ 
 				"COALESCE((SELECT SUM(valor) "+ 

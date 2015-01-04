@@ -68,7 +68,17 @@ public class BarChartView extends DemoView {
 	private String valueAxis = "Value";
 	private DefaultCategoryDataset dataset;
 	
-    /**
+    public DefaultCategoryDataset getDataset() {
+		return dataset;
+	}
+
+	public void setDataset(DefaultCategoryDataset dataset) {
+		this.dataset = dataset;
+        AFreeChart chart = createChart(dataset);
+        setChart(chart);
+	}
+
+	/**
      * constructor
      * @param context
      */

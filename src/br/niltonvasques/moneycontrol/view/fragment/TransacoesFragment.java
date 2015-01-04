@@ -37,7 +37,7 @@ import br.niltonvasques.moneycontrol.view.adapter.ExpandableListAdapter;
 import br.niltonvasques.moneycontrol.view.adapter.TransacaoAdapter;
 import br.niltonvasques.moneycontrol.view.custom.ChangeMonthView;
 import br.niltonvasques.moneycontrol.view.custom.ChangeMonthView.ChangeMonthListener;
-import br.niltonvasques.moneycontrol2.R;
+import br.niltonvasques.moneycontrol.R;
 
 public class TransacoesFragment extends Fragment{
 	

@@ -52,7 +52,7 @@ import org.afree.graphics.geom.Font;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import br.niltonvasques.moneycontrol2.R;
+import br.niltonvasques.moneycontrol.R;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
 
 /**
