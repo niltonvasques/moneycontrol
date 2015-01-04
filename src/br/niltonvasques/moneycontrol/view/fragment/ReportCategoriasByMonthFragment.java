@@ -27,7 +27,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemLongClickListener;
-import br.niltonvasques.moneycontrol.R;
+import br.niltonvasques.moneycontrol2.R;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
 import br.niltonvasques.moneycontrol.database.DatabaseHandler;
 import br.niltonvasques.moneycontrol.database.QuerysUtil;

@@ -17,7 +17,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import br.niltonvasques.moneycontrol.R;
+import br.niltonvasques.moneycontrol2.R;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
 import br.niltonvasques.moneycontrol.database.DatabaseHandler;
 import br.niltonvasques.moneycontrol.database.bean.CategoriaTransacao;

@@ -1,5 +1,7 @@
 package br.niltonvasques.moneycontrol.view.fragment;
 
+import java.util.Date;
+
 import org.afree.data.category.DefaultCategoryDataset;
 
 import android.database.Cursor;
@@ -11,13 +13,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import br.niltonvasques.moneycontrol.R;
+import android.widget.Toast;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
 import br.niltonvasques.moneycontrol.database.DatabaseHandler;
 import br.niltonvasques.moneycontrol.database.QuerysUtil;
 import br.niltonvasques.moneycontrol.view.chart.BarChartView;
 import br.niltonvasques.moneycontrol.view.custom.ChangeMonthView;
+import br.niltonvasques.moneycontrol.view.custom.ChangeMonthView.ChangeMonthListener;
 import br.niltonvasques.moneycontrol.view.custom.SquareLayout;
+import br.niltonvasques.moneycontrol2.R;
 
 public class ReportReceitasDespesasFragment extends Fragment{
 	
@@ -39,6 +43,15 @@ public class ReportReceitasDespesasFragment extends Fragment{
 		
 		app = (MoneyControlApp) getActivity().getApplication();
 		myFragmentView = inflater.inflate(R.layout.fragment_report_receitas_x_despesas, container, false);
+		changeMonth = (ChangeMonthView) myFragmentView.findViewById(R.id.mes);
+		changeMonth.enableYearType();
+		changeMonth.setListener(new ChangeMonthListener() {
+			@Override
+			public void onMonthChange(Date time) {
+				Toast.makeText(getActivity(), "Change Year", Toast.LENGTH_LONG).show();
+			}
+		});
+		
 		SquareLayout view = (SquareLayout)myFragmentView.findViewById(R.id.fragmentReportByCategoriaContent);
 		
 		barChartView = new BarChartView(getActivity(), createDataset(app));
@@ -48,7 +61,6 @@ public class ReportReceitasDespesasFragment extends Fragment{
 		barChartView.update();
 		
 		view.addView(barChartView);
-		
 		
 		return myFragmentView;
 	}

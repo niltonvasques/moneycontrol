@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.view.ActionMode;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,7 +16,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import br.niltonvasques.moneycontrol.activity.NVFragmentActivity;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
@@ -29,6 +27,7 @@ import br.niltonvasques.moneycontrol.view.fragment.InvestimentosFragment;
 import br.niltonvasques.moneycontrol.view.fragment.OrcamentoFragment;
 import br.niltonvasques.moneycontrol.view.fragment.ReportsFragment;
 import br.niltonvasques.moneycontrol.view.fragment.TransacoesFragment;
+import br.niltonvasques.moneycontrol2.R;
 
 @SuppressLint("NewApi")
 public class MainActivity extends NVFragmentActivity {

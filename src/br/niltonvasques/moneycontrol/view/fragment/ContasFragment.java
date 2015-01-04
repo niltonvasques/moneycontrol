@@ -1,7 +1,6 @@
 package br.niltonvasques.moneycontrol.view.fragment;
 
-import java.text.SimpleDateFormat;
-import java.util.GregorianCalendar;
+import java.util.Date;
 import java.util.List;
 
 import android.content.DialogInterface;
@@ -17,10 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import br.niltonvasques.moneycontrol.R;
 import br.niltonvasques.moneycontrol.activity.NVFragmentActivity;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
 import br.niltonvasques.moneycontrol.database.DatabaseHandler;
@@ -29,6 +26,9 @@ import br.niltonvasques.moneycontrol.database.bean.Conta;
 import br.niltonvasques.moneycontrol.util.DateUtil;
 import br.niltonvasques.moneycontrol.util.MessageUtils;
 import br.niltonvasques.moneycontrol.view.adapter.ContaAdapter;
+import br.niltonvasques.moneycontrol.view.custom.ChangeMonthView;
+import br.niltonvasques.moneycontrol.view.custom.ChangeMonthView.ChangeMonthListener;
+import br.niltonvasques.moneycontrol2.R;
 
 public class ContasFragment extends Fragment{
 	
@@ -39,12 +39,9 @@ public class ContasFragment extends Fragment{
 	private LayoutInflater inflater;
 	
 	private List<Conta> contas;
-	private GregorianCalendar dateRange; 
 	
 	private View myFragmentView;
-    private TextView txtViewDateRange;
-    private Button	btnNextMonth;
-    private Button btnPreviousMonth;
+    private ChangeMonthView monthView;
 	private ListView listViewContas;
 	private ContaAdapter listAdapter;
 	
@@ -73,23 +70,22 @@ public class ContasFragment extends Fragment{
 	}
 
 	private void loadComponentsFromXml() {
-		txtViewDateRange 	= (TextView) myFragmentView.findViewById(R.id.principalFragmentTxtViewMonth);
-		btnPreviousMonth 	= (Button) myFragmentView.findViewById(R.id.principalFragmentBtnPreviousMonth);
-		btnNextMonth		= (Button) myFragmentView.findViewById(R.id.principalFragmentBtnNextMonth);		
+		monthView 	= (ChangeMonthView) myFragmentView.findViewById(R.id.principalFragmentChangeMonthView);
 		listViewContas 		= (ListView) myFragmentView.findViewById(R.id.mainActivityListViewContas);
 	}
 
 	private void configureComponents() {
-		dateRange = new GregorianCalendar();
-		dateRange.set(GregorianCalendar.DAY_OF_MONTH, 1);
-		updateDateRange();
         
-        btnPreviousMonth.setOnClickListener(mOnClick);
-        btnNextMonth.setOnClickListener(mOnClick);
+		monthView.setListener(new ChangeMonthListener() {
+			@Override
+			public void onMonthChange(Date time) {
+				update();				
+			}
+		});
 		
 		contas = db.select(Conta.class);
 		
-		listAdapter = new ContaAdapter(contas, dateRange, inflater, app);
+		listAdapter = new ContaAdapter(contas, monthView.getDateRange(), inflater, app);
 		listViewContas.setAdapter(listAdapter);
 		
 		listViewContas.setOnItemLongClickListener(new OnItemLongClickListener() {
@@ -112,7 +108,7 @@ public class ContasFragment extends Fragment{
 				Fragment fragment = new TransacoesByContaFragment();
 				Bundle args = new Bundle();
 				args.putInt("conta", contas.get(position).getId());
-				args.putString("range", DateUtil.sqlDateFormat().format(dateRange.getTime()));
+				args.putString("range", DateUtil.sqlDateFormat().format(monthView.getDateRange().getTime()));
 				fragment.setArguments(args);
 				((NVFragmentActivity)getActivity()).changeFragment(fragment);
 			}
@@ -162,48 +158,24 @@ public class ContasFragment extends Fragment{
 	    }
 	}
 	
-	private View.OnClickListener mOnClick = new View.OnClickListener() {
-		
-		@Override
-		public void onClick(View v) {
-			switch (v.getId()) {
-			case R.id.principalFragmentBtnPreviousMonth:
-				dateRange.add(GregorianCalendar.MONTH, -1);
-				updateDateRange();
-				update();
-				break;
-				
-			case R.id.principalFragmentBtnNextMonth:
-				dateRange.add(GregorianCalendar.MONTH, +1);
-				updateDateRange();
-				update();
-				break;
-
-			default:
-				break;
-			}
-			
-		}
-	};
-	
 	private void update(){
 		contas.clear();
 		contas.addAll(db.select(Conta.class));
 		listAdapter.notifyDataSetChanged();
 		
 		float credito = 0;
-		String creditoQuery = db.runQuery(QuerysUtil.sumContasCreditoWithDateInterval(dateRange.getTime()));
+		String creditoQuery = db.runQuery(QuerysUtil.sumContasCreditoWithDateInterval(monthView.getDateRange().getTime()));
 		if(creditoQuery != null && creditoQuery.length() > 0){
 			credito = Float.valueOf(creditoQuery);
 		}
 		
 		float debito = 0;
-		String debitoQuery = db.runQuery(QuerysUtil.sumContasDebitoWithDateInterval(dateRange.getTime()));
+		String debitoQuery = db.runQuery(QuerysUtil.sumContasDebitoWithDateInterval(monthView.getDateRange().getTime()));
 		if(debitoQuery != null && debitoQuery.length() > 0){
 			debito = Float.valueOf(debitoQuery);
 		}
 		
-		String saldo = db.runQuery(QuerysUtil.computeSaldoBeforeDate(dateRange.getTime()));
+		String saldo = db.runQuery(QuerysUtil.computeSaldoBeforeDate(monthView.getDateRange().getTime()));
 		float saldoSum = 0;
 		if(saldo != null && saldo.length() > 0){
 			saldoSum = Float.valueOf(saldo);
@@ -218,9 +190,5 @@ public class ContasFragment extends Fragment{
 		((TextView)myFragmentView.findViewById(R.id.mainActivityTxtDebitosSum)).setText("R$ "+String.format("%.2f",debito));
 	}
 
-	private void updateDateRange() {
-		SimpleDateFormat format2 = new SimpleDateFormat("MMMMM - yyyy");
-	    txtViewDateRange.setText(format2.format(dateRange.getTime()));
-	}
 
 }

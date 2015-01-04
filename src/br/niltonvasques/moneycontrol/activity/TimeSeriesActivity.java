@@ -52,11 +52,11 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
-import br.niltonvasques.moneycontrol.R;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
 import br.niltonvasques.moneycontrol.database.QuerysUtil;
 import br.niltonvasques.moneycontrol.database.bean.CategoriaTransacao;
 import br.niltonvasques.moneycontrol.view.chart.TimeSeriesChartView;
+import br.niltonvasques.moneycontrol2.R;
 
 /**
  * TimeSeriesChartDemo01Activity

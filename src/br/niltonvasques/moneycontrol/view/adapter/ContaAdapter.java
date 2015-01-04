@@ -14,7 +14,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import br.niltonvasques.moneycontrol.R;
+import br.niltonvasques.moneycontrol2.R;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
 import br.niltonvasques.moneycontrol.database.QuerysUtil;
 import br.niltonvasques.moneycontrol.database.bean.CartaoCredito;

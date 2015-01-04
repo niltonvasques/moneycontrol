@@ -11,7 +11,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import br.niltonvasques.moneycontrol.R;
+import br.niltonvasques.moneycontrol.util.StringUtil;
+import br.niltonvasques.moneycontrol2.R;
 
 public class ChangeMonthView extends RelativeLayout{
 	
@@ -22,6 +23,7 @@ public class ChangeMonthView extends RelativeLayout{
     private Button btnPreviousMonth;
     private View mView;
     private ChangeMonthListener listener;
+    private int type = GregorianCalendar.MONTH;
     
     public interface ChangeMonthListener{
     	public void onMonthChange(Date time);
@@ -30,13 +32,11 @@ public class ChangeMonthView extends RelativeLayout{
 	public ChangeMonthView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		configure(context);
-		loadComponentsFromXml();
 	}
 
 	public ChangeMonthView(Context context) {
 		super(context);
 		configure(context);
-		loadComponentsFromXml();
 	}
 
 	private void configure(Context context) {
@@ -44,9 +44,13 @@ public class ChangeMonthView extends RelativeLayout{
 		mView = layoutInflater.inflate(R.layout.mudar_mes_template, null);
 		addView(mView);
 		
+		loadComponentsFromXml();
+		
 		dateRange = new GregorianCalendar();
 		dateRange.set(GregorianCalendar.DAY_OF_MONTH, 1);
+		
 		updateDateRange();
+		
         btnPreviousMonth.setOnClickListener(mOnClick);
         btnNextMonth.setOnClickListener(mOnClick);
 	}
@@ -63,7 +67,10 @@ public class ChangeMonthView extends RelativeLayout{
 		public void onClick(View v) {
 			switch (v.getId()) {
 			case R.id.principalFragmentBtnPreviousMonth:
-				dateRange.add(GregorianCalendar.MONTH, -1);
+				if(type == GregorianCalendar.MONTH)
+					dateRange.add(GregorianCalendar.MONTH, -1);
+				else
+					dateRange.add(GregorianCalendar.YEAR, -1);
 				updateDateRange();
 				if(listener != null){
 					listener.onMonthChange(dateRange.getTime());
@@ -71,7 +78,10 @@ public class ChangeMonthView extends RelativeLayout{
 				break;
 				
 			case R.id.principalFragmentBtnNextMonth:
-				dateRange.add(GregorianCalendar.MONTH, +1);
+				if(type == GregorianCalendar.MONTH)
+					dateRange.add(GregorianCalendar.MONTH, +1);
+				else
+					dateRange.add(GregorianCalendar.YEAR, +1);
 				updateDateRange();
 				if(listener != null){
 					listener.onMonthChange(dateRange.getTime());
@@ -85,13 +95,41 @@ public class ChangeMonthView extends RelativeLayout{
 		}
 	};
 	
-	private void updateDateRange() {
-		SimpleDateFormat format2 = new SimpleDateFormat("MMMMM - yyyy");
-	    txtViewDateRange.setText(format2.format(dateRange.getTime()));
+	public void updateDateRange() {
+		SimpleDateFormat format2;
+		String dateFormated;
+		if(type == GregorianCalendar.MONTH){
+			format2  = new SimpleDateFormat("MMMM - yyyy");
+			dateFormated = StringUtil.capitalize(format2.format(dateRange.getTime()));
+		}else{
+			format2 = new SimpleDateFormat("yyyy");
+			dateFormated = format2.format(dateRange.getTime());
+		}
+	    txtViewDateRange.setText(dateFormated);
 	}
 
 	public void setListener(ChangeMonthListener listener) {
 		this.listener = listener;
 	}
+	
+	public void enableYearType(){
+		this.type = GregorianCalendar.YEAR;
+		updateDateRange();
+	}
+	
+	public void enableMonthType(){
+		this.type = GregorianCalendar.MONTH;
+		updateDateRange();
+	}
+
+	public GregorianCalendar getDateRange() {
+		return dateRange;
+	}
+
+	public void setDateRange(GregorianCalendar dateRange) {
+		this.dateRange = dateRange;
+	}
+	
+	
 
 }

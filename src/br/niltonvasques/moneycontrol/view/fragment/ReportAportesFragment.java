@@ -11,7 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import br.niltonvasques.moneycontrol.R;
+import br.niltonvasques.moneycontrol2.R;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
 import br.niltonvasques.moneycontrol.database.DatabaseHandler;
 import br.niltonvasques.moneycontrol.database.QuerysUtil;
