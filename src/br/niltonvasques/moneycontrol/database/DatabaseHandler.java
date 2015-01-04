@@ -1,8 +1,12 @@
 package br.niltonvasques.moneycontrol.database;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,17 +30,79 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 	private static final int DATABASE_VERSION = 15;
 
 	private static final String DATABASE_NAME = "money-db";
-	
+
 	private static final String DATABASE_UPDATE_PATTERN = "db/db-update-";
+	
+	private static String DB_PATH = ""; 
 
 	private Context context;
 
 	public DatabaseHandler(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 		this.context = context;
+		if(android.os.Build.VERSION.SDK_INT >= 17){
+			DB_PATH = context.getApplicationInfo().dataDir + "/databases/";         
+		}
+		else
+		{
+			DB_PATH = "/data/data/" + context.getPackageName() + "/databases/";
+		}
 
 		System.out.println("DatabaseHandler() ver: "+DATABASE_VERSION);
+//		try {
+//			createDataBase();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
+	
+	public void createDataBase() throws IOException
+	{
+	    //If database not exists copy it from the assets
+
+	    boolean mDataBaseExist = checkDataBase();
+	    if(!mDataBaseExist)
+	    {
+	        this.getReadableDatabase();
+	        this.close();
+	        try 
+	        {
+	            //Copy the database from assests
+	            copyDataBase();
+	            Log.e(TAG, "createDatabase database created");
+	        } 
+	        catch (IOException mIOException) 
+	        {
+	            throw new Error("ErrorCopyingDataBase");
+	        }
+	    }
+	}
+	
+    //Check that the database exists here: /data/data/your package/databases/Da Name
+    private boolean checkDataBase()
+    {
+        File dbFile = new File(DB_PATH + DATABASE_NAME);
+        Log.v("dbFile", dbFile + "   "+ dbFile.exists());
+        return dbFile.exists();
+    }
+    
+    //Copy the database from assets
+    private void copyDataBase() throws IOException
+    {
+        InputStream mInput = context.getAssets().open(DATABASE_NAME);
+        String outFileName = DB_PATH + DATABASE_NAME;
+        OutputStream mOutput = new FileOutputStream(outFileName);
+        byte[] mBuffer = new byte[1024];
+        int mLength;
+        while ((mLength = mInput.read(mBuffer))>0)
+        {
+            mOutput.write(mBuffer, 0, mLength);
+        }
+        mOutput.flush();
+        mOutput.close();
+        mInput.close();
+    }
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
@@ -46,8 +112,6 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 		if(createTables(db)){
 			seedDb(db);
 		}
-
-		//		db.close();
 
 	}
 
@@ -175,7 +239,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 		// Inserting Row
 		long id = db.insert("Conta", null, values);
 		db.close();
-		
+
 		if(id != -1){
 			cc.setId((int)id);
 			return cc;
@@ -183,58 +247,58 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 		return null;
 
 	}
-	
+
 	public boolean deleteConta(Conta cc) {
-    	SQLiteDatabase db = this.getWritableDatabase();
-    	
-    	int count = db.delete("Conta", "id = "+cc.getId(), null);
-        
-    	db.close();
-        return count > 0;
+		SQLiteDatabase db = this.getWritableDatabase();
+
+		int count = db.delete("Conta", "id = "+cc.getId(), null);
+
+		db.close();
+		return count > 0;
 	}
-	
+
 	public <T> boolean delete(T cc) {
-    	SQLiteDatabase db = this.getWritableDatabase();
-    	
-    	
-    	int count = 0;
+		SQLiteDatabase db = this.getWritableDatabase();
+
+
+		int count = 0;
 		try {
 			Field[] fields = cc.getClass().getDeclaredFields();
-			
+
 			Field id = null;
 			for (Field field : fields) {
 				if(field.getName().equals("id")) id = field;
 			}
-			
+
 			id.setAccessible(true);
-			
+
 			count = db.delete(cc.getClass().getSimpleName(), "id = "+id.getInt(cc), null);
-			
+
 			db.close();
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		}
-        
-        return count > 0;
+
+		return count > 0;
 	}
 
 	public <T> List<T> select(Class<T> type){
-		
+
 		return select(type, "");
 	}
-	
+
 	public <T> List<T> select(Class<T> type, String where){
-		
+
 		List<T> items = new ArrayList<T>();
-		
+
 		SQLiteDatabase db = this.getReadableDatabase();
-		
+
 		Log.d(TAG, "SELECT * FROM "+type.getSimpleName()+" "+where);
-	
+
 		Cursor c = db.rawQuery("SELECT * FROM "+type.getSimpleName()+" "+where, null);
-	
+
 		// looping through all rows and adding to list
 		try {
 			if (c.moveToFirst()) {
@@ -249,39 +313,39 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		}
-	
+
 		db.close(); // Closing database connection		
-		
+
 		return items;
 	}
-	
+
 	public String runQuery(String query){
 		SQLiteDatabase db = this.getReadableDatabase();
-		
+
 		Log.d(TAG, "runQuery: "+query);
-		
+
 		Cursor c = db.rawQuery(query, null);
 		if(c.moveToFirst()){
 			db.close();
 			return c.getString(0);
 		}
-		
+
 		return "";
 	}
-	
+
 	public Cursor runQueryCursor(String query){
 		SQLiteDatabase db = this.getReadableDatabase();
-		
+
 		Log.d(TAG, "runQuery: "+query);
-		
+
 		Cursor c = db.rawQuery(query, null);
 		return c;
 	}
-	
+
 	public <T> boolean insert(T bean){
 		try{
 			SQLiteDatabase db = this.getWritableDatabase();    	 
-		
+
 			db.execSQL(DatabaseUtil.beanToSqlInsert(bean, bean.getClass().getSimpleName(), "id"));
 			int id = Integer.parseInt(runQuery("SELECT MAX(id) FROM "+bean.getClass().getSimpleName()));
 			DatabaseUtil.setBeanId(bean, "id", id);
@@ -290,18 +354,18 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 			e.printStackTrace();
 			return false;
 		}
-		
+
 		return true;
 	}
-	
+
 	public <T> boolean update(T bean){
-		
+
 		SQLiteDatabase db = this.getWritableDatabase();    	 
-	
+
 		db.execSQL(DatabaseUtil.beanToSqlUpdate(bean, bean.getClass().getSimpleName(), "id"));
-	
+
 		db.close(); // Closing database connection		
-		
+
 		return true;
 	}
 
