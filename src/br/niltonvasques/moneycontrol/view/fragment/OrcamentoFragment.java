@@ -1,7 +1,6 @@
 package br.niltonvasques.moneycontrol.view.fragment;
 
-import java.text.SimpleDateFormat;
-import java.util.GregorianCalendar;
+import java.util.Date;
 import java.util.List;
 
 import android.content.DialogInterface;
@@ -18,7 +17,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
@@ -27,6 +25,8 @@ import br.niltonvasques.moneycontrol.database.QuerysUtil;
 import br.niltonvasques.moneycontrol.database.bean.Orcamento;
 import br.niltonvasques.moneycontrol.util.MessageUtils;
 import br.niltonvasques.moneycontrol.view.adapter.OrcamentoAdapter;
+import br.niltonvasques.moneycontrol.view.custom.ChangeMonthView;
+import br.niltonvasques.moneycontrol.view.custom.ChangeMonthView.ChangeMonthListener;
 import br.niltonvasques.moneycontrolbeta.R;
 
 public class OrcamentoFragment extends Fragment{
@@ -36,13 +36,10 @@ public class OrcamentoFragment extends Fragment{
 	private MoneyControlApp app;
 	private DatabaseHandler db;
 	private LayoutInflater inflater;
-	private GregorianCalendar dateRange; 
 	
 	private List<Orcamento> orcamento;
 	
-    private TextView txtViewDateRange;
-    private Button	btnNextMonth;
-    private Button btnPreviousMonth;
+	private ChangeMonthView monthView;
 	private View myFragmentView;
 	private ListView listViewOrcamento;
 	private OrcamentoAdapter adapter;
@@ -67,20 +64,20 @@ public class OrcamentoFragment extends Fragment{
 	}
 	
 	private void loadComponentsFromXml() {
-		txtViewDateRange 	= (TextView) myFragmentView.findViewById(R.id.principalFragmentTxtViewMonth);
-		btnPreviousMonth 	= (Button) myFragmentView.findViewById(R.id.principalFragmentBtnPreviousMonth);
-		btnNextMonth		= (Button) myFragmentView.findViewById(R.id.principalFragmentBtnNextMonth);		
+		monthView 	= (ChangeMonthView) myFragmentView.findViewById(R.id.orcamentoFragmentChangeMonthView);		
 		listViewOrcamento = (ListView) myFragmentView.findViewById(R.id.categoriaFragmentListViewCategorias);
 	}
 
 	private void configureComponents() {
-		dateRange = new GregorianCalendar();
-		dateRange.set(GregorianCalendar.DAY_OF_MONTH, 1);
-		updateDateRange();
-        btnPreviousMonth.setOnClickListener(mOnClick);
-        btnNextMonth.setOnClickListener(mOnClick);
 		
-		orcamento = db.select(Orcamento.class, QuerysUtil.whereOrcamentoOnMonth(dateRange.getTime()));
+		monthView.setListener(new ChangeMonthListener() {
+			@Override
+			public void onMonthChange(Date time) {
+				update();				
+			}
+		});
+		
+		orcamento = db.select(Orcamento.class, QuerysUtil.whereOrcamentoOnMonth(monthView.getDateRange().getTime()));
 		
 		adapter = new OrcamentoAdapter(orcamento, inflater, app);
 		
@@ -114,30 +111,6 @@ public class OrcamentoFragment extends Fragment{
 		
 		update();
 	}
-	
-	private View.OnClickListener mOnClick = new View.OnClickListener() {
-		
-		@Override
-		public void onClick(View v) {
-			switch (v.getId()) {
-			case R.id.principalFragmentBtnPreviousMonth:
-				dateRange.add(GregorianCalendar.MONTH, -1);
-				updateDateRange();
-				update();
-				break;
-				
-			case R.id.principalFragmentBtnNextMonth:
-				dateRange.add(GregorianCalendar.MONTH, +1);
-				updateDateRange();
-				update();
-				break;
-
-			default:
-				break;
-			}
-			
-		}
-	};
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -177,17 +150,17 @@ public class OrcamentoFragment extends Fragment{
 	
 	private void update(){
 		orcamento.clear();
-		orcamento.addAll(db.select(Orcamento.class, QuerysUtil.whereOrcamentoOnMonth(dateRange.getTime())));
+		orcamento.addAll(db.select(Orcamento.class, QuerysUtil.whereOrcamentoOnMonth(monthView.getDateRange().getTime())));
 		adapter.notifyDataSetChanged();
 		
 		float credito = 0;
-		String creditoQuery = db.runQuery(QuerysUtil.sumOrcamentoOnMonth(dateRange.getTime()));
+		String creditoQuery = db.runQuery(QuerysUtil.sumOrcamentoOnMonth(monthView.getDateRange().getTime()));
 		if(creditoQuery != null && creditoQuery.length() > 0){
 			credito = Float.valueOf(creditoQuery);
 		}
 		
 		float debito = 0;
-		String debitoQuery = db.runQuery(QuerysUtil.sumContasDebitoWithDateInterval(dateRange.getTime()));
+		String debitoQuery = db.runQuery(QuerysUtil.sumContasDebitoWithDateInterval(monthView.getDateRange().getTime()));
 		if(debitoQuery != null && debitoQuery.length() > 0){
 			debito = Float.valueOf(debitoQuery);
 		}
@@ -199,9 +172,4 @@ public class OrcamentoFragment extends Fragment{
 		((TextView)myFragmentView.findViewById(R.id.mainActivityTxtDebitosSum)).setText("R$ "+String.format("%.2f",debito));
 	}
 	
-	private void updateDateRange() {
-		SimpleDateFormat format2 = new SimpleDateFormat("MMMMM - yyyy");
-	    txtViewDateRange.setText(format2.format(dateRange.getTime()));
-	}
-
 }

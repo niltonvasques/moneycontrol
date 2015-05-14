@@ -8,36 +8,17 @@
     android:paddingTop="@dimen/activity_vertical_margin" 
     android:descendantFocusability="blocksDescendants">
     
-    <RelativeLayout
-        android:id="@+id/principalFragmentLayDateRange"
+    <br.niltonvasques.moneycontrol.view.custom.ChangeMonthView
+        android:id="@+id/orcamentoFragmentChangeMonthView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <Button 
-            android:id="@+id/principalFragmentBtnPreviousMonth"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_action_previous_item"
-            android:layout_alignParentLeft="true"/>
-        <TextView 
-            android:id="@+id/principalFragmentTxtViewMonth"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Abril - 2014"
-            style="@style/TextViewTitle"
-            android:layout_centerInParent="true"/>
-        <Button 
-            android:id="@+id/principalFragmentBtnNextMonth"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_action_next_item"
-            android:layout_alignParentRight="true"/>
-    </RelativeLayout>
+        android:layout_height="wrap_content"
+        />
 
     <ListView
         android:id="@+id/categoriaFragmentListViewCategorias"
         android:layout_width="match_parent"
         android:layout_height="match_parent" 
-        android:layout_below="@id/principalFragmentLayDateRange"
+        android:layout_below="@id/orcamentoFragmentChangeMonthView"
         android:layout_above="@+id/mainActivityBottomBar" 
 		>
     </ListView>
