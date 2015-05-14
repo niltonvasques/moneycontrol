@@ -26,5 +26,6 @@ INSERT INTO Ativo (id, nome) VALUES(6, 'LCA');
 INSERT INTO Ativo (id, nome) VALUES(7, 'Poupança');
 INSERT INTO Ativo (id, nome) VALUES(8, 'Fundos Imobiliários');
 
+INSERT INTO Conta (id, nome, saldo, icon, id_TipoConta) VALUES (1, 'Carteira', 0, 'carteira_icon.jpg', 5);
 
 

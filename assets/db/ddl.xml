@@ -63,7 +63,7 @@
 <datatype>DECIMAL</datatype>
 <default>NULL</default></row>
 <row name="icon" null="1" autoincrement="0">
-<datatype>INTEGER</datatype>
+<datatype>VARCHAR(100)</datatype>
 <default>NULL</default></row>
 <row name="id_TipoConta" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
