@@ -1,2 +1,7 @@
 bin/
 gen/
+assets/money-db
+.settings
+assets/db/data.ab
+assets/db/apps
+*.swp

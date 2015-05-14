@@ -24,6 +24,14 @@ public class QuerysUtil {
 														"INNER JOIN CategoriaTransacao c on c.id = t.id_CategoriaTransacao " +
 														"WHERE id_TipoTransacao = 2 AND id_Conta = ";
 	
+	public static final String whereTransacaoTransferenciaReceita(){
+		return "WHERE system = 1 AND id_TipoTransacao = "+1;
+	}
+	
+	public static final String whereTransacaoTransferenciaDespesa(){
+		return "WHERE system = 1 AND id_TipoTransacao = "+2;
+	}
+	
 	public static final String sumTransacoesCreditoFromConta(int id_Conta){
 		return SUM_TRANSACOES_CREDITO + id_Conta;
 	}

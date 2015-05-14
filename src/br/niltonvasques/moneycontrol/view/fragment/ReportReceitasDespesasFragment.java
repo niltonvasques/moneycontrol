@@ -23,7 +23,7 @@ import br.niltonvasques.moneycontrol.view.chart.BarChartView;
 import br.niltonvasques.moneycontrol.view.custom.ChangeMonthView;
 import br.niltonvasques.moneycontrol.view.custom.ChangeMonthView.ChangeMonthListener;
 import br.niltonvasques.moneycontrol.view.custom.SquareLayout;
-import br.niltonvasques.moneycontrol.R;
+import br.niltonvasques.moneycontrolbeta.R;
 
 public class ReportReceitasDespesasFragment extends Fragment{
 	

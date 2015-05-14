@@ -27,7 +27,7 @@ import br.niltonvasques.moneycontrol.view.fragment.InvestimentosFragment;
 import br.niltonvasques.moneycontrol.view.fragment.OrcamentoFragment;
 import br.niltonvasques.moneycontrol.view.fragment.ReportsFragment;
 import br.niltonvasques.moneycontrol.view.fragment.TransacoesFragment;
-import br.niltonvasques.moneycontrol.R;
+import br.niltonvasques.moneycontrolbeta.R;
 
 @SuppressLint("NewApi")
 public class MainActivity extends NVFragmentActivity {

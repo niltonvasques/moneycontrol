@@ -7,15 +7,15 @@ INSERT INTO TipoConta (id, nome) VALUES(5,'Dinheiro');
 INSERT INTO TipoBem (id, nome) VALUES(1,'Ativo');
 INSERT INTO TipoBem (id, nome) VALUES(2,'Passivo');
 
-INSERT INTO TipoTransacao (id, nome) VALUES(1, 'Crédito');
-INSERT INTO TipoTransacao (id, nome) VALUES(2, 'Débito');
+INSERT INTO TipoTransacao (id, nome) VALUES(1, 'Receita');
+INSERT INTO TipoTransacao (id, nome) VALUES(2, 'Despesa');
 
-INSERT INTO CategoriaTransacao (id, nome, id_TipoTransacao, system) VALUES(1, 'Alimentação',2,1);
-INSERT INTO CategoriaTransacao (id, nome, id_TipoTransacao, system) VALUES(2, 'Salário',1,1);
-INSERT INTO CategoriaTransacao (nome, id_TipoTransacao, system) VALUES ('Transferência',1,1);
-INSERT INTO CategoriaTransacao (nome, id_TipoTransacao, system) VALUES ('Transferência',2,1);
-INSERT INTO CategoriaTransacao (nome, id_TipoTransacao, system) VALUES ('Investimento',2,1);
-INSERT INTO CategoriaTransacao (nome, id_TipoTransacao, system) VALUES ('Investimento',1,1);
+INSERT INTO CategoriaTransacao (id, nome, id_TipoTransacao, system) VALUES (1, 'Transferência',1,1);
+INSERT INTO CategoriaTransacao (id, nome, id_TipoTransacao, system) VALUES (2, 'Transferência',2,1);
+INSERT INTO CategoriaTransacao (id, nome, id_TipoTransacao, system) VALUES (3, 'Investimento',2,1);
+INSERT INTO CategoriaTransacao (id, nome, id_TipoTransacao, system) VALUES (4, 'Investimento',1,1);
+INSERT INTO CategoriaTransacao (id, nome, id_TipoTransacao, system) VALUES (5, 'Alimentação',2,1);
+INSERT INTO CategoriaTransacao (id, nome, id_TipoTransacao, system) VALUES (6, 'Salário',1,1);
 
 INSERT INTO Ativo (id, nome) VALUES(1, 'Ações');
 INSERT INTO Ativo (id, nome) VALUES(2, 'Tesouro Direto');
