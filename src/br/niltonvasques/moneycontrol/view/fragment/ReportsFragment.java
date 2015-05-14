@@ -14,7 +14,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import br.niltonvasques.moneycontrol.R;
+import br.niltonvasques.moneycontrolbeta.R;
 import br.niltonvasques.moneycontrol.activity.NVFragmentActivity;
 import br.niltonvasques.moneycontrol.activity.TimeSeriesActivity;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;

@@ -57,7 +57,7 @@ import org.afree.data.xy.XYDataset;
 import org.afree.graphics.SolidColor;
 import org.afree.ui.RectangleInsets;
 
-import br.niltonvasques.moneycontrol.R;
+import br.niltonvasques.moneycontrolbeta.R;
 
 import android.content.Context;
 import android.graphics.Color;

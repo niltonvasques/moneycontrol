@@ -27,7 +27,7 @@ import br.niltonvasques.moneycontrol.database.QuerysUtil;
 import br.niltonvasques.moneycontrol.database.bean.Orcamento;
 import br.niltonvasques.moneycontrol.util.MessageUtils;
 import br.niltonvasques.moneycontrol.view.adapter.OrcamentoAdapter;
-import br.niltonvasques.moneycontrol.R;
+import br.niltonvasques.moneycontrolbeta.R;
 
 public class OrcamentoFragment extends Fragment{
 	

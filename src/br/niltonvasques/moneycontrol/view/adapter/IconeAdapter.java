@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import br.niltonvasques.moneycontrol.R;
+import br.niltonvasques.moneycontrolbeta.R;
 import br.niltonvasques.moneycontrol.util.AssetUtil;
 
 public class IconeAdapter extends BaseAdapter{

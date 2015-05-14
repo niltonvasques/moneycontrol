@@ -1,2 +1,5 @@
 bin/
 gen/
+assets/money-db
+assets/db
+.settings

@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import br.niltonvasques.moneycontrol.util.StringUtil;
-import br.niltonvasques.moneycontrol.R;
+import br.niltonvasques.moneycontrolbeta.R;
 
 public class ChangeMonthView extends RelativeLayout{
 	

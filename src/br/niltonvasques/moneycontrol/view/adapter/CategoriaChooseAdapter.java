@@ -12,7 +12,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
-import br.niltonvasques.moneycontrol.R;
+import br.niltonvasques.moneycontrolbeta.R;
 import br.niltonvasques.moneycontrol.database.bean.CategoriaTransacao;
 
 public class CategoriaChooseAdapter extends BaseAdapter{
