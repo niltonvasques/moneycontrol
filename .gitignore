@@ -1,5 +1,6 @@
 bin/
 gen/
 assets/money-db
-assets/db
 .settings
+assets/db/data.ab
+assets/db/apps
