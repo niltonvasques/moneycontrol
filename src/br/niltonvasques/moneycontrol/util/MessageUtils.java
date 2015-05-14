@@ -779,8 +779,8 @@ public class MessageUtils {
 	    final Transacao tCredito = new Transacao();
 	    final Transacao tDebito = new Transacao();
 	    
-	    final CategoriaTransacao transfCatDebito = db.select(CategoriaTransacao.class, "WHERE system = 1 AND id_TipoTransacao = "+2).get(0);
-	    final CategoriaTransacao transfCatCredito = db.select(CategoriaTransacao.class, "WHERE system = 1 AND id_TipoTransacao = "+1).get(0);
+	    final CategoriaTransacao transfCatDebito = db.select(CategoriaTransacao.class, QuerysUtil.whereTransacaoTransferenciaDespesa()).get(0);
+	    final CategoriaTransacao transfCatCredito = db.select(CategoriaTransacao.class, QuerysUtil.whereTransacaoTransferenciaReceita()).get(0);
 	    
 	    final List<Conta> contas = db.select(Conta.class);
 	    
