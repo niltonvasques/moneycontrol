@@ -109,7 +109,7 @@ public class ReportsFragment extends Fragment{
 				}else if(item.equals(reports.get(REPORT_APORTES_HISTORY))){
 					((NVFragmentActivity)getActivity()).changeFragment(new ReportAportesFragment());
 				}else if(item.equals(reports.get(REPORT_ASSET_ALLOCATION))){
-					((NVFragmentActivity)getActivity()).changeFragment(new ReportByAtivosFragment());
+					((NVFragmentActivity)getActivity()).changeFragment(new ReportAtivosByMonthFragment());
 				}
 				
 			}

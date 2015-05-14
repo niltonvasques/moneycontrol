@@ -22,29 +22,24 @@ import br.niltonvasques.moneycontrol.view.custom.ChangeMonthView.ChangeMonthList
 import br.niltonvasques.moneycontrol.view.custom.SquareLayout;
 import br.niltonvasques.moneycontrolbeta.R;
 
-public class ReportByCategoriasFragment extends Fragment{
+public class ReportAtivosByMonthFragment extends Fragment{
 	
 	private static final String TAG = "[CategoriasFragment]";
 	
 	private MoneyControlApp app;
 	private LayoutInflater inflater;
 	
-	private int tipoTransacao;
-	
 	private View myFragmentView;
 	private ChangeMonthView monthView;
     private PieChartView pieChartView;
 
-	
-	
+    
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		
 		this.inflater = inflater;
 		app = (MoneyControlApp) getActivity().getApplication();
-		myFragmentView = inflater.inflate(R.layout.fragment_report_bycategoria, container, false);
-		this.tipoTransacao = getArguments().getInt("TipoTransacao");		
+		myFragmentView = inflater.inflate(R.layout.fragment_report_ativos_by_month, container, false);
 		
 		
 		return myFragmentView;
@@ -58,24 +53,23 @@ public class ReportByCategoriasFragment extends Fragment{
 	}
 	
 	private void loadComponentsFromXml() {
-		monthView 	= (ChangeMonthView) myFragmentView.findViewById(R.id.reportByCategoriaFragmentChangeMonthView);
+		monthView 	= (ChangeMonthView) myFragmentView.findViewById(R.id.reportAtivosByMonthFragmentChangeMonthView);
 	}
 	
 	private void configureComponents(LayoutInflater inflater) {
-		
 		monthView.setListener(new ChangeMonthListener() {
 			@Override
 			public void onMonthChange(Date time) {
 				update();				
 			}
 		});
-		
-		SquareLayout view = (SquareLayout)myFragmentView.findViewById(R.id.fragmentReportByCategoriaContent);		
-		String title = getActivity().getResources().getString( tipoTransacao == 1 ? R.string.report_by_categorias_receitas_chart_title : R.string.report_by_categorias_despesas_chart_title);
-		pieChartView = new PieChartView(getActivity(), title, app, createDataset(app, tipoTransacao, monthView.getDateRange().getTime()));
-		view.addView(pieChartView);
         
+        SquareLayout view = (SquareLayout)myFragmentView.findViewById(R.id.fragmentReportByCategoriaContent);
+		String title = getActivity().getResources().getString( R.string.report_by_ativos_chart_title );
+		pieChartView = new PieChartView(getActivity(), title, app, createDataset(app, monthView.getDateRange().getTime()));
+		view.addView(pieChartView);
 	}
+	
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -91,22 +85,22 @@ public class ReportByCategoriasFragment extends Fragment{
 	
 	
 	private void update(){
-		pieChartView.setPieDataset(createDataset(app, tipoTransacao, monthView.getDateRange().getTime()));
+		pieChartView.setPieDataset(createDataset(app, monthView.getDateRange().getTime()));
 	}
 	
     /**
      * Creates a sample dataset.
      * @return a sample dataset.
      */
-    private static PieDataset createDataset(MoneyControlApp app, int tipo, Date range) {
-    	Cursor c = app.getDatabase().runQueryCursor(QuerysUtil.reportTransacaoByTipoByCategoriasWithDateInterval(tipo, range));
+    private static PieDataset createDataset(MoneyControlApp app, Date range) {
+    	Cursor c = app.getDatabase().runQueryCursor(QuerysUtil.reportByAtivos(range));
     	DefaultPieDataset dataset = new DefaultPieDataset();
     	if (c.moveToFirst()) {
 			do {
 				float valor = c.getFloat(1);
 				float percentual = c.getFloat(2);
-				percentual = Math.round(percentual*100)/100f;
-				dataset.setValue(c.getString(0)+" R$ "+String.format("%.2f", valor)+" - "+percentual+"%", Double.valueOf(valor));
+				percentual = percentual*100;
+				dataset.setValue(c.getString(0)+" R$ "+String.format("%.2f", valor)+" - "+String.format("%.2f", percentual)+"%", Double.valueOf(valor));
 			} while (c.moveToNext());
 		}
         return dataset;

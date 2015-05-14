@@ -1,11 +1,8 @@
 package br.niltonvasques.moneycontrol.view.fragment;
 
-import java.text.SimpleDateFormat;
-import java.util.GregorianCalendar;
+import java.util.Date;
 import java.util.List;
 
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -17,18 +14,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import br.niltonvasques.moneycontrolbeta.R;
 import br.niltonvasques.moneycontrol.activity.NVFragmentActivity;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
 import br.niltonvasques.moneycontrol.database.DatabaseHandler;
 import br.niltonvasques.moneycontrol.database.bean.Ativo;
 import br.niltonvasques.moneycontrol.util.DateUtil;
-import br.niltonvasques.moneycontrol.util.MessageUtils;
 import br.niltonvasques.moneycontrol.view.adapter.AtivoAdapter;
+import br.niltonvasques.moneycontrol.view.custom.ChangeMonthView;
+import br.niltonvasques.moneycontrol.view.custom.ChangeMonthView.ChangeMonthListener;
+import br.niltonvasques.moneycontrolbeta.R;
 
 public class InvestimentosFragment extends Fragment{
 	
@@ -39,30 +35,21 @@ public class InvestimentosFragment extends Fragment{
 	private LayoutInflater inflater;
 	
 	private List<Ativo> ativos;
-	private GregorianCalendar dateRange;
 	
 	private View myFragmentView;
-	private TextView txtViewDateRange;
-    private Button	btnNextMonth;
-    private Button btnPreviousMonth;
 	private ListView listViewAtivos;
+	private ChangeMonthView monthView;
 	private AtivoAdapter listAdapter;
-	
-	
-	
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		
 		this.inflater = inflater;
 		
-		myFragmentView = inflater.inflate(R.layout.fragment_investimentos, null);
+		myFragmentView = inflater.inflate(R.layout.fragment_investimentos, container, false);
 		
 		app = (MoneyControlApp) getActivity().getApplication();
 		db = app.getDatabase();
-		
-		dateRange = new GregorianCalendar();
-		dateRange.set(GregorianCalendar.DAY_OF_MONTH, 1);
 		
 		loadComponentsFromXml();
 		
@@ -78,12 +65,19 @@ public class InvestimentosFragment extends Fragment{
 		setHasOptionsMenu(true);
 	}
 
+	private void loadComponentsFromXml() {
+		monthView 	= (ChangeMonthView) myFragmentView.findViewById(R.id.reportInvestimentosFragmentChangeMonthView);
+		listViewAtivos = (ListView) myFragmentView.findViewById(R.id.transacoesActivityListViewTransacoes);
+	}
+
 	private void configureComponents() {
 		
-		updateDateRange();
-        
-        btnPreviousMonth.setOnClickListener(mOnClick);
-        btnNextMonth.setOnClickListener(mOnClick);
+		monthView.setListener(new ChangeMonthListener() {
+			@Override
+			public void onMonthChange(Date time) {
+				update();				
+			}
+		});
         
 //		ativos = db.select(Ativo.class, " WHERE data < date('"+DateUtil.sqlDateFormat().format(dateRange.getTime())+"','+1 month')");
         ativos = db.select(Ativo.class, "WHERE (SELECT count(*) FROM MovimentacaoAtivo WHERE id_Ativo = Ativo.id) > 0");
@@ -91,7 +85,7 @@ public class InvestimentosFragment extends Fragment{
 			Log.i(TAG, a.toString());
 		}
 		
-		listAdapter = new AtivoAdapter(ativos, getActivity(), dateRange, inflater, app);
+		listAdapter = new AtivoAdapter(ativos, getActivity(), monthView.getDateRange(), inflater, app);
 		listViewAtivos.setAdapter(listAdapter);
 		listViewAtivos.setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -106,7 +100,7 @@ public class InvestimentosFragment extends Fragment{
 				Fragment fragment = new MovimentacaoAtivoFragment();
 				Bundle args = new Bundle();
 				args.putInt("id_Ativo", ativo.getId());
-				args.putString("range", DateUtil.sqlDateFormat().format(dateRange.getTime()));
+				args.putString("range", DateUtil.sqlDateFormat().format(monthView.getDateRange().getTime()));
 				fragment.setArguments(args);
 				((NVFragmentActivity)getActivity()).changeFragment(fragment);
 			}
@@ -133,13 +127,6 @@ public class InvestimentosFragment extends Fragment{
  
 	}
 
-	private void loadComponentsFromXml() {
-		txtViewDateRange 	= (TextView) myFragmentView.findViewById(R.id.transacoesFragmentTxtViewMonth);
-		btnPreviousMonth 	= (Button) myFragmentView.findViewById(R.id.transacoesFragmentBtnPreviousMonth);
-		btnNextMonth		= (Button) myFragmentView.findViewById(R.id.transacoesFragmentBtnNextMonth);
-		listViewAtivos = (ListView) myFragmentView.findViewById(R.id.transacoesActivityListViewTransacoes);
-	}
-	
 	@Override
 	public void onResume() {
 		super.onResume();
@@ -183,30 +170,6 @@ public class InvestimentosFragment extends Fragment{
 	    }
 	}
 	
-	private View.OnClickListener mOnClick = new View.OnClickListener() {
-		
-		@Override
-		public void onClick(View v) {
-			switch (v.getId()) {
-			case R.id.transacoesFragmentBtnPreviousMonth:
-				dateRange.add(GregorianCalendar.MONTH, -1);
-				updateDateRange();
-				update();
-				break;
-				
-			case R.id.transacoesFragmentBtnNextMonth:
-				dateRange.add(GregorianCalendar.MONTH, +1);
-				updateDateRange();
-				update();
-				break;
-
-			default:
-				break;
-			}
-			
-		}
-	};
-	
 	private void update(){
 		
 		ativos.clear();
@@ -227,7 +190,7 @@ public class InvestimentosFragment extends Fragment{
 //		}
 		
 //		String saldo = db.runQuery(QuerysUtil.computeSaldoBeforeDate(dateRange.getTime()));
-		float saldoSum = 0;
+//		float saldoSum = 0;
 //		if(saldo != null && saldo.length() > 0){
 //			saldoSum = Float.valueOf(saldo);
 //		}		
@@ -240,7 +203,7 @@ public class InvestimentosFragment extends Fragment{
 		String sumStr = db.runQuery("SELECT SUM(patrimonio) " +
 									"FROM (SELECT patrimonio " +
 											"FROM ( SELECT * FROM MovimentacaoAtivo " +
-													"WHERE data  < date('"+DateUtil.sqlDateFormat().format(dateRange.getTime())+"','+1 month') "+
+													"WHERE data  < date('"+DateUtil.sqlDateFormat().format(monthView.getDateRange().getTime())+"','+1 month') "+
 													" ORDER BY data ASC) "+
 										   "GROUP BY id_Ativo)");
 		
@@ -249,16 +212,11 @@ public class InvestimentosFragment extends Fragment{
 			sum = Float.valueOf(sumStr);
 		}catch(Exception e){}
 		
-		saldoSum += credito - debito;
+//		saldoSum += credito - debito;
 		
 		((TextView)myFragmentView.findViewById(R.id.transacoesActivityTxtDebitosSum)).setText("R$ "+String.format("%.2f", debito));
 		((TextView)myFragmentView.findViewById(R.id.transacoesActivityTxtCreditosSum)).setText("R$ "+String.format("%.2f",credito));
 		((TextView)myFragmentView.findViewById(R.id.transacoesActivityTxtSaldoSum)).setText("R$ "+String.format("%.2f",sum));
-	}
-	
-	private void updateDateRange() {
-		SimpleDateFormat format2 = new SimpleDateFormat("MMMMM - yyyy");
-	    txtViewDateRange.setText(format2.format(dateRange.getTime()));
 	}
 
 }

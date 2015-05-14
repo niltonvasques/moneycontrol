@@ -8,37 +8,19 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".transacoesActivity" >
     
-    <RelativeLayout
-        android:id="@+id/transacoesFragmentLayDateRange"
+    
+    <br.niltonvasques.moneycontrol.view.custom.ChangeMonthView
+        android:id="@+id/reportInvestimentosFragmentChangeMonthView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <Button 
-            android:id="@+id/transacoesFragmentBtnPreviousMonth"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_action_previous_item"
-            android:layout_alignParentLeft="true"/>
-        <TextView 
-            android:id="@+id/transacoesFragmentTxtViewMonth"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Abril - 2014"
-            style="@style/TextViewTitle"
-            android:layout_centerInParent="true"/>
-        <Button 
-            android:id="@+id/transacoesFragmentBtnNextMonth"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_action_next_item"
-            android:layout_alignParentRight="true"/>
-    </RelativeLayout>
+        android:layout_height="wrap_content"
+        />
     
     <RelativeLayout 
         android:id="@+id/investimentosFragmentLayHeader"
 	    android:layout_width="match_parent"
 	    android:layout_height="40dp"
 	    android:descendantFocusability="blocksDescendants"
-	    android:layout_below="@id/transacoesFragmentLayDateRange"
+	    android:layout_below="@id/reportInvestimentosFragmentChangeMonthView"
 	    android:gravity="center_vertical">
     
         <LinearLayout 
@@ -100,7 +82,7 @@
         android:id="@+id/transacoesFragmentExpandableListViewTransacoes"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/transacoesFragmentLayDateRange"
+        android:layout_below="@id/reportInvestimentosFragmentChangeMonthView"
 	    android:layout_above="@+id/transacoesActivityBottomBar"
 	    android:visibility="gone" >
     </ExpandableListView>

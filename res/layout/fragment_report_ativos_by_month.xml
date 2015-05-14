@@ -8,7 +8,7 @@
     android:paddingTop="@dimen/activity_vertical_margin" >
     
     <br.niltonvasques.moneycontrol.view.custom.ChangeMonthView
-        android:id="@+id/reportByCategoriaFragmentChangeMonthView"
+        android:id="@+id/reportAtivosByMonthFragmentChangeMonthView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
