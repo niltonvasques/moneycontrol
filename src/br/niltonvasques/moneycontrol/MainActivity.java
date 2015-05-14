@@ -1,6 +1,8 @@
 package br.niltonvasques.moneycontrol;
 
 import java.util.GregorianCalendar;
+import java.util.Queue;
+import java.util.Stack;
 
 import android.annotation.SuppressLint;
 import android.content.res.Configuration;
@@ -48,7 +50,7 @@ public class MainActivity extends NVFragmentActivity {
 	private String[] mDrawerItens;
 	private DrawerLayout mDrawerLayout;
 	private ActionBarDrawerToggle mDrawerToggle;
-	private ListView mDrawerList;
+	private ListView mDrawerList;	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,33 +73,13 @@ public class MainActivity extends NVFragmentActivity {
 		mDrawerList.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position,long arg3) {
-				getSupportActionBar().setIcon(R.drawable.ic_launcher);
-				getSupportActionBar().setTitle(mDrawerItens[position]);
-				
-				if(mDrawerItens[position].equals(mDrawerItens[CONTAS_ITEM_MENU])){
-					changeFragment( new ContasFragment() );
-				}else if(mDrawerItens[position].equals(mDrawerItens[CATEGORIAS_ITEM_MENU])){
-					changeFragment(new CategoriasFragment());
-				}else if(mDrawerItens[position].equals(mDrawerItens[RELATORIOS_ITEM_MENU])){
-					changeFragment(new ReportsFragment());
-				}else if(mDrawerItens[position].equals(mDrawerItens[TRANSACOES_ITEM_MENU])){
-					GregorianCalendar dateRange = new GregorianCalendar();
-					dateRange.set(GregorianCalendar.DAY_OF_MONTH, 1);
-					Fragment fragment = new TransacoesFragment();
-					Bundle args = new Bundle();
-					args.putString("range", DateUtil.sqlDateFormat().format(dateRange.getTime()));
-					fragment.setArguments(args);
-					changeFragment(fragment);
-				}else if(mDrawerItens[position].equals(mDrawerItens[INVESTIMENTOS_ITEM_MENU])){
-					changeFragment(new InvestimentosFragment());
-				}else if(mDrawerItens[position].equals(mDrawerItens[ORCAMENTO_ITEM_MENU])){
-					changeFragment(new OrcamentoFragment());
-				}
-				
+				switchContent(position);				
 				mDrawerLayout.closeDrawer(mDrawerList);
 
 
 			}
+
+			
 		});
 
 		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
@@ -132,8 +114,8 @@ public class MainActivity extends NVFragmentActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		
 	}
+	
 
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
@@ -172,6 +154,31 @@ public class MainActivity extends NVFragmentActivity {
 	@Override
 	public int getFragmentContentID() {
 		return R.id.content_frame;
+	}
+	
+	private void switchContent(int position) {
+		getSupportActionBar().setIcon(R.drawable.ic_launcher);
+		getSupportActionBar().setTitle(mDrawerItens[position]);
+		
+		if(mDrawerItens[position].equals(mDrawerItens[CONTAS_ITEM_MENU])){
+			changeFragment( new ContasFragment() );
+		}else if(mDrawerItens[position].equals(mDrawerItens[CATEGORIAS_ITEM_MENU])){
+			changeFragment(new CategoriasFragment());
+		}else if(mDrawerItens[position].equals(mDrawerItens[RELATORIOS_ITEM_MENU])){
+			changeFragment(new ReportsFragment());
+		}else if(mDrawerItens[position].equals(mDrawerItens[TRANSACOES_ITEM_MENU])){
+			GregorianCalendar dateRange = new GregorianCalendar();
+			dateRange.set(GregorianCalendar.DAY_OF_MONTH, 1);
+			Fragment fragment = new TransacoesFragment();
+			Bundle args = new Bundle();
+			args.putString("range", DateUtil.sqlDateFormat().format(dateRange.getTime()));
+			fragment.setArguments(args);
+			changeFragment(fragment);
+		}else if(mDrawerItens[position].equals(mDrawerItens[INVESTIMENTOS_ITEM_MENU])){
+			changeFragment(new InvestimentosFragment());
+		}else if(mDrawerItens[position].equals(mDrawerItens[ORCAMENTO_ITEM_MENU])){
+			changeFragment(new OrcamentoFragment());
+		}
 	}
 
 }
