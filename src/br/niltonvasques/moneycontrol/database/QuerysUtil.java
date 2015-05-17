@@ -32,6 +32,10 @@ public class QuerysUtil {
 		return "WHERE system = 0 AND id_TipoTransacao = "+tipo;
 	}
 	
+	public static final String whereNoSystemCategorias(){
+		return "WHERE system = 0";
+	}
+	
 	public static final String whereTransacaoTransferenciaDespesa(){
 		return "WHERE system = 1 AND id_TipoTransacao = "+2;
 	}

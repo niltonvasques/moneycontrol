@@ -20,6 +20,7 @@ import android.widget.ListView;
 import br.niltonvasques.moneycontrolbeta.R;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
 import br.niltonvasques.moneycontrol.database.DatabaseHandler;
+import br.niltonvasques.moneycontrol.database.QuerysUtil;
 import br.niltonvasques.moneycontrol.database.bean.CategoriaTransacao;
 import br.niltonvasques.moneycontrol.util.MessageUtils;
 
@@ -49,7 +50,7 @@ public class CategoriasFragment extends Fragment{
 		
 		db = app.getDatabase();
 		
-		categorias = db.select(CategoriaTransacao.class);
+		categorias = db.select(CategoriaTransacao.class, QuerysUtil.whereNoSystemCategorias());
 		
 		listViewContas = (ListView) myFragmentView.findViewById(R.id.categoriaFragmentListViewCategorias);
 		listViewContas.setAdapter(new ArrayAdapter<CategoriaTransacao>(getActivity(), android.R.layout.simple_list_item_1, categorias));
