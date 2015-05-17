@@ -93,7 +93,8 @@ public class TransacoesFragment extends Fragment{
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 	}
-
+	
+	private boolean longClick = false;
 	private void configureComponents() {
 		
 		monthView.setListener(new ChangeMonthListener() {
@@ -110,25 +111,34 @@ public class TransacoesFragment extends Fragment{
 		listViewTransacoes.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position,long arg3) {
-				Transacao t = transacoes.get(position);
-				MessageUtils.showEditTransacao(getActivity(), t, inflater, db, new OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						update();
-					}
-				});
+				if(!longClick){
+					Transacao t = transacoes.get(position);
+					MessageUtils.showEditTransacao(getActivity(), t, inflater, db, new OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							update();
+						}
+					});
+				}
+				longClick = false;
 			}
 		});
 		
 		listViewTransacoes.setOnItemLongClickListener(new OnItemLongClickListener() {
 			
 			public boolean onItemLongClick(android.widget.AdapterView<?> arg0, View arg1, final int position, long arg3) {
+				longClick = true;
 				MessageUtils.showMessageYesNo(getActivity(), "Atenção!", "Deseja excluir esta transação?", new OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						Transacao t = transacoes.get(position);
 						db.delete(t);
 						update();
+					}
+				}, new DialogInterface.OnDismissListener() {					
+					@Override
+					public void onDismiss(DialogInterface dialog) {
+						longClick = false;						
 					}
 				});
 				return false;

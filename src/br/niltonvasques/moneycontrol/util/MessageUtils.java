@@ -75,6 +75,10 @@ public class MessageUtils {
 	}
 	
 	public static void showMessageYesNo(Context context, String title, String message, DialogInterface.OnClickListener listener){
+		showMessageYesNo(context, title, message, listener, null);
+	}
+	
+	public static void showMessageYesNo(Context context, String title, String message, DialogInterface.OnClickListener listener, DialogInterface.OnDismissListener dismissListener){
 		AlertDialog.Builder dialog = new AlertDialog.Builder(context);
 		dialog.setTitle(title);
 		dialog.setMessage(message);
@@ -85,6 +89,7 @@ public class MessageUtils {
 			public void onClick(DialogInterface dialog, int which) {
 			}
 		});
+		dialog.setOnDismissListener(dismissListener);
 		dialog.create();
 		dialog.show();
 	}
