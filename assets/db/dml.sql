@@ -14,8 +14,12 @@ INSERT INTO CategoriaTransacao (id, nome, id_TipoTransacao, system) VALUES (1, '
 INSERT INTO CategoriaTransacao (id, nome, id_TipoTransacao, system) VALUES (2, 'Transferência',2,1);
 INSERT INTO CategoriaTransacao (id, nome, id_TipoTransacao, system) VALUES (3, 'Investimento',2,1);
 INSERT INTO CategoriaTransacao (id, nome, id_TipoTransacao, system) VALUES (4, 'Investimento',1,1);
-INSERT INTO CategoriaTransacao (id, nome, id_TipoTransacao, system) VALUES (5, 'Alimentação',2,1);
-INSERT INTO CategoriaTransacao (id, nome, id_TipoTransacao, system) VALUES (6, 'Salário',1,1);
+INSERT INTO CategoriaTransacao (id, nome, id_TipoTransacao, system) VALUES (5, 'Mercado',2,0);
+INSERT INTO CategoriaTransacao (id, nome, id_TipoTransacao, system) VALUES (6, 'Salário',1,0);
+INSERT INTO CategoriaTransacao (id, nome, id_TipoTransacao, system) VALUES (7, 'Transporte',2,0);
+INSERT INTO CategoriaTransacao (id, nome, id_TipoTransacao, system) VALUES (8, 'Lazer',2,0);
+INSERT INTO CategoriaTransacao (id, nome, id_TipoTransacao, system) VALUES (9, 'Serviços',2,0);
+INSERT INTO CategoriaTransacao (id, nome, id_TipoTransacao, system) VALUES (10, 'Outros',2,0);
 
 INSERT INTO Ativo (id, nome) VALUES(1, 'Ações');
 INSERT INTO Ativo (id, nome) VALUES(2, 'Tesouro Direto');

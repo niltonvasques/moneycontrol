@@ -5,6 +5,7 @@ public class CategoriaTransacao implements Comparable<CategoriaTransacao>{
 	private int id;
 	private String nome;
 	private int id_TipoTransacao;
+	private boolean system;
 	
 	public int getId() {
 		return id;
@@ -40,6 +41,12 @@ public class CategoriaTransacao implements Comparable<CategoriaTransacao>{
 			if(((CategoriaTransacao)o).getId() == id) return true;
 		}
 		return false;
+	}
+	public boolean isSystem() {
+		return system;
+	}
+	public void setSystem(boolean system) {
+		this.system = system;
 	}
 	
 	
