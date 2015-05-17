@@ -35,6 +35,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import br.niltonvasques.moneycontrolbeta.R;
 import br.niltonvasques.moneycontrol.database.DatabaseHandler;
@@ -379,7 +380,7 @@ public class MessageUtils {
 	    final Transacao t = new Transacao();
 	    
 	    final List<TipoTransacao> tipos = db.select(TipoTransacao.class);
-	    final List<CategoriaTransacao> categorias = db.select(CategoriaTransacao.class, "WHERE id_TipoTransacao = "+2);
+	    final List<CategoriaTransacao> categorias = db.select(CategoriaTransacao.class, QuerysUtil.whereNoSystemCategorias(2));
 	    final List<Conta> contas = db.select(Conta.class);
 	    
 	    int startContaPos = 0;
@@ -406,7 +407,7 @@ public class MessageUtils {
 					public void onClick(DialogInterface dialog, int which) {
 						TipoTransacao tipo = (TipoTransacao)spinnerTipos.getSelectedItem();
 			    		categorias.clear();
-			    		categorias.addAll(db.select(CategoriaTransacao.class, "WHERE id_TipoTransacao = "+tipo.getId()));
+			    		categorias.addAll(db.select(CategoriaTransacao.class, QuerysUtil.whereNoSystemCategorias(tipo.getId())));
 			    		((ArrayAdapter)spinnerCategoria.getAdapter()).notifyDataSetChanged();
 					}
 				});
@@ -422,7 +423,7 @@ public class MessageUtils {
 	    	public void onItemSelected(AdapterView<?> arg0, View arg1,int position, long arg3) {
 	    		TipoTransacao tipo = (TipoTransacao)spinnerTipos.getSelectedItem();
 	    		categorias.clear();
-	    		categorias.addAll(db.select(CategoriaTransacao.class, "WHERE id_TipoTransacao = "+tipo.getId()));
+	    		categorias.addAll(db.select(CategoriaTransacao.class, QuerysUtil.whereNoSystemCategorias(tipo.getId())));
 	    		((ArrayAdapter)spinnerCategoria.getAdapter()).notifyDataSetChanged();
 	    	}
 
@@ -519,13 +520,17 @@ public class MessageUtils {
 		} catch (ParseException e1) {
 			e1.printStackTrace();
 		}
+		
+		final TextView txtViewTitle = (TextView)view.findViewById(R.id.addTransacaoDialogTxtViewTitle);
+		txtViewTitle.setText(R.string.edit_transacao_dialog_title);
+		
 	    final Button btnDate = (Button)view.findViewById(R.id.addTransacaoDialogBtnData);
 	    ViewUtil.adjustDateOnTextView(btnDate, value);
 	    
 	    CategoriaTransacao c = db.select(CategoriaTransacao.class, " WHERE id = "+t.getId_CategoriaTransacao()).get(0);
 	    
 	    final List<TipoTransacao> tipos = db.select(TipoTransacao.class);
-	    final List<CategoriaTransacao> categorias = db.select(CategoriaTransacao.class, "WHERE id_TipoTransacao = "+c.getId_TipoTransacao());
+	    final List<CategoriaTransacao> categorias = db.select(CategoriaTransacao.class, QuerysUtil.whereNoSystemCategorias(c.getId_TipoTransacao()));
 	    final List<Conta> contas = db.select(Conta.class);
 	    
 	    int startContaPos = 0;
@@ -556,53 +561,63 @@ public class MessageUtils {
 	    }
 	    
 	    final Spinner spinnerTipos = (Spinner) view.findViewById(R.id.addTransacaoDialogSpinnerTipo);
-	    spinnerTipos.setAdapter(new ArrayAdapter<TipoTransacao>(context, android.R.layout.simple_list_item_1, tipos));
-	    spinnerTipos.setSelection(startTipoTransacaoPos);
-	    
 	    final Spinner spinnerCategoria = (Spinner) view.findViewById(R.id.addTransacaoDialogSpinnerCategoria);
-	    spinnerCategoria.setAdapter(new ArrayAdapter<CategoriaTransacao>(context, android.R.layout.simple_list_item_1, categorias));
-	    spinnerCategoria.setSelection(startCategoria);
-	    
-	    view.findViewById(R.id.addTransacaoDialogBtnAddCategoria).setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				MessageUtils.showAddCategoria(context, inflater, db, new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						TipoTransacao tipo = (TipoTransacao)spinnerTipos.getSelectedItem();
-			    		categorias.clear();
-			    		categorias.addAll(db.select(CategoriaTransacao.class, "WHERE id_TipoTransacao = "+tipo.getId()));
-			    		((ArrayAdapter)spinnerCategoria.getAdapter()).notifyDataSetChanged();
-					}
-				});
-			}
-		});
-	    
 	    final Spinner spinnerContas = (Spinner) view.findViewById(R.id.addTransacaoDialogSpinnerConta);
-	    spinnerContas.setAdapter(new ArrayAdapter<Conta>(context, android.R.layout.simple_list_item_1, contas));
-	    spinnerContas.setSelection(startContaPos);
-	    
-	    spinnerTipos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-	    	@Override
-	    	public void onItemSelected(AdapterView<?> arg0, View arg1,int position, long arg3) {
-	    		TipoTransacao tipo = (TipoTransacao)spinnerTipos.getSelectedItem();
-	    		categorias.clear();
-	    		categorias.addAll(db.select(CategoriaTransacao.class, "WHERE id_TipoTransacao = "+tipo.getId()));
-	    		((ArrayAdapter)spinnerCategoria.getAdapter()).notifyDataSetChanged();
-	    	}
+	    final Button btnAddCategory = (Button) 		    view.findViewById(R.id.addTransacaoDialogBtnAddCategoria);
+	    if(c.isSystem()){
+	    	view.findViewById(R.id.addTransacaoDialogLayoutTipo).setVisibility(View.GONE);
+	    	view.findViewById(R.id.addTransacaoDialogLayoutCategoria).setVisibility(View.GONE);
+	    	view.findViewById(R.id.addTransacaoDialogLayoutConta).setVisibility(View.GONE);
+	    }else{
+		    spinnerTipos.setAdapter(new ArrayAdapter<TipoTransacao>(context, android.R.layout.simple_list_item_1, tipos));
+		    spinnerTipos.setSelection(startTipoTransacaoPos);
+		    
+		    spinnerCategoria.setAdapter(new ArrayAdapter<CategoriaTransacao>(context, android.R.layout.simple_list_item_1, categorias));
+		    spinnerCategoria.setSelection(startCategoria);
+		    
+		    spinnerContas.setAdapter(new ArrayAdapter<Conta>(context, android.R.layout.simple_list_item_1, contas));
+		    spinnerContas.setSelection(startContaPos);
+		    
+		    spinnerTipos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+		    	@Override
+		    	public void onItemSelected(AdapterView<?> arg0, View arg1,int position, long arg3) {
+		    		TipoTransacao tipo = (TipoTransacao)spinnerTipos.getSelectedItem();
+		    		categorias.clear();
+		    		categorias.addAll(db.select(CategoriaTransacao.class, QuerysUtil.whereNoSystemCategorias(tipo.getId())));
+		    		((ArrayAdapter)spinnerCategoria.getAdapter()).notifyDataSetChanged();
+		    	}
 
-			@Override
-			public void onNothingSelected(AdapterView<?> arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
+				@Override
+				public void onNothingSelected(AdapterView<?> arg0) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
+		    
+		    btnAddCategory.setOnClickListener(new OnClickListener() {
+		    	@Override
+		    	public void onClick(View v) {
+		    		MessageUtils.showAddCategoria(context, inflater, db, new DialogInterface.OnClickListener() {
+		    			@Override
+		    			public void onClick(DialogInterface dialog, int which) {
+		    				TipoTransacao tipo = (TipoTransacao)spinnerTipos.getSelectedItem();
+		    				categorias.clear();
+		    				categorias.addAll(db.select(CategoriaTransacao.class, QuerysUtil.whereNoSystemCategorias(tipo.getId())));
+		    				((ArrayAdapter)spinnerCategoria.getAdapter()).notifyDataSetChanged();
+		    			}
+		    		});
+		    	}
+		    });
+	    }
+	    
+	    
+	    
+	    
 	    
 	    final EditText editValor = (EditText) view.findViewById(R.id.addTransacaoDialogEditTxtValor);
 		final EditText editDescricao = (EditText) view.findViewById(R.id.addTransacaoDialogEditTxtDescrição);
 		editValor.setText(t.getValor()+"");
-		editDescricao.setText(t.getDescricao());
-		
+		editDescricao.setText(t.getDescricao());		
 	    
 	    alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 			

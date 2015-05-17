@@ -89,6 +89,9 @@
     <string name="add_transacao_dialog_categoria">Categoria:</string>
     <string name="add_transacao_dialog_conta">Conta:</string>
     
+    <!-- edit add_transacao_dialog.xml -->
+    <string name="edit_transacao_dialog_title">Editar Transação</string>
+    
     <!-- transferencia_dialog.xml -->
     <string name="transferencia_dialog_conta_origem">Conta origem:</string>
     <string name="transferencia_dialog_conta_destino">Conta destino:</string>
