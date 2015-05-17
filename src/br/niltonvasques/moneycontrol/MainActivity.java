@@ -23,6 +23,7 @@ import br.niltonvasques.moneycontrol.activity.NVFragmentActivity;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
 import br.niltonvasques.moneycontrol.database.DatabaseHandler;
 import br.niltonvasques.moneycontrol.util.DateUtil;
+import br.niltonvasques.moneycontrol.view.fragment.AboutFragment;
 import br.niltonvasques.moneycontrol.view.fragment.CategoriasFragment;
 import br.niltonvasques.moneycontrol.view.fragment.ContasFragment;
 import br.niltonvasques.moneycontrol.view.fragment.InvestimentosFragment;
@@ -178,6 +179,8 @@ public class MainActivity extends NVFragmentActivity {
 			changeFragment(new InvestimentosFragment());
 		}else if(mDrawerItens[position].equals(mDrawerItens[ORCAMENTO_ITEM_MENU])){
 			changeFragment(new OrcamentoFragment());
+		}else if(mDrawerItens[position].equals(mDrawerItens[SOBRE_ITEM_MENU])){
+			changeFragment(new AboutFragment());
 		}
 	}
 
