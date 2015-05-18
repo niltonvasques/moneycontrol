@@ -78,6 +78,9 @@
         <item>28</item>
     </string-array>
     
+    <!-- Editar Conta -->
+    <string name="edit_conta_dialog_title">Editar Conta</string>
+    
     <!-- add_transacao_dialog.xml -->
     <string name="add_transacao_dialog_title">Adicionar Transação</string>
     <string name="add_transacao_dialog_tipo">Tipo:</string>

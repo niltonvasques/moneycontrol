@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" 
+    android:background="@android:color/white">
+    
+    <ScrollView 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+	    <LinearLayout 
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical">
+	        
+		    <TextView 
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:gravity="center"
+		        style="@style/TextViewTitle"
+		        android:text="@string/edit_conta_dialog_title"/>
+		    
+		    <LinearLayout 
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:orientation="horizontal">
+		        
+			    <ImageView 
+			        android:id="@+id/editContaDialogImgIcon"
+			        android:layout_width="50dp"
+			        android:layout_height="50dp"/>
+			    
+			    <LinearLayout 
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:orientation="vertical">
+				    <EditText 
+				        android:id="@+id/editContaDialogEditTxtNome"
+				        android:layout_width="match_parent"
+				        android:layout_height="wrap_content"
+				        android:gravity="center"
+				        android:hint="@string/add_conta_dialog_nome_hint"/>
+				    
+				    <EditText 
+				        android:id="@+id/editContaDialogEditTxtSaldo"
+				        android:layout_width="match_parent"
+				        android:layout_height="wrap_content"
+				        android:gravity="center"
+				        android:hint="@string/add_conta_dialog_saldo_hint"
+				        android:inputType="numberDecimal"/>
+			    </LinearLayout>
+		    </LinearLayout>
+		    <LinearLayout 
+		        android:id="@+id/editContaDialogLayoutCartaoCredito"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:orientation="vertical"
+		        android:visibility="gone">
+		        <TextView 
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:text="Cartão de Crédito"
+		            android:gravity="center"/>
+		        <LinearLayout 
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:gravity="center">
+		            <TextView 
+		                android:layout_width="0dp"
+		                android:layout_height="wrap_content"
+		                android:layout_weight="2"
+		                android:text="Limite:"/>
+		            
+		            <EditText 
+		                android:id="@+id/editContaDialogEditTxtLimite"
+		                android:layout_width="0dp"
+		                android:layout_height="wrap_content"
+						android:layout_weight="7"
+						android:inputType="numberDecimal"/>
+		        </LinearLayout>
+		        
+	    	    <LinearLayout 
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:gravity="center">
+		            <TextView 
+		                android:layout_width="0dp"
+		                android:layout_height="wrap_content"
+		                android:layout_weight="2"
+		                android:text="Vencimento:"/>
+		            <Spinner 
+		                android:id="@+id/editContaDialogSpinnerVencimento"
+		                android:layout_width="0dp"
+		                android:layout_height="wrap_content"
+						android:layout_weight="7"
+						android:inputType="numberDecimal"
+						android:entries="@array/add_conta_dialog_days"/>
+		        </LinearLayout>
+		        
+	    	    <LinearLayout 
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:gravity="center">
+		            <TextView 
+		                android:layout_width="0dp"
+		                android:layout_height="wrap_content"
+		                android:layout_weight="2"
+		                android:text="Fechamento:"/>
+		            <Spinner 
+		                android:id="@+id/editContaDialogSpinnerFechamento"
+		                android:layout_width="0dp"
+		                android:layout_height="wrap_content"
+						android:layout_weight="7"
+						android:inputType="numberDecimal"
+						android:entries="@array/add_conta_dialog_days"
+						/>
+		        </LinearLayout>
+		    </LinearLayout>
+		    
+	    </LinearLayout>
+	</ScrollView>
+</RelativeLayout>

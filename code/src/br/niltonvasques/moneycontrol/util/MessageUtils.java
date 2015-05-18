@@ -225,12 +225,12 @@ public class MessageUtils {
 	
 	public static void showEditConta(final Context context, final Conta conta, final LayoutInflater inflater, final DatabaseHandler db, final DialogInterface.OnClickListener listener){
 		final AlertDialog.Builder alert = new AlertDialog.Builder(context);
-		final View view = inflater.inflate(R.layout.add_conta_dialog, null);
+		final View view = inflater.inflate(R.layout.edit_conta_dialog, null);
 	    alert.setView(view);
 	    
 	    final String[] icons = getIconsNameOnAsset(context);
 	    
-	    final ImageView imgIcon = (ImageView) view.findViewById(R.id.addContaDialogImgIcon);
+	    final ImageView imgIcon = (ImageView) view.findViewById(R.id.editContaDialogImgIcon);
 	    
 	    try {
 			imgIcon.setImageDrawable(AssetUtil.loadDrawableFromAsset(context, "icons/"+conta.getIcon()));
@@ -271,15 +271,10 @@ public class MessageUtils {
 			pos++;
 		}
 	    
-	    final Spinner spinnerTipos = (Spinner) view.findViewById(R.id.addContaDialogSpinnerTipo);
-	    spinnerTipos.setAdapter(new ArrayAdapter<TipoConta>(context, android.R.layout.simple_list_item_1, tipos));
-	    spinnerTipos.setSelection(pos);
-	    
-	    final EditText editNome = (EditText) view.findViewById(R.id.addContaDialogEditTxtNome);
+	    final EditText editNome = (EditText) view.findViewById(R.id.editContaDialogEditTxtNome);
 	    editNome.setText(conta.getNome());
-	    final EditText editSaldo = (EditText) view.findViewById(R.id.addContaDialogEditTxtSaldo);
+	    final EditText editSaldo = (EditText) view.findViewById(R.id.editContaDialogEditTxtSaldo);
 	    editSaldo.setText(conta.getSaldo()+"");
-	    
 	    
 	    alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 			
@@ -288,8 +283,6 @@ public class MessageUtils {
 
 				String ccNome = editNome.getText().toString();
 				conta.setNome(ccNome);
-				TipoConta tConta = (TipoConta) spinnerTipos.getSelectedItem();
-				conta.setId_TipoConta(tConta.getId());
 				
 				try{
 					float saldo = Float.valueOf(editSaldo.getText().toString());
@@ -309,8 +302,6 @@ public class MessageUtils {
 	            dialog.cancel();
 	        }
 	    });
-	    
-	    
 	    
 	    alert.show();        
 	}
