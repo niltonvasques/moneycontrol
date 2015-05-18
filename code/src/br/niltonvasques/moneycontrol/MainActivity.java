@@ -1,10 +1,10 @@
 package br.niltonvasques.moneycontrol;
 
 import java.util.GregorianCalendar;
-import java.util.Queue;
-import java.util.Stack;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,6 +23,7 @@ import br.niltonvasques.moneycontrol.activity.NVFragmentActivity;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
 import br.niltonvasques.moneycontrol.database.DatabaseHandler;
 import br.niltonvasques.moneycontrol.util.DateUtil;
+import br.niltonvasques.moneycontrol.util.MessageUtils;
 import br.niltonvasques.moneycontrol.view.fragment.AboutFragment;
 import br.niltonvasques.moneycontrol.view.fragment.CategoriasFragment;
 import br.niltonvasques.moneycontrol.view.fragment.ContasFragment;
@@ -110,6 +111,8 @@ public class MainActivity extends NVFragmentActivity {
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setHomeButtonEnabled(true);
+		
+		createNewsVersionDialog();
 	}
 	
 	@Override
@@ -181,6 +184,15 @@ public class MainActivity extends NVFragmentActivity {
 			changeFragment(new OrcamentoFragment());
 		}else if(mDrawerItens[position].equals(mDrawerItens[SOBRE_ITEM_MENU])){
 			changeFragment(new AboutFragment());
+		}
+	}
+	
+	private void createNewsVersionDialog() {
+		if(!app.isAlreadyShowNewsChangeDialog()){
+			String title = getString(R.string.news_change_dialog_title)+" "+getString(R.string.app_version);
+			String message = getString(R.string.news_change_dialog_body);
+			MessageUtils.showMessage(this, title, message);
+			app.alreadyShowChangeDialog();
 		}
 	}
 

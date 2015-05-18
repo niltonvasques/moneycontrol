@@ -171,6 +171,9 @@
     <string name="about_fragment_author">Desenvolvido por Nilton Vasques</string>
     <string name="about_fragment_license">2014 - Todos os direitos reservados</string>
     
+    <!-- Change Dialog -->
+    <string name="news_change_dialog_title">Novidades da versão</string>
+	<string name="news_change_dialog_body">- Resolvido o problema de criar novas categorias.\n- Removido a possibilidade de alteração do tipo de uma conta.</string>
     
     
 </resources>

@@ -2,17 +2,22 @@ package br.niltonvasques.moneycontrol.app;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.TreeSet;
 
 import android.app.Application;
+import android.content.SharedPreferences;
 import br.niltonvasques.moneycontrol.database.DatabaseHandler;
 import br.niltonvasques.moneycontrol.database.bean.CategoriaTransacao;
+import br.niltonvasques.moneycontrolbeta.R;
 
 public class MoneyControlApp extends Application{
+	
+	public static final String PREFES_NAME 				= "money-control-prefs";
+	private static final String PREFERENCE_CHANGE_DIALOG 				= "change_dialog_";
 	
 	private DatabaseHandler handler = null;
 	private Object data;
 	private HashMap<Integer, CategoriaTransacao> categoriasTransacao;
+	private SharedPreferences settings = null;
 	
 	@Override
 	public void onCreate() {
@@ -21,6 +26,12 @@ public class MoneyControlApp extends Application{
 		updateCategorias();
 	}
 	
+	private SharedPreferences getSettings(){
+		if(settings == null){
+			settings = getSharedPreferences(PREFES_NAME, MODE_PRIVATE); 
+		}
+		return settings;
+	}
 	
 	public DatabaseHandler getDatabase() {
 		if(handler == null) handler = new DatabaseHandler(getApplicationContext());
@@ -48,6 +59,15 @@ public class MoneyControlApp extends Application{
 		this.data = data;
 	}
 	
+	public boolean isAlreadyShowNewsChangeDialog() {
+		return getSettings().getBoolean(PREFERENCE_CHANGE_DIALOG+getString(R.string.app_version), false);
+	}
+	
+	public void alreadyShowChangeDialog() {
+		SharedPreferences.Editor editor = getSettings().edit();
+		editor.putBoolean(PREFERENCE_CHANGE_DIALOG+getString(R.string.app_version),true);
+		editor.commit();
+	}
 	
 
 }
