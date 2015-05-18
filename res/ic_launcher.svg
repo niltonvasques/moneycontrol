@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.5 r10040"
+   width="72"
+   height="72"
+   sodipodi:docname="ic_launcher.png"
+   inkscape:export-filename="/home/niltonvasques/Development/android-dev/workspace/MoneyControl/res/drawable-hdpi/promo.png"
+   inkscape:export-xdpi="765.00006"
+   inkscape:export-ydpi="765.00006">
+  <metadata
+     id="metadata8">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs6" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1053"
+     id="namedview4"
+     showgrid="false"
+     inkscape:zoom="9.2709556"
+     inkscape:cx="49.537406"
+     inkscape:cy="38.568478"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg2" />
+  <rect
+     style="fill:#ffffff"
+     id="rect3007"
+     width="120.4"
+     height="50"
+     x="-25.132254"
+     y="3.6631594"
+     inkscape:export-filename="/home/niltonvasques/promo_1024.png"
+     inkscape:export-xdpi="900.00006"
+     inkscape:export-ydpi="900.00006" />
+  <g
+     id="g3003"
+     transform="matrix(0.70644754,0,0,0.70974426,5.2685997,0.5643055)"
+     inkscape:export-xdpi="1046.51"
+     inkscape:export-ydpi="1046.51"
+     inkscape:export-filename="/media/niltonvasques/home/niltonvasques/Development/android-dev/workspace/MoneyControl/res/drawable-hdpi/promo_1400.png">
+    <path
+       transform="matrix(1.199187,0,0,1.200409,-10.192685,-7.1994888)"
+       d="m 66.875523,38.076851 c 0,14.565232 -11.879892,26.372686 -26.534481,26.372686 -14.65459,0 -26.534481,-11.807454 -26.534481,-26.372686 0,-14.565233 11.879891,-26.372686 26.534481,-26.372686 14.654589,0 26.534481,11.807453 26.534481,26.372686 z"
+       sodipodi:ry="26.372686"
+       sodipodi:rx="26.534481"
+       sodipodi:cy="38.076851"
+       sodipodi:cx="40.341042"
+       id="path3001"
+       style="fill:#ffffff"
+       sodipodi:type="arc" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path2987"
+       d="M 28.420309,68.353812 C 17.623569,64.622996 11.037159,57.990955 7.5545492,47.343475 5.4145492,40.800804 5.9968892,32.66003 9.1250792,25.388346 11.941409,18.841629 20.246199,11.032735 26.748649,8.8171259 c 7.19731,-2.4523679 8.35737,-2.2016829 8.35737,1.8060041 0,3.220133 -0.23268,3.451412 -4.1356,4.110807 -2.61199,0.441294 -5.46718,1.919013 -7.75,4.011058 -3.31236,3.035554 -3.6144,3.771656 -3.6144,8.80863 0,6.868144 2.52746,9.933415 10.17945,12.345493 l 5.32055,1.677155 0,5.362691 0,5.362691 -3.75,-0.69122 c -2.0625,-0.380172 -5.49408,-1.300562 -7.62573,-2.045313 -2.13165,-0.744751 -4.04415,-1.354093 -4.25,-1.354093 -0.20585,0 -0.37427,1.784167 -0.37427,3.964816 0,4.463768 1.16647,5.47286 7.51841,6.504038 8.92799,1.449378 8.48159,1.10463 8.48159,6.550197 0,2.739521 -0.3375,4.966257 -0.75,4.948302 -0.4125,-0.01796 -3.08357,-0.839012 -5.93571,-1.82457 z m 12.88232,-3.254239 0.30339,-5.176356 4.84742,-1.226242 c 6.69726,-1.69419 9.80852,-5.053458 10.40213,-11.231307 0.79442,-8.267654 -3.23393,-13.001515 -12.66972,-14.888673 -2.93437,-0.586874 -3.07983,-0.846218 -3.07983,-5.490967 0,-5.583974 0.5565,-5.815678 8.34107,-3.472868 l 4.65893,1.402132 0,-4.319268 0,-4.319268 -5.04922,-1.082864 c -2.77708,-0.595575 -5.70208,-1.082864 -6.5,-1.082864 -0.99137,0 -1.45078,-1.108331 -1.45078,-3.5 0,-2.719259 0.4064,-3.500001 1.82186,-3.500001 4.35575,0 11.59937,3.532286 16.58184,8.085988 16.31576,14.911678 12.98977,41.035143 -6.44134,50.59262 -3.5543,1.748233 -7.72389,3.450336 -9.26575,3.78245 l -2.80338,0.603845 0.30338,-5.176357 z m -0.19661,-17.920768 c 0,-5.232705 0.50665,-5.780223 3.39466,-3.668462 2.50925,1.834812 1.79138,6.733194 -1.14466,7.810589 -2.14219,0.786086 -2.25,0.58761 -2.25,-4.142127 z m -8.81714,-17.089276 c -1.7632,-0.657242 -2.24132,-1.498789 -2,-3.52025 0.31339,-2.625099 3.14917,-5.359551 4.33176,-4.176964 0.3358,0.335801 0.46988,2.399385 0.29796,4.585742 -0.29059,3.69549 -0.47562,3.914421 -2.62972,3.111472 z"
+       style="fill:#366c01" />
+  </g>
+</svg>
