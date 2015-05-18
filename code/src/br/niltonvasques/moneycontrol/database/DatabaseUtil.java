@@ -34,6 +34,8 @@ public class DatabaseUtil {
 				if(fields[i].getType().equals(String.class)){
 					insert+="'"+fields[i].get(classObject)+"'"
 					+( i== fields.length-1 ? ")":",");
+				}else if(fields[i].getType().equals(boolean.class)){
+					insert+= (((Boolean) fields[i].get(classObject)) ? "1":"0")+( i== fields.length-1 ? ")":",");
 				}else{
 					insert+=fields[i].get(classObject)+( i== fields.length-1 ? ")":",");
 				}
@@ -78,6 +80,8 @@ public class DatabaseUtil {
 				if(fields[i].getType().equals(String.class)){
 					insert+="'"+fields[i].get(classObject)+"'"
 					+( i== fields.length-1 ? ")":",");
+				}else if(fields[i].getType().equals(boolean.class)){
+					insert+= (((Boolean) fields[i].get(classObject)) ? "1":"0")+( i== fields.length-1 ? ")":",");
 				}else{
 					insert+=fields[i].get(classObject)+( i== fields.length-1 ? ")":",");
 				}
