@@ -13,26 +13,61 @@
         android:layout_height="wrap_content"
         />
     
-    <RelativeLayout
-        android:id="@+id/reportByCategoriaFragmentLayDateRange"
+    <TextView
+        android:id="@+id/fragmentReportReceitasDespesasTxtViewTitle"
+        style="@style/TextViewAbout"
+        android:layout_below="@id/mes"
         android:layout_width="match_parent"
+        android:gravity="center_horizontal"
         android:layout_height="wrap_content"
-        android:layout_below="@id/mes">
-        <TextView 
-            android:id="@+id/reportByCategoriaFragmentTxtViewMonth"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/report_receita_x_despesas_title"
-            style="@style/TextViewTitle"
-            android:layout_centerInParent="true"/>
-    </RelativeLayout>
+        android:layout_marginTop="10dp"
+        android:text="@string/report_receita_x_despesas_title"
+        android:textStyle="bold" />
+    
 
-    <br.niltonvasques.moneycontrol.view.custom.SquareLayout
-        android:id="@+id/fragmentReportByCategoriaContent" 
+   <lecho.lib.hellocharts.view.ColumnChartView
+        android:id="@+id/chart"
+        android:layout_below="@id/fragmentReportReceitasDespesasTxtViewTitle"
+        android:layout_above="@+id/fragmentReportReceitasDespesasLayoutLegend"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true">
-    </br.niltonvasques.moneycontrol.view.custom.SquareLayout>
+        android:layout_height="match_parent" >
+    </lecho.lib.hellocharts.view.ColumnChartView>
+    
+   <LinearLayout
+       android:id="@id/fragmentReportReceitasDespesasLayoutLegend"
+       android:layout_width="match_parent"
+       android:layout_height="20dp"
+       android:layout_alignParentBottom="true"
+       android:orientation="horizontal" 
+       android:gravity="center">
+       
+	   <ImageView
+	        android:layout_width="20dp"
+	        android:layout_height="match_parent"
+	        android:background="@color/hello_chart_green"
+			/>
+		<TextView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginLeft="5dp"
+	        android:text="@string/report_receita_x_despesas_legend_receita"
+	        android:textStyle="bold" />
+		
+		<ImageView
+	        android:layout_width="20dp"
+	        android:layout_height="match_parent"
+	        android:layout_marginLeft="20dp"
+	        android:background="@color/hello_chart_red"
+			/>
+		<TextView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginLeft="5dp"
+	        android:text="@string/report_receita_x_despesas_legend_despesa"
+	        android:textStyle="bold" />   
+	   
+   </LinearLayout>
+    
 
 
 </RelativeLayout>

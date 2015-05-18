@@ -1,12 +1,23 @@
 package br.niltonvasques.moneycontrol.view.fragment;
 
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.LinkedHashMap;
+import java.util.List;
 
-import org.afree.data.category.DefaultCategoryDataset;
-
+import lecho.lib.hellocharts.gesture.ZoomType;
+import lecho.lib.hellocharts.model.Axis;
+import lecho.lib.hellocharts.model.AxisValue;
+import lecho.lib.hellocharts.model.Column;
+import lecho.lib.hellocharts.model.ColumnChartData;
+import lecho.lib.hellocharts.model.SubcolumnValue;
+import lecho.lib.hellocharts.model.Viewport;
+import lecho.lib.hellocharts.util.ChartUtils;
+import lecho.lib.hellocharts.view.ColumnChartView;
+import android.R.color;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -15,14 +26,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
-import br.niltonvasques.moneycontrol.database.DatabaseHandler;
 import br.niltonvasques.moneycontrol.database.QuerysUtil;
-import br.niltonvasques.moneycontrol.view.chart.BarChartView;
+import br.niltonvasques.moneycontrol.util.MessageUtils;
 import br.niltonvasques.moneycontrol.view.custom.ChangeMonthView;
 import br.niltonvasques.moneycontrol.view.custom.ChangeMonthView.ChangeMonthListener;
-import br.niltonvasques.moneycontrol.view.custom.SquareLayout;
 import br.niltonvasques.moneycontrolbeta.R;
 
 public class ReportReceitasDespesasFragment extends Fragment{
@@ -30,13 +38,10 @@ public class ReportReceitasDespesasFragment extends Fragment{
 	private static final String TAG = "[CategoriasFragment]";
 	
 	private MoneyControlApp app;
-	private DatabaseHandler db;
-	
 	
 	private View myFragmentView;
 	private ChangeMonthView changeMonth;
-    private BarChartView barChartView;
-
+	private ColumnChartView chart;
 	
 	
 	@Override
@@ -50,21 +55,12 @@ public class ReportReceitasDespesasFragment extends Fragment{
 		changeMonth.setListener(new ChangeMonthListener() {
 			@Override
 			public void onMonthChange(Date time) {
-				Toast.makeText(getActivity(), "Change Year", Toast.LENGTH_LONG).show();
-				barChartView.setDataset(createDataset(app));
-				barChartView.update();
+				chart.setColumnChartData(createDataset(app));
 			}
 		});
 		
-		SquareLayout view = (SquareLayout)myFragmentView.findViewById(R.id.fragmentReportByCategoriaContent);
-		
-		barChartView = new BarChartView(getActivity(), createDataset(app));
-		barChartView.setTitle(getResources().getString(R.string.report_receita_x_despesas_title));
-		barChartView.setCategoryAxis(getResources().getString(R.string.report_receita_x_despesas_axis_category));
-		barChartView.setValueAxis(getResources().getString(R.string.report_receita_x_despesas_axis_value));
-		barChartView.update();
-		
-		view.addView(barChartView);
+		chart = (ColumnChartView) myFragmentView.findViewById(R.id.chart);
+		chart.setColumnChartData(createDataset(app));
 		
 		return myFragmentView;
 	}
@@ -92,37 +88,70 @@ public class ReportReceitasDespesasFragment extends Fragment{
      * Creates a sample dataset.
      * @return a sample dataset.
      */
-    private DefaultCategoryDataset createDataset(MoneyControlApp app) {
+    private ColumnChartData createDataset(MoneyControlApp app) {
     	
-    	// row keys...
-        String series1 = "Receitas";
-        String series2 = "Despesas";
+		try{
+	        
+	        LinkedHashMap<Integer, List<SubcolumnValue>> columnMap = new LinkedHashMap<Integer, List<SubcolumnValue>>();
+	        
+	        List<Column> columns = new ArrayList<Column>();
+	        List<SubcolumnValue> values;
+	        List<AxisValue> axisValues = new ArrayList<AxisValue>();
+	        
+	        String year = changeMonth.getDateRange().get(GregorianCalendar.YEAR)+"";
 
-        // create the dataset...
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        
-        String year = changeMonth.getDateRange().get(GregorianCalendar.YEAR)+"";
-
-        Cursor c2 = app.getDatabase().runQueryCursor(QuerysUtil.reportHistoryDespesasByYear(year));
-        if (c2.moveToFirst()) {
-        	do {
-        		float valor = c2.getFloat(0);
-        		String month = c2.getString(1);
-        		dataset.addValue(valor, series2, month);
-        	} while (c2.moveToNext());
-        }
-        
-    	Cursor c1 = app.getDatabase().runQueryCursor(QuerysUtil.reportHistoryReceitasByYear(year));
-    	if (c1.moveToFirst()) {
-			do {
-				float valor = c1.getFloat(0);
-				String month = c1.getString(1);
-				dataset.addValue(valor, series1, month);
-			} while (c1.moveToNext());
+	        int i = 0;
+	        Cursor c2 = app.getDatabase().runQueryCursor(QuerysUtil.reportHistoryDespesasByYear(year));
+	        if (c2.moveToFirst()) {
+	        	do {
+	        		values = new ArrayList<SubcolumnValue>();
+	        		float valor = c2.getFloat(0);
+	        		int month = Integer.parseInt(c2.getString(1));
+//	        		dataset.addValue(valor, series2, month);
+	        		SubcolumnValue sub = new SubcolumnValue(valor, ChartUtils.COLOR_RED);
+//	        		sub.setLabel(month);
+	        		values.add(sub);   
+	        		columnMap.put(month, values);
+	        		axisValues.add(new AxisValue(i++).setLabel(getResources().getStringArray(R.array.months)[month-1]));
+	        	} while (c2.moveToNext());
+	        }
+	        
+	    	Cursor c1 = app.getDatabase().runQueryCursor(QuerysUtil.reportHistoryReceitasByYear(year));
+	    	if (c1.moveToFirst()) {
+				do {
+					float valor = c1.getFloat(0);
+					int month = Integer.parseInt(c1.getString(1));
+					if(columnMap.containsKey(month))
+						values = columnMap.get(month);
+					else
+						values = new ArrayList<SubcolumnValue>();
+	        		SubcolumnValue sub = new SubcolumnValue(valor, ChartUtils.COLOR_GREEN);
+//	        		sub.setLabel(month);
+	        		values.add(sub); 
+	        		columnMap.put(month, values);
+	        		Column column = new Column(values);
+//	        		column.setHasLabels(true);
+	        		columns.add(column);
+				} while (c1.moveToNext());
+			}
+	    	c1.close();
+	    	ColumnChartData data = new ColumnChartData(columns);
+	    	Axis axisX = new Axis(axisValues).setHasLines(true);
+	    	Axis axisY = new Axis().setHasLines(true);
+	    	axisX.setName(getResources().getString(R.string.report_receita_x_despesas_axis_category));
+	    	axisY.setName(getResources().getString(R.string.report_receita_x_despesas_axis_value));
+	    	axisX.setTextColor(Color.DKGRAY);
+	    	axisY.setTextColor(Color.DKGRAY);
+	    	data.setAxisXBottom(axisX);
+	    	data.setAxisYLeft(axisY);
+	    	
+	    	return data;
+		}catch(Exception e){
+			e.printStackTrace();
+			MessageUtils.showMessage(getActivity(), getString(R.string.dialog_error_message_title), getString(R.string.dialog_error_message_message));
 		}
-    	c1.close();
     	
-        return dataset;
+    	return null;
     }
     
     @Override

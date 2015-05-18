@@ -1,0 +1,17 @@
+
+    <resources>
+        <string-array name="months">
+          <item >Jan</item>
+          <item >Fev</item>
+          <item >Mar</item>
+          <item >Abr</item>
+          <item >Mai</item>
+          <item >Jun</item>
+          <item >Jul</item>
+          <item >Ago</item>
+          <item >Set</item>
+          <item >Out</item>
+          <item >Nov</item>
+          <item >Dec</item>
+        </string-array>
+    </resources>
