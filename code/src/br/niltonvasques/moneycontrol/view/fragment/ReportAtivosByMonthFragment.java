@@ -1,10 +1,13 @@
 package br.niltonvasques.moneycontrol.view.fragment;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-import org.afree.data.general.DefaultPieDataset;
-import org.afree.data.general.PieDataset;
-
+import lecho.lib.hellocharts.model.PieChartData;
+import lecho.lib.hellocharts.model.SliceValue;
+import lecho.lib.hellocharts.util.ChartUtils;
+import lecho.lib.hellocharts.view.PieChartView;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,12 +17,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
 import br.niltonvasques.moneycontrol.database.QuerysUtil;
-import br.niltonvasques.moneycontrol.view.chart.PieChartView;
 import br.niltonvasques.moneycontrol.view.custom.ChangeMonthView;
 import br.niltonvasques.moneycontrol.view.custom.ChangeMonthView.ChangeMonthListener;
-import br.niltonvasques.moneycontrol.view.custom.SquareLayout;
 import br.niltonvasques.moneycontrolbeta.R;
 
 public class ReportAtivosByMonthFragment extends Fragment{
@@ -64,10 +66,11 @@ public class ReportAtivosByMonthFragment extends Fragment{
 			}
 		});
         
-        SquareLayout view = (SquareLayout)myFragmentView.findViewById(R.id.fragmentReportByCategoriaContent);
-		String title = getActivity().getResources().getString( R.string.report_by_ativos_chart_title );
-		pieChartView = new PieChartView(getActivity(), title, app, createDataset(app, monthView.getDateRange().getTime()));
-		view.addView(pieChartView);
+		TextView txt = (TextView) myFragmentView.findViewById(R.id.reportAtivosByMonthFragmentTxtViewTitle);
+		txt.setText(R.string.report_by_ativos_chart_title);
+		
+		pieChartView = (PieChartView) myFragmentView.findViewById(R.id.reportAtivosByMonthFragmentChart);
+		pieChartView.setPieChartData(createDataset(app, monthView.getDateRange().getTime()));
 	}
 	
 	
@@ -85,25 +88,30 @@ public class ReportAtivosByMonthFragment extends Fragment{
 	
 	
 	private void update(){
-		pieChartView.setPieDataset(createDataset(app, monthView.getDateRange().getTime()));
+		pieChartView.setPieChartData(createDataset(app, monthView.getDateRange().getTime()));
 	}
 	
     /**
      * Creates a sample dataset.
      * @return a sample dataset.
      */
-    private static PieDataset createDataset(MoneyControlApp app, Date range) {
+    private PieChartData createDataset(MoneyControlApp app, Date range) {
     	Cursor c = app.getDatabase().runQueryCursor(QuerysUtil.reportByAtivos(range));
-    	DefaultPieDataset dataset = new DefaultPieDataset();
+    	List<SliceValue> values = new ArrayList<SliceValue>();
     	if (c.moveToFirst()) {
 			do {
 				float valor = c.getFloat(1);
 				float percentual = c.getFloat(2);
 				percentual = percentual*100;
-				dataset.setValue(c.getString(0)+" R$ "+String.format("%.2f", valor)+" - "+String.format("%.2f", percentual)+"%", Double.valueOf(valor));
+				String label = c.getString(0)+" R$ "+String.format("%.2f", valor)+" - "+String.format("%.2f", percentual)+"%";
+				SliceValue sliceValue = new SliceValue(valor, ChartUtils.nextColor());
+				sliceValue.setLabel(label);
+				values.add(sliceValue);
 			} while (c.moveToNext());
 		}
-        return dataset;
+    	PieChartData data = new PieChartData(values);
+    	data.setHasLabels(true);
+    	return data;
     }
     
     @Override
