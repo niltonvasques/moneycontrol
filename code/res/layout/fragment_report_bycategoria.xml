@@ -13,12 +13,23 @@
         android:layout_height="wrap_content"
         />
 
-    <br.niltonvasques.moneycontrol.view.custom.SquareLayout
-        android:id="@+id/fragmentReportByCategoriaContent" 
+    <TextView
+        android:id="@+id/reportByCategoriaFragmentTxtViewTitle"
+        style="@style/TextViewAbout"
+        android:layout_below="@id/reportByCategoriaFragmentChangeMonthView"
         android:layout_width="match_parent"
+        android:gravity="center_horizontal"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true">
-    </br.niltonvasques.moneycontrol.view.custom.SquareLayout>
+        android:layout_marginTop="10dp"
+        android:text="@string/report_by_categorias_despesas_chart_title"
+        android:textStyle="bold" />
+    
+    <lecho.lib.hellocharts.view.PieChartView
+        android:id="@+id/fragmentReportByCategoriaChart"
+        android:layout_below="@id/reportByCategoriaFragmentTxtViewTitle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    </lecho.lib.hellocharts.view.PieChartView>
 
 
 </RelativeLayout>
