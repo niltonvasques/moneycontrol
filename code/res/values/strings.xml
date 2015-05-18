@@ -167,8 +167,11 @@
     <string name="contas_fragment_message_dialog_transfer_error_msg">Para realizar uma transferência é necessário ter pelo menos duas contas cadastradas.</string>
     
     <!-- AboutFragment -->
-    <string name="about_fragment_version">Versão 0.2-alpha</string>
-    <string name="about_fragment_author">Desenvolvido por Nilton Vasques</string>
+    <string name="about_fragment_version">Versão:</string>
+    <string name="about_fragment_author_title">Desenvolvedores</string>
+    <string name="about_fragment_author">Nilton Vasques</string>
+    <string name="about_fragment_coworkers_title">Colaboradores</string>
+    <string name="about_fragment_coworkers">Joseni Oliveira</string>    
     <string name="about_fragment_license">2014 - Todos os direitos reservados</string>
     
     <!-- Change Dialog -->
