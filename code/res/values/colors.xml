@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="dark_green">#04a800</color>
+    <color name="hello_chart_red">#FF4444</color>
+    <color name="hello_chart_green">#99CC00</color>
+    
 </resources>

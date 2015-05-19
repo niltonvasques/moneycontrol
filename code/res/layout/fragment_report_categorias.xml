@@ -8,28 +8,37 @@
     android:paddingTop="@dimen/activity_vertical_margin" >
     
     <br.niltonvasques.moneycontrol.view.custom.ChangeMonthView
-        android:id="@+id/fragmentReportAportsChangeMonthView"
+        android:id="@+id/fragmentReportCategoriasChangeMonthView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
     />
     
     <TextView
-        android:id="@+id/fragmentReportAportsTxtViewTitle"
+        android:id="@+id/fragmentReportCategoriasTxtViewTitle"
         style="@style/TextViewAbout"
-        android:layout_below="@id/fragmentReportAportsChangeMonthView"
+        android:layout_below="@id/fragmentReportCategoriasChangeMonthView"
         android:layout_width="match_parent"
         android:gravity="center_horizontal"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="@string/report_aportes_title"
+        android:text="@string/report_categorias_title"
         android:textStyle="bold" />
-
-   <lecho.lib.hellocharts.view.ColumnChartView
-        android:id="@+id/fragmentReportAportsChart"
-        android:layout_below="@id/fragmentReportAportsTxtViewTitle"
+    
+   <lecho.lib.hellocharts.view.LineChartView
+        android:id="@+id/fragmentReportCategoriasChart"
+        android:layout_below="@id/fragmentReportCategoriasTxtViewTitle"
+        android:layout_above="@+id/fragmentReportCategoriasLegendView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
-    </lecho.lib.hellocharts.view.ColumnChartView>
+    </lecho.lib.hellocharts.view.LineChartView>
+    
+   <br.niltonvasques.moneycontrol.view.custom.LegendView
+        android:id="@id/fragmentReportCategoriasLegendView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+    />
+   
 
 
 </RelativeLayout>

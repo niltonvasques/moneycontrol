@@ -128,6 +128,8 @@
     <string name="report_receita_x_despesas_title">"Receitas x Despesas"</string>
     <string name="report_receita_x_despesas_axis_category">Meses</string>
     <string name="report_receita_x_despesas_axis_value">Valor(R$)</string>
+    <string name="report_receita_x_despesas_legend_despesa">Despesas</string>
+    <string name="report_receita_x_despesas_legend_receita">Receitas</string>
     
     <string name="report_by_ativos_chart_title">Alocação de ativos</string>
     
@@ -178,5 +180,8 @@
     <string name="news_change_dialog_title">Novidades da versão</string>
 	<string name="news_change_dialog_body">- Resolvido o problema de criar novas categorias.\n- Removido a possibilidade de alteração do tipo de uma conta.</string>
     
+	<!--  Error Dialog -->
+	<string name="dialog_error_message_title">Atenção!</string>
+	<string name="dialog_error_message_message">Um erro inesperado ocorreu!</string>
     
 </resources>

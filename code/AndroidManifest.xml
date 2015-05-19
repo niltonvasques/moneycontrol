@@ -22,13 +22,6 @@
             </intent-filter>
         </activity>
         
-        <activity android:name="br.niltonvasques.moneycontrol.activity.TimeSeriesActivity"
-            android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
-        </activity>
-        
     </application>
 
 </manifest>

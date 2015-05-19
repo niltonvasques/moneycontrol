@@ -13,26 +13,29 @@
         android:layout_height="wrap_content"
         />
     
-    <RelativeLayout
-        android:id="@+id/reportByCategoriaFragmentLayDateRange"
+    <TextView
+        android:id="@+id/fragmentReportReceitasDespesasTxtViewTitle"
+        style="@style/TextViewAbout"
+        android:layout_below="@id/mes"
+        android:layout_width="match_parent"
+        android:gravity="center_horizontal"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/report_receita_x_despesas_title"
+        android:textStyle="bold" />    
+
+   <lecho.lib.hellocharts.view.ColumnChartView
+        android:id="@+id/chart"
+        android:layout_below="@id/fragmentReportReceitasDespesasTxtViewTitle"
+        android:layout_above="@+id/fragmentReportReceitasDespesasLegendView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    </lecho.lib.hellocharts.view.ColumnChartView>
+    
+   <br.niltonvasques.moneycontrol.view.custom.LegendView
+        android:id="@id/fragmentReportReceitasDespesasLegendView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/mes">
-        <TextView 
-            android:id="@+id/reportByCategoriaFragmentTxtViewMonth"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/report_receita_x_despesas_title"
-            style="@style/TextViewTitle"
-            android:layout_centerInParent="true"/>
-    </RelativeLayout>
-
-    <br.niltonvasques.moneycontrol.view.custom.SquareLayout
-        android:id="@+id/fragmentReportByCategoriaContent" 
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true">
-    </br.niltonvasques.moneycontrol.view.custom.SquareLayout>
-
-
+        android:layout_alignParentBottom="true"
+    />
 </RelativeLayout>

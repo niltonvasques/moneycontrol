@@ -3,24 +3,21 @@ package br.niltonvasques.moneycontrol.view.fragment;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import br.niltonvasques.moneycontrolbeta.R;
 import br.niltonvasques.moneycontrol.activity.NVFragmentActivity;
-import br.niltonvasques.moneycontrol.activity.TimeSeriesActivity;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
 import br.niltonvasques.moneycontrol.database.DatabaseHandler;
 import br.niltonvasques.moneycontrol.util.MessageUtils;
 import br.niltonvasques.moneycontrol.util.MessageUtils.MessageListener;
+import br.niltonvasques.moneycontrolbeta.R;
 
 public class ReportsFragment extends Fragment{
 	
@@ -96,8 +93,9 @@ public class ReportsFragment extends Fragment{
 						@Override
 						public void onMessage(int result, Object data) {
 							app.setData(data);
-							Intent it = new Intent(getActivity(), TimeSeriesActivity.class);
-							startActivity(it);
+//							Intent it = new Intent(getActivity(), TimeSeriesActivity.class);
+//							startActivity(it);
+							((NVFragmentActivity)getActivity()).changeFragment(new ReportCategoriasFragment());
 						}
 					} );
 				}else if(item.equals(reports.get(REPORT_RECEITAS_X_DESPESAS_HISTORY))){
