@@ -2,6 +2,7 @@
 <RelativeLayout 
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:bootstrap="http://schemas.android.com/apk/res-auto"
+    xmlns:fontawesometext="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:descendantFocusability="blocksDescendants">
@@ -70,24 +71,54 @@
 	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content"
 	            android:orientation="horizontal">
-	            
-	            <TextView
-	                android:id="@+id/contaListItemTxtDebitos" 
+		        
+	            <!-- basic text-->
+	            <LinearLayout 
 	                android:layout_width="0dp"
 	                android:layout_height="match_parent"
 	                android:layout_weight="1"
-	                android:textColor="#ff0000"
-	                android:text="@string/default_currency_value" 
-	                android:maxLines="2"/>
+	                android:orientation="horizontal">
+	                
+		            <TextView
+		                android:id="@+id/contaListItemTxtDebitos" 
+		                android:layout_width="wrap_content"
+		                android:layout_height="match_parent"
+		                android:textColor="#ff0000"
+		                android:text="@string/default_currency_value" 
+		                android:maxLines="2"/>
+		            
+					<com.beardedhen.androidbootstrap.FontAwesomeText
+					    android:layout_width="wrap_content"
+					    android:layout_height="wrap_content"
+					    fontawesometext:fa_icon="fa-arrow-down" 
+					    android:textSize="15sp"
+					    android:textColor="#ff0000"
+					/>					
+	            </LinearLayout>
 	            
-	            <TextView
-	                android:id="@+id/contaListItemTxtCreditos" 
+	            <LinearLayout 
 	                android:layout_width="0dp"
 	                android:layout_height="match_parent"
 	                android:layout_weight="1"
-	                android:textColor="@color/dark_green"
-	                android:text="@string/default_currency_value"
-	                android:maxLines="2"/>
+	                android:orientation="horizontal">
+		            
+		            <TextView
+		                android:id="@+id/contaListItemTxtCreditos" 
+		                android:layout_width="wrap_content"
+		                android:layout_height="match_parent"
+		                android:textColor="@color/dark_green"
+		                android:text="@string/default_currency_value"
+		                android:maxLines="2"/>
+		            
+	                <com.beardedhen.androidbootstrap.FontAwesomeText
+					    android:layout_width="wrap_content"
+					    android:layout_height="wrap_content"
+					    fontawesometext:fa_icon="fa-arrow-up"
+					    android:textSize="15sp"
+					    android:textColor="@color/dark_green" 
+					/>
+	            </LinearLayout>
+	            
 	            
 	            <TextView 
 	                android:id="@+id/contaListItemTxtSaldo"
