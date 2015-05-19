@@ -53,13 +53,20 @@ public class QuerysUtil {
 				"data >= date('"+DateUtil.sqlDateFormat().format(range)+"')";
 	}
 	
+	public static final String sumTransacoesDebitoFromCartaoWithDateInterval(int id_Conta, Date range){
+		return SUM_TRANSACOES_DEBITO + id_Conta+" AND data <= date('"+DateUtil.sqlDateFormat().format(range)+"', '+1 month') AND " +
+				"data > date('"+DateUtil.sqlDateFormat().format(range)+"')";
+	}
+	
 	public static final String sumTransacoesCreditoFromContaWithDateInterval(int id_Conta, Date range){
 		return SUM_TRANSACOES_CREDITO + id_Conta+" AND data < date('"+DateUtil.sqlDateFormat().format(range)+"', '+1 month') AND " +
 				"data >= date('"+DateUtil.sqlDateFormat().format(range)+"')";
 	}
 	
 	public static final String getPagamentoFaturaCartao(int id_Conta, Date range){
-		return sumTransacoesCreditoFromContaWithDateInterval(id_Conta,range)+ " AND c.nome like 'Transferência'";
+		return SUM_TRANSACOES_CREDITO + id_Conta+" AND data < date('"+DateUtil.sqlDateFormat().format(range)+"', '+2 month') AND " +
+		"data >= date('"+DateUtil.sqlDateFormat().format(range)+"', '+1 month')"
+		+ " AND c.nome like 'Transferência'";
 	}
 	
 	public static final String checkTipoTransacao(int id_Transacao){
@@ -157,6 +164,24 @@ public class QuerysUtil {
 						" FROM Transacao t "+ 
 						" INNER JOIN CategoriaTransacao c on c.id = t.id_CategoriaTransacao "+
 						"WHERE t.id_Conta = "+id_Conta+" AND c.id_TipoTransacao = 2 AND t.data < date('"+DateUtil.sqlDateFormat().format(range)+"')) "+ 
+						" ,0)";
+	}
+	
+	public static final String computeSaldoFromCartaoBeforeDate(int id_Conta, Date fechamento){
+		return "SELECT "+ 
+					"(SELECT saldo FROM Conta WHERE id = "+id_Conta+")+ "+
+					"COALESCE("+
+						"(SELECT SUM(t.valor) "+ 
+						"FROM Transacao t "+ 
+						"INNER JOIN CategoriaTransacao c on c.id = t.id_CategoriaTransacao "+
+						"WHERE t.id_Conta = "+id_Conta+" AND c.id_TipoTransacao = 1 AND t.data < date('"+DateUtil.sqlDateFormat().format(fechamento)+"', '+1 month')) "+
+						",0) "+
+						" - "+
+					"COALESCE( "+
+						" (SELECT SUM(t.valor) "+ 
+						" FROM Transacao t "+ 
+						" INNER JOIN CategoriaTransacao c on c.id = t.id_CategoriaTransacao "+
+						"WHERE t.id_Conta = "+id_Conta+" AND c.id_TipoTransacao = 2 AND t.data <= date('"+DateUtil.sqlDateFormat().format(fechamento)+"')) "+ 
 						" ,0)";
 	}
 	

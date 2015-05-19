@@ -167,6 +167,10 @@
     <!-- ContasFragment -->
     <string name="contas_fragment_message_dialog_atention_title">Atenção!</string>
     <string name="contas_fragment_message_dialog_transfer_error_msg">Para realizar uma transferência é necessário ter pelo menos duas contas cadastradas.</string>
+	<string name="contas_fragment_fatura_status_paga">paga</string>
+	<string name="contas_fragment_fatura_status_pendente">pendente</string>
+	<string name="contas_list_item_cartao_pay">pagar</string>
+	<string name="contas_list_item_cartao_edit">editar</string>
     
     <!-- AboutFragment -->
     <string name="about_fragment_version">Versão:</string>
@@ -183,5 +187,9 @@
 	<!--  Error Dialog -->
 	<string name="dialog_error_message_title">Atenção!</string>
 	<string name="dialog_error_message_message">Um erro inesperado ocorreu!</string>
+	
+	<!-- pagar_fatura_dialog_title -->
+	<string name="pagar_fatura_dialog_title">Pagar Fatura</string>
+	
     
 </resources>
