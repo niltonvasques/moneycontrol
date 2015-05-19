@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
 import br.niltonvasques.moneycontrol.business.CartaoBusiness;
@@ -24,6 +23,7 @@ import br.niltonvasques.moneycontrol.util.MessageUtils;
 import br.niltonvasques.moneycontrolbeta.R;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
+import com.beardedhen.androidbootstrap.BootstrapCircleThumbnail;
 
 public class ContaAdapter extends BaseAdapter{
 	
@@ -67,7 +67,7 @@ public class ContaAdapter extends BaseAdapter{
 		
 		View view = inflater.inflate(R.layout.conta_list_item, null);
 		
-		ImageView imgIcon = (ImageView) view.findViewById(R.id.contaListItemImgIcon);
+		BootstrapCircleThumbnail imgIcon = (BootstrapCircleThumbnail) view.findViewById(R.id.contaListItemImgIcon);
 		final TextView txtNome = (TextView) view.findViewById(R.id.contaListItemTxtNome);
 		final TextView txtSaldo = (TextView) view.findViewById(R.id.contaListItemTxtSaldo);
 		final TextView txtDebitos = (TextView) view.findViewById(R.id.contaListItemTxtDebitos);
@@ -75,7 +75,8 @@ public class ContaAdapter extends BaseAdapter{
 		
 		txtNome.setText(cc.getNome());
 		try {
-			imgIcon.setImageDrawable(AssetUtil.loadDrawableFromAsset(app, "icons/"+cc.getIcon()));
+//			imgIcon.setImageDrawable();
+			imgIcon.setImage(AssetUtil.loadBitmapFromAsset(app, "icons/"+cc.getIcon()));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
