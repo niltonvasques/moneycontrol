@@ -30,6 +30,8 @@ import br.niltonvasques.moneycontrol.app.MoneyControlApp;
 import br.niltonvasques.moneycontrol.database.QuerysUtil;
 import br.niltonvasques.moneycontrol.util.MessageUtils;
 import br.niltonvasques.moneycontrol.view.custom.ChangeMonthView;
+import br.niltonvasques.moneycontrol.view.custom.Legend;
+import br.niltonvasques.moneycontrol.view.custom.LegendView;
 import br.niltonvasques.moneycontrol.view.custom.ChangeMonthView.ChangeMonthListener;
 import br.niltonvasques.moneycontrolbeta.R;
 
@@ -42,6 +44,7 @@ public class ReportReceitasDespesasFragment extends Fragment{
 	private View myFragmentView;
 	private ChangeMonthView changeMonth;
 	private ColumnChartView chart;
+	private LegendView legendView;
 	
 	
 	@Override
@@ -50,6 +53,8 @@ public class ReportReceitasDespesasFragment extends Fragment{
 		
 		app = (MoneyControlApp) getActivity().getApplication();
 		myFragmentView = inflater.inflate(R.layout.fragment_report_receitas_x_despesas, container, false);
+		
+		legendView = (LegendView) myFragmentView.findViewById(R.id.fragmentReportReceitasDespesasLegendView);
 		changeMonth = (ChangeMonthView) myFragmentView.findViewById(R.id.mes);
 		changeMonth.enableYearType();
 		changeMonth.setListener(new ChangeMonthListener() {
@@ -97,6 +102,17 @@ public class ReportReceitasDespesasFragment extends Fragment{
 	        List<Column> columns = new ArrayList<Column>();
 	        List<SubcolumnValue> values;
 	        List<AxisValue> axisValues = new ArrayList<AxisValue>();
+	        List<Legend> legends = new ArrayList<Legend>();
+	        
+	        Legend legend = new Legend();
+			legend.setLegendName(getString(R.string.report_receita_x_despesas_legend_receita));
+			legend.setLegendColor(ChartUtils.COLOR_GREEN);
+			legends.add(legend);
+			
+			legend = new Legend();
+			legend.setLegendName(getString(R.string.report_receita_x_despesas_legend_despesa));
+			legend.setLegendColor(ChartUtils.COLOR_RED);
+			legends.add(legend);
 	        
 	        String year = changeMonth.getDateRange().get(GregorianCalendar.YEAR)+"";
 
@@ -144,6 +160,8 @@ public class ReportReceitasDespesasFragment extends Fragment{
 	    	axisY.setTextColor(Color.DKGRAY);
 	    	data.setAxisXBottom(axisX);
 	    	data.setAxisYLeft(axisY);
+	    	
+	    	legendView.setLegends(legends);
 	    	
 	    	return data;
 		}catch(Exception e){

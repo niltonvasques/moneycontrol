@@ -27,46 +27,15 @@
    <lecho.lib.hellocharts.view.ColumnChartView
         android:id="@+id/chart"
         android:layout_below="@id/fragmentReportReceitasDespesasTxtViewTitle"
-        android:layout_above="@+id/fragmentReportReceitasDespesasLayoutLegend"
+        android:layout_above="@+id/fragmentReportReceitasDespesasLegendView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
     </lecho.lib.hellocharts.view.ColumnChartView>
     
-   <LinearLayout
-       android:id="@id/fragmentReportReceitasDespesasLayoutLegend"
-       android:layout_width="match_parent"
-       android:layout_height="20dp"
-       android:layout_alignParentBottom="true"
-       android:orientation="horizontal" 
-       android:gravity="center">
-       
-	   <ImageView
-	        android:layout_width="20dp"
-	        android:layout_height="match_parent"
-	        android:background="@color/hello_chart_green"
-			/>
-		<TextView
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_marginLeft="5dp"
-	        android:text="@string/report_receita_x_despesas_legend_receita"
-	        android:textStyle="bold" />
-		
-		<ImageView
-	        android:layout_width="20dp"
-	        android:layout_height="match_parent"
-	        android:layout_marginLeft="20dp"
-	        android:background="@color/hello_chart_red"
-			/>
-		<TextView
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_marginLeft="5dp"
-	        android:text="@string/report_receita_x_despesas_legend_despesa"
-	        android:textStyle="bold" />   
-	   
-   </LinearLayout>
-    
-
-
+   <br.niltonvasques.moneycontrol.view.custom.LegendView
+        android:id="@id/fragmentReportReceitasDespesasLegendView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+    />
 </RelativeLayout>
