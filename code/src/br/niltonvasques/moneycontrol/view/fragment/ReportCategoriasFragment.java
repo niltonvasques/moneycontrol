@@ -105,10 +105,8 @@ public class ReportCategoriasFragment extends Fragment{
 			List<Line> lines = new ArrayList<Line>();
 			List<Legend> legends = new ArrayList<Legend>();
 			
-			boolean firstcat = true;
-			
 			for(int i = 0; i < 12; i++){
-				if(firstcat) axisValues.add(new AxisValue(i).setLabel(getResources().getStringArray(R.array.months)[i]));
+				axisValues.add(new AxisValue(i).setLabel(getResources().getStringArray(R.array.months)[i]));
 			}
 			
 			for (CategoriaTransacao cat : categorias) {

@@ -38,10 +38,6 @@ public class LegendView extends LinearLayout{
 		setOrientation(LinearLayout.HORIZONTAL);
 		setPadding(0, 5, 5, 0);
 		setGravity(Gravity.CENTER);
-//		LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//		mView = layoutInflater.inflate(R.layout.legend, null);
-//		addView(mView);
-		
 	}
 
 	public List<Legend> getLegends() {
@@ -50,6 +46,7 @@ public class LegendView extends LinearLayout{
 
 	public void setLegends(List<Legend> legends) {
 		this.legends = legends;
+		removeAllViews();
 		for(Legend legend: legends){
 			LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View item = layoutInflater.inflate(R.layout.legend_item, null);
