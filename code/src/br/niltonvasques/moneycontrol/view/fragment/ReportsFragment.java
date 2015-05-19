@@ -96,8 +96,9 @@ public class ReportsFragment extends Fragment{
 						@Override
 						public void onMessage(int result, Object data) {
 							app.setData(data);
-							Intent it = new Intent(getActivity(), TimeSeriesActivity.class);
-							startActivity(it);
+//							Intent it = new Intent(getActivity(), TimeSeriesActivity.class);
+//							startActivity(it);
+							((NVFragmentActivity)getActivity()).changeFragment(new ReportCategoriasFragment());
 						}
 					} );
 				}else if(item.equals(reports.get(REPORT_RECEITAS_X_DESPESAS_HISTORY))){

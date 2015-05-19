@@ -236,6 +236,13 @@ public class QuerysUtil {
 				"GROUP BY strftime(\"%m-%Y\", data)";
 	}
 	
+	public static final String reportCategoriaByMonthWhereYear(int id_CategoriaTransacao, String year){
+		return 	"SELECT SUM(valor) as total, strftime(\"%m\",data) as month, strftime(\"%Y\",data) as year From Transacao "+
+				"WHERE id_CategoriaTransacao = " +id_CategoriaTransacao+" "+
+				"AND strftime(\"%Y\", data) = '"+year+"'\n" + 
+				"GROUP BY strftime(\"%m-%Y\", data)";
+	}
+	
 	
 	public static final String reportHistoryReceitas(){
 		return reportHistory(1);
@@ -281,7 +288,7 @@ public class QuerysUtil {
 				"GROUP BY strftime(\"%m-%Y\", data)\n";
 	}
 	
-	public static final String reportInvestimentsHistory(){
+	public static final String reportInvestimentsHistory(String year){
 		return 	"SELECT (SUM(valor) - "+ 
 				"COALESCE((SELECT SUM(valor) "+ 
 				"			FROM Transacao t1 "+ 
@@ -290,12 +297,13 @@ public class QuerysUtil {
 				"				AND c1.id_TipoTransacao = 1 AND c1.nome = 'Investimento' "+ 
 				"				AND c1.system = 1  ),0 ) "+
 				") as total "+
-				", strftime(\"%m-%Y\", data) as month " +
+				", strftime(\"%m\", data) as month " +
 				"FROM Transacao t " +
 				"INNER JOIN CategoriaTransacao c on c.id = t.id_CategoriaTransacao "+ 
 				"WHERE c.nome = 'Investimento' "+ 
 				"	AND system = 1 "+ 
 				" 	AND id_TipoTransacao = 2 "+
+				"AND strftime(\"%Y\", data) = '"+year+"'\n" + 
 				"GROUP BY strftime(\"%m-%Y\", data)";
 	}
 

@@ -22,8 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="@string/report_receita_x_despesas_title"
-        android:textStyle="bold" />
-    
+        android:textStyle="bold" />    
 
    <lecho.lib.hellocharts.view.ColumnChartView
         android:id="@+id/chart"

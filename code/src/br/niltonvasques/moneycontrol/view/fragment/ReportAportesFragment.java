@@ -1,8 +1,20 @@
 package br.niltonvasques.moneycontrol.view.fragment;
 
-import org.afree.data.category.DefaultCategoryDataset;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.LinkedHashMap;
+import java.util.List;
 
+import lecho.lib.hellocharts.model.Axis;
+import lecho.lib.hellocharts.model.AxisValue;
+import lecho.lib.hellocharts.model.Column;
+import lecho.lib.hellocharts.model.ColumnChartData;
+import lecho.lib.hellocharts.model.SubcolumnValue;
+import lecho.lib.hellocharts.util.ChartUtils;
+import lecho.lib.hellocharts.view.ColumnChartView;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -11,23 +23,22 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import br.niltonvasques.moneycontrolbeta.R;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
-import br.niltonvasques.moneycontrol.database.DatabaseHandler;
 import br.niltonvasques.moneycontrol.database.QuerysUtil;
-import br.niltonvasques.moneycontrol.view.chart.BarChartView;
-import br.niltonvasques.moneycontrol.view.custom.SquareLayout;
+import br.niltonvasques.moneycontrol.util.MessageUtils;
+import br.niltonvasques.moneycontrol.view.custom.ChangeMonthView;
+import br.niltonvasques.moneycontrol.view.custom.ChangeMonthView.ChangeMonthListener;
+import br.niltonvasques.moneycontrolbeta.R;
 
 public class ReportAportesFragment extends Fragment{
 	
 	private static final String TAG = "[ReportAportesFragment]";
 	
 	private MoneyControlApp app;
-	private DatabaseHandler db;
-	
 	
 	private View myFragmentView;
-    private BarChartView barChartView;
+    private ColumnChartView chart;
+	private ChangeMonthView changeMonth;
 
 	
 	
@@ -37,16 +48,18 @@ public class ReportAportesFragment extends Fragment{
 		
 		app = (MoneyControlApp) getActivity().getApplication();
 		myFragmentView = inflater.inflate(R.layout.fragment_report_aportes, container, false);
-		SquareLayout view = (SquareLayout)myFragmentView.findViewById(R.id.fragmentReportByCategoriaContent);
 		
-		barChartView = new BarChartView(getActivity(), createDataset(app));
-		barChartView.setTitle(getResources().getString(R.string.report_aportes_title));
-		barChartView.setCategoryAxis(getResources().getString(R.string.report_aportes_axis_category));
-		barChartView.setValueAxis(getResources().getString(R.string.report_aportes_axis_value));
-		barChartView.update();
+		changeMonth = (ChangeMonthView) myFragmentView.findViewById(R.id.fragmentReportAportsChangeMonthView);
+		changeMonth.enableYearType();
+		changeMonth.setListener(new ChangeMonthListener() {
+			@Override
+			public void onMonthChange(Date time) {
+				chart.setColumnChartData(createDataset(app));
+			}
+		});
 		
-		view.addView(barChartView);
-		
+		chart = (ColumnChartView) myFragmentView.findViewById(R.id.fragmentReportAportsChart);
+		chart.setColumnChartData(createDataset(app));
 		
 		return myFragmentView;
 	}
@@ -70,29 +83,59 @@ public class ReportAportesFragment extends Fragment{
 	}
 	
 	
+   
     /**
      * Creates a sample dataset.
      * @return a sample dataset.
      */
-    private static DefaultCategoryDataset createDataset(MoneyControlApp app) {
+    private ColumnChartData createDataset(MoneyControlApp app) {
     	
-    	// row keys...
-        String series1 = "Aportes";
+		try{
+	        
+	        LinkedHashMap<Integer, List<SubcolumnValue>> columnMap = new LinkedHashMap<Integer, List<SubcolumnValue>>();
+	        
+	        List<Column> columns = new ArrayList<Column>();
+	        List<SubcolumnValue> values;
+	        List<AxisValue> axisValues = new ArrayList<AxisValue>();
+	        
+	        String year = changeMonth.getDateRange().get(GregorianCalendar.YEAR)+"";
 
-        // create the dataset...
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+	        int i = 0;
+	        
+	        Cursor c2 = app.getDatabase().runQueryCursor(QuerysUtil.reportInvestimentsHistory(year));
+	        if (c2.moveToFirst()) {
+	        	do {
+	        		values = new ArrayList<SubcolumnValue>();
+	        		float valor = c2.getFloat(0);
+//	        		String month = c2.getString(1);
+	        		int month = Integer.parseInt(c2.getString(1));
+	        		System.out.println(month+" - "+c2.getString(1));
+//	        		dataset.addValue(valor, series1, month);
+	        		SubcolumnValue sub = new SubcolumnValue(valor, ChartUtils.COLOR_BLUE);
+	        		values.add(sub);   
+	        		axisValues.add(new AxisValue(i++).setLabel(getResources().getStringArray(R.array.months)[month-1]));
+	        		Column column = new Column(values);
+	        		columns.add(column);
+	        	} while (c2.moveToNext());
+	        }
 
-        Cursor c2 = app.getDatabase().runQueryCursor(QuerysUtil.reportInvestimentsHistory());
-        if (c2.moveToFirst()) {
-        	do {
-        		float valor = c2.getFloat(0);
-        		String month = c2.getString(1);
-        		dataset.addValue(valor, series1, month);
-        	} while (c2.moveToNext());
-        }
+	    	ColumnChartData data = new ColumnChartData(columns);
+	    	Axis axisX = new Axis(axisValues).setHasLines(true);
+	    	Axis axisY = new Axis().setHasLines(true);
+	    	axisX.setName(getResources().getString(R.string.report_aportes_axis_category));
+	    	axisY.setName(getResources().getString(R.string.report_aportes_axis_value));
+	    	axisX.setTextColor(Color.DKGRAY);
+	    	axisY.setTextColor(Color.DKGRAY);
+	    	data.setAxisXBottom(axisX);
+	    	data.setAxisYLeft(axisY);
+	    	
+	    	return data;
+		}catch(Exception e){
+			e.printStackTrace();
+			MessageUtils.showMessage(getActivity(), getString(R.string.dialog_error_message_title), getString(R.string.dialog_error_message_message));
+		}
     	
-    	
-        return dataset;
+    	return null;
     }
     
     @Override
