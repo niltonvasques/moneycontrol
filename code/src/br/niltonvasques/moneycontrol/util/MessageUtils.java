@@ -10,7 +10,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -23,7 +22,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.webkit.WebChromeClient.CustomViewCallback;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -37,13 +35,13 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import br.niltonvasques.moneycontrolbeta.R;
 import br.niltonvasques.moneycontrol.database.DatabaseHandler;
 import br.niltonvasques.moneycontrol.database.QuerysUtil;
 import br.niltonvasques.moneycontrol.database.bean.Ativo;
 import br.niltonvasques.moneycontrol.database.bean.CartaoCredito;
 import br.niltonvasques.moneycontrol.database.bean.CategoriaTransacao;
 import br.niltonvasques.moneycontrol.database.bean.Conta;
+import br.niltonvasques.moneycontrol.database.bean.Fatura;
 import br.niltonvasques.moneycontrol.database.bean.MovimentacaoAtivo;
 import br.niltonvasques.moneycontrol.database.bean.Orcamento;
 import br.niltonvasques.moneycontrol.database.bean.TipoConta;
@@ -51,6 +49,7 @@ import br.niltonvasques.moneycontrol.database.bean.TipoTransacao;
 import br.niltonvasques.moneycontrol.database.bean.Transacao;
 import br.niltonvasques.moneycontrol.view.adapter.CategoriaChooseAdapter;
 import br.niltonvasques.moneycontrol.view.adapter.IconeAdapter;
+import br.niltonvasques.moneycontrolbeta.R;
 
 @SuppressLint("NewApi")
 public class MessageUtils {
@@ -72,6 +71,10 @@ public class MessageUtils {
 		});
 		dialog.create();
 		dialog.show();
+	}
+	
+	public static void showDefaultErrorMessage(Context context){
+		MessageUtils.showMessage(context, context.getString(R.string.dialog_error_message_title), context.getString(R.string.dialog_error_message_message));
 	}
 	
 	public static void showMessageYesNo(Context context, String title, String message, DialogInterface.OnClickListener listener){
@@ -619,30 +622,37 @@ public class MessageUtils {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-				
-				
-				
 				try{
-					float valor = Float.valueOf(editValor.getText().toString());
-					t.setValor(valor);
-				}catch(Exception e){
+					SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");				
+					
+					try{
+						float valor = Float.valueOf(editValor.getText().toString());
+						t.setValor(valor);
+					}catch(Exception e){
+						e.printStackTrace();
+					}
+					
+					t.setDescricao(editDescricao.getText().toString());
+					
+					CategoriaTransacao cat = (CategoriaTransacao) spinnerCategoria.getSelectedItem();
+					if(cat != null){
+						t.setId_CategoriaTransacao(cat.getId());					
+					}
+					
+					Conta cc = (Conta) spinnerContas.getSelectedItem();
+					if(cc != null){
+						t.setId_Conta(cc.getId());					
+					}
+					
+					t.setData(format.format(value.getTime()));
+					
+					db.update(t);
+				}catch (Exception e){
 					e.printStackTrace();
+					MessageUtils.showDefaultErrorMessage(context);
 				}
-				
-				t.setDescricao(editDescricao.getText().toString());
-				
-				CategoriaTransacao cat = (CategoriaTransacao) spinnerCategoria.getSelectedItem();
-				t.setId_CategoriaTransacao(cat.getId());
-				
-				Conta cc = (Conta) spinnerContas.getSelectedItem();
-				t.setId_Conta(cc.getId());
-				
-				t.setData(format.format(value.getTime()));
-				
-				db.update(t);
-				
 				listener.onClick(dialog, which);
+				
 			}
 		});
 
@@ -823,6 +833,111 @@ public class MessageUtils {
 //				
 					tCredito.setDescricao("Transferência de "+cDebito.getNome());
 					tDebito.setDescricao("Transferência p/ "+cCredito.getNome());
+					
+					tCredito.setId_CategoriaTransacao(transfCatCredito.getId());
+					tDebito.setId_CategoriaTransacao(transfCatDebito.getId());
+					
+					tCredito.setData(format.format(value.getTime()));
+					tDebito.setData(format.format(value.getTime()));
+					
+					db.insert(tCredito);
+					db.insert(tDebito);
+				}catch(Exception e){
+					e.printStackTrace();
+					MessageUtils.showMessage(context, context.getResources().getString(R.string.error_title), context.getResources().getString(R.string.error_message));
+				}
+				
+				listener.onClick(dialog, which);
+			}
+		});
+
+	    alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+	        public void onClick(DialogInterface dialog, int whichButton) {
+	            dialog.cancel();
+	        }
+	    });
+	    
+	    
+		OnDateSetListener dateListener = new DatePickerDialog.OnDateSetListener() {
+
+			public void onDateSet(DatePicker view, int year, int monthOfYear,
+					int dayOfMonth) {
+				Calendar c = Calendar.getInstance();
+				c.set(Calendar.YEAR, year);
+				c.set(Calendar.MONTH, monthOfYear);
+				c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+				value.set(Calendar.YEAR, year);
+				value.set(Calendar.MONTH, monthOfYear);
+				value.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+				ViewUtil.adjustDateOnTextView(btnDate, value);
+
+			}
+		};
+
+		final DatePickerDialog dateDialog = new DatePickerDialog(context, dateListener, 
+				value.get(Calendar.YEAR), 
+				value.get(Calendar.MONTH), 
+				value.get(Calendar.DAY_OF_MONTH));
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
+			dateDialog.getDatePicker().setMaxDate(Calendar.getInstance().getTimeInMillis());
+		}
+
+		btnDate.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				dateDialog.show();				
+			}
+		});
+	    
+	    
+	    
+	    alert.show();        
+	}
+	
+	@SuppressLint("NewApi")
+	public static void showPagarFatura(final Context context, final LayoutInflater inflater, final DatabaseHandler db, final Fatura fatura, 
+			final Conta destino, final DialogInterface.OnClickListener listener){
+		final AlertDialog.Builder alert = new AlertDialog.Builder(context);
+		final View view = inflater.inflate(R.layout.pagar_fatura_dialog, null);
+	    alert.setView(view);
+	    
+	    final GregorianCalendar value = new GregorianCalendar();
+	    value.set(Calendar.DAY_OF_MONTH, fatura.getCartao().getDia_vencimento());
+	    value.set(Calendar.MONTH, fatura.getDate().get(Calendar.MONTH));	    
+	    final Button btnDate = (Button)view.findViewById(R.id.transferenciaDialogBtnData);
+	    ViewUtil.adjustDateOnTextView(btnDate, value);
+	    
+	    final Transacao tCredito = new Transacao();
+	    final Transacao tDebito = new Transacao();
+	    
+	    final CategoriaTransacao transfCatDebito = db.select(CategoriaTransacao.class, QuerysUtil.whereTransacaoTransferenciaDespesa()).get(0);
+	    final CategoriaTransacao transfCatCredito = db.select(CategoriaTransacao.class, QuerysUtil.whereTransacaoTransferenciaReceita()).get(0);
+	    
+	    final List<Conta> contas = db.select(Conta.class);
+	    
+	    final Spinner spinnerContasOrigem = (Spinner) view.findViewById(R.id.transferenciaDialogSpinnerContaOrigem);
+	    spinnerContasOrigem.setAdapter(new ArrayAdapter<Conta>(context, android.R.layout.simple_list_item_1, contas));
+	    spinnerContasOrigem.setSelection(0);
+	    final EditText editValor = (EditText) view.findViewById(R.id.transferenciaDialogEditTxtValor);
+	    editValor.setText(fatura.getValor()+"");
+	    
+	    alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+				try{
+					float valor = Float.valueOf(editValor.getText().toString());
+					tCredito.setValor(valor);
+					tDebito.setValor(valor);
+					
+					Conta cDebito = (Conta) spinnerContasOrigem.getSelectedItem();
+					tDebito.setId_Conta(cDebito.getId());
+					
+					tCredito.setId_Conta(destino.getId());
+//				
+					tCredito.setDescricao("Pago com "+cDebito.getNome());
+					tDebito.setDescricao("Pagamento da fatura: "+destino.getNome());
 					
 					tCredito.setId_CategoriaTransacao(transfCatCredito.getId());
 					tDebito.setId_CategoriaTransacao(transfCatDebito.getId());

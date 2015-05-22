@@ -1,42 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bootstrap="http://schemas.android.com/apk/res-auto"
+    xmlns:fontawesometext="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    
-    
-    <LinearLayout 
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:padding="10dp"
-        android:orientation="vertical">
-        
-        <TextView 
+        android:orientation="vertical"
+        android:padding="10dp" >
+
+        <TextView
             android:id="@+id/transacaoListItemTxtData"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:text="10/05/2013"/>
-        
-        <LinearLayout 
+            android:text="10/05/2013"
+            android:textSize="12sp" />
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            
-			<TextView 
-	            android:id="@+id/transacaoListItemTxtDescricao"
-	            android:layout_width="0dp"
-	            android:layout_height="wrap_content"
-	            android:layout_weight="8"
-	            android:textSize="18sp"
-	            android:text="Banco do Brasil"/>
-	            
-            <TextView 
-                android:id="@+id/transacaoListItemTxtValor"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/transacaoListItemTxtDescricao"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:textColor="#ff0000"
-                android:text="@string/default_currency_value"/>
+                android:layout_weight="8"
+                android:text="Banco do Brasil"
+                android:textSize="18sp" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3" >
+
+                <TextView
+                    android:id="@+id/transacaoListItemTxtValor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/default_currency_value"
+                    android:textColor="#ff0000" />
+
+                <com.beardedhen.androidbootstrap.FontAwesomeText
+                    android:id="@+id/transacaoListItemFontAwe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#ff0000"
+                    android:textSize="15sp"
+                    fontawesometext:fa_icon="fa-arrow-down" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+
 </RelativeLayout>

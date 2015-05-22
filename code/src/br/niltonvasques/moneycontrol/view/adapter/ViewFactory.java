@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import com.beardedhen.androidbootstrap.FontAwesomeText;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
@@ -38,6 +40,7 @@ public class ViewFactory {
 		TextView txtNome = (TextView) view.findViewById(R.id.transacaoListItemTxtDescricao);
 		TextView txtSaldo = (TextView) view.findViewById(R.id.transacaoListItemTxtValor);
 		TextView txtData = (TextView) view.findViewById(R.id.transacaoListItemTxtData);
+		FontAwesomeText fontAwesome = (FontAwesomeText) view.findViewById(R.id.transacaoListItemFontAwe);
 		
 		String tipo = app.getDatabase().runQuery(QuerysUtil.checkTipoTransacao(tr.getId()));
 		
@@ -47,6 +50,8 @@ public class ViewFactory {
 			txtSaldo.setTextColor(Color.RED);
 		}else{
 			txtSaldo.setTextColor(app.getResources().getColor(R.color.dark_green));
+			fontAwesome.setTextColor(app.getResources().getColor(R.color.dark_green));
+			fontAwesome.setIcon("fa-arrow-up");
 		}
 		
 		txtNome.setText(tr.getDescricao());

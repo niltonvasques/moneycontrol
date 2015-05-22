@@ -11,16 +11,19 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
-import br.niltonvasques.moneycontrolbeta.R;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
+import br.niltonvasques.moneycontrol.business.CartaoBusiness;
 import br.niltonvasques.moneycontrol.database.QuerysUtil;
 import br.niltonvasques.moneycontrol.database.bean.CartaoCredito;
 import br.niltonvasques.moneycontrol.database.bean.Conta;
+import br.niltonvasques.moneycontrol.database.bean.Fatura;
 import br.niltonvasques.moneycontrol.util.AssetUtil;
 import br.niltonvasques.moneycontrol.util.MessageUtils;
+import br.niltonvasques.moneycontrolbeta.R;
+
+import com.beardedhen.androidbootstrap.BootstrapButton;
+import com.beardedhen.androidbootstrap.BootstrapCircleThumbnail;
 
 public class ContaAdapter extends BaseAdapter{
 	
@@ -64,20 +67,21 @@ public class ContaAdapter extends BaseAdapter{
 		
 		View view = inflater.inflate(R.layout.conta_list_item, null);
 		
-		ImageView imgIcon = (ImageView) view.findViewById(R.id.contaListItemImgIcon);
-		TextView txtNome = (TextView) view.findViewById(R.id.contaListItemTxtNome);
-		TextView txtSaldo = (TextView) view.findViewById(R.id.contaListItemTxtSaldo);
-		TextView txtDebitos = (TextView) view.findViewById(R.id.contaListItemTxtDebitos);
-		TextView txtCreditos = (TextView) view.findViewById(R.id.contaListItemTxtCreditos);
+		BootstrapCircleThumbnail imgIcon = (BootstrapCircleThumbnail) view.findViewById(R.id.contaListItemImgIcon);
+		final TextView txtNome = (TextView) view.findViewById(R.id.contaListItemTxtNome);
+		final TextView txtSaldo = (TextView) view.findViewById(R.id.contaListItemTxtSaldo);
+		final TextView txtDebitos = (TextView) view.findViewById(R.id.contaListItemTxtDebitos);
+		final TextView txtCreditos = (TextView) view.findViewById(R.id.contaListItemTxtCreditos);
 		
 		txtNome.setText(cc.getNome());
 		try {
-			imgIcon.setImageDrawable(AssetUtil.loadDrawableFromAsset(app, "icons/"+cc.getIcon()));
+//			imgIcon.setImageDrawable();
+			imgIcon.setImage(AssetUtil.loadBitmapFromAsset(app, "icons/"+cc.getIcon()));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
-		Button btnEditConta = (Button) view.findViewById(R.id.contaListItemBtnEditConta);
+		BootstrapButton btnEditConta = (BootstrapButton) view.findViewById(R.id.contaListItemBtnEditConta);
 		btnEditConta.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -100,9 +104,13 @@ public class ContaAdapter extends BaseAdapter{
 		float creditoSum = 0;
 		
 		if(cc.getId_TipoConta() == 4){
+			
 			cartao = app.getDatabase().select(CartaoCredito.class, " WHERE id_Conta = "+cc.getId()).get(0);
 			cartaoDateRange = (GregorianCalendar)dateRange.clone();
-			cartaoDateRange.add(GregorianCalendar.MONTH, -2);
+			if(cartao.getDia_fechamento() <= cartao.getDia_vencimento())
+				cartaoDateRange.add(GregorianCalendar.MONTH, -2);
+			else
+				cartaoDateRange.add(GregorianCalendar.MONTH, -3);
 			cartaoDateRange.set(GregorianCalendar.DAY_OF_MONTH, cartao.getDia_fechamento());
 			range = cartaoDateRange.getTime();
 			cartaoDateRange.add(GregorianCalendar.MONTH, 1);
@@ -121,18 +129,43 @@ public class ContaAdapter extends BaseAdapter{
 		
 		
 		if(cc.getId_TipoConta() == 4){
-			String pagamentos = app.getDatabase().runQuery(QuerysUtil.getPagamentoFaturaCartao(cc.getId(),cartaoDateRange.getTime()));
-			float pagsF = 0;
-			if(pagamentos != null && pagamentos.length() > 0 ) pagsF = Float.valueOf(pagamentos);
+			final Fatura f1 = CartaoBusiness.computeFatura(app.getDatabase(), cartao, cartaoDateRange);
 			
-			float fatura = saldoAnterior;
-			String cartaoSaldo = app.getDatabase().runQuery(QuerysUtil.computeSaldoConta(cc.getId()));
-			float limite = Float.valueOf(cartaoSaldo);
-			limite = cartao.getLimite()-( limite > 0 ? 0 : Math.abs(limite));
+			final BootstrapButton btnPagarConta = (BootstrapButton) view.findViewById(R.id.contaListItemBtnPagarFatura);
+			btnPagarConta.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					f1.setDate(dateRange);
+					MessageUtils.showPagarFatura(inflater.getContext(), inflater, app.getDatabase(), f1, cc, new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							btnPagarConta.setVisibility(View.GONE);
+							txtSaldo.setText(R.string.contas_fragment_fatura_status_paga);	
+						}
+					});
+				}
+			});			
 			
-			txtCreditos.setText("limite: R$ "+String.format("%.2f",limite));
-			txtDebitos.setText("fatura: R$ "+String.format("%.2f",fatura));
-			txtSaldo.setText((pagsF > 0) || (fatura <= 0) ? "paga" : "pendente");
+			txtCreditos.setText("limite: R$ "+String.format("%.2f",f1.getLimite()));
+			txtDebitos.setText("fatura: R$ "+String.format("%.2f",f1.getValor()));
+			
+			switch (f1.getStatus()) {
+			case PAGA:
+				txtSaldo.setText(R.string.contas_fragment_fatura_status_paga);				
+				break;
+				
+			case PENDENTE:
+				btnPagarConta.setVisibility(View.VISIBLE);
+				txtSaldo.setText(R.string.contas_fragment_fatura_status_pendente);
+				break;
+				
+			case NENHUM:
+				txtSaldo.setText("-");
+				break;		
+
+			default:
+				break;
+			}
 		}else{
 			txtCreditos.setText("R$ "+String.format("%.2f",creditoSum));
 			txtDebitos.setText("R$ "+String.format("%.2f",debitoSum));

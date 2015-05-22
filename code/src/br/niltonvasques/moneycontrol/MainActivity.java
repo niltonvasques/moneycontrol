@@ -3,8 +3,6 @@ package br.niltonvasques.moneycontrol;
 import java.util.GregorianCalendar;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
