@@ -104,15 +104,16 @@ public class ContaAdapter extends BaseAdapter{
 			range = cartaoDateRange.getTime();
 			cartaoDateRange.add(GregorianCalendar.MONTH, 1);
 			
-			final CartaoCredito cartaoFinal = cartao;
 			btnEditConta.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
+					final CartaoCredito cartaoFinal = app.getDatabase().select(CartaoCredito.class, " WHERE id_Conta = "+cc.getId()).get(0);
 					MessageUtils.showEditCartaoCredito(inflater.getContext(), cc, cartaoFinal, inflater, app.getDatabase(), new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							contas.clear();
 							contas.addAll(app.getDatabase().select(Conta.class));
+							notifyDataSetChanged();
 						}
 					});				
 				}
@@ -128,6 +129,7 @@ public class ContaAdapter extends BaseAdapter{
 						public void onClick(DialogInterface dialog, int which) {
 							contas.clear();
 							contas.addAll(app.getDatabase().select(Conta.class));
+							notifyDataSetChanged();
 						}
 					});				
 				}
