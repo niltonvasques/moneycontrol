@@ -19,6 +19,6 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- Default text encoding for WebSettings. -->
-    <string name="app_version">0.2.1-alpha</string>
+    <string name="app_version">0.2.2-alpha</string>
     
 </resources>

@@ -182,7 +182,7 @@
     
     <!-- Change Dialog -->
     <string name="news_change_dialog_title">Novidades da versão</string>
-	<string name="news_change_dialog_body">- Resolvido o problema de criar novas categorias.\n- Removido a possibilidade de alteração do tipo de uma conta.</string>
+	<string name="news_change_dialog_body">- Corrigido o cálculo da fatura do cartão.\n- Melhorado o layout da tela principal.\n- Adicionado botão para pagamento da fatura do cartão.\n- Melhorado o gráfico dos relatórios.</string>
     
 	<!--  Error Dialog -->
 	<string name="dialog_error_message_title">Atenção!</string>
