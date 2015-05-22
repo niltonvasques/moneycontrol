@@ -47,6 +47,7 @@
     <string name="add_conta_dialog_title">Adicionar Conta</string>
     <string name="add_conta_dialog_nome_hint">nome da conta</string>
     <string name="add_conta_dialog_saldo_hint">saldo inicial</string>
+    <string name="add_conta_dialog_icon_choose_message">Escolha um ícone!</string>
     <string-array name="add_conta_dialog_days">
         <item>1</item>
         <item>2</item>
@@ -80,6 +81,12 @@
     
     <!-- Editar Conta -->
     <string name="edit_conta_dialog_title">Editar Conta</string>
+    
+    <!-- Editar Cartao -->
+    <string name="edit_cartao_dialog_title">Editar Cartão de Crédito</string>
+    <string name="edit_cartao_dialog_close_date">Fechamento:</string>
+    <string name="edit_cartao_dialog_expire_date">Vencimento:</string>
+    
     
     <!-- add_transacao_dialog.xml -->
     <string name="add_transacao_dialog_title">Adicionar Transação</string>
@@ -146,6 +153,7 @@
     <string name="add_ativo_dialog_vencimento">Vencimento:</string>
     <string name="add_ativo_dialog_conta">Conta:</string>
     <string name="add_ativo_dialog_quantidade">Quantidade:</string>
+    <string name="add_ativo_dialog_message_error">Não foi possível realizar o investimento!</string>
     
      <!-- add_fechamento_ativo_dialog.xml -->
     <string name="add_fechamento_ativo_dialog_title">Movimentação Ativo</string>

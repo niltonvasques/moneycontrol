@@ -82,18 +82,7 @@ public class ContaAdapter extends BaseAdapter{
 		}
 		
 		BootstrapButton btnEditConta = (BootstrapButton) view.findViewById(R.id.contaListItemBtnEditConta);
-		btnEditConta.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				MessageUtils.showEditConta(inflater.getContext(), cc, inflater, app.getDatabase(), new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						contas.clear();
-						contas.addAll(app.getDatabase().select(Conta.class));
-					}
-				});				
-			}
-		});
+		
 		
 		Date range = dateRange.getTime();
 		GregorianCalendar cartaoDateRange = null;
@@ -114,9 +103,37 @@ public class ContaAdapter extends BaseAdapter{
 			cartaoDateRange.set(GregorianCalendar.DAY_OF_MONTH, cartao.getDia_fechamento());
 			range = cartaoDateRange.getTime();
 			cartaoDateRange.add(GregorianCalendar.MONTH, 1);
+			
+			btnEditConta.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					final CartaoCredito cartaoFinal = app.getDatabase().select(CartaoCredito.class, " WHERE id_Conta = "+cc.getId()).get(0);
+					MessageUtils.showEditCartaoCredito(inflater.getContext(), cc, cartaoFinal, inflater, app.getDatabase(), new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							contas.clear();
+							contas.addAll(app.getDatabase().select(Conta.class));
+							notifyDataSetChanged();
+						}
+					});				
+				}
+			});
 		}else{
 			creditos = app.getDatabase().runQuery(QuerysUtil.sumTransacoesCreditoFromContaWithDateInterval(cc.getId(),range));
 			if(creditos != null && creditos.length() > 0) creditoSum = Float.valueOf(creditos);
+			btnEditConta.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					MessageUtils.showEditConta(inflater.getContext(), cc, inflater, app.getDatabase(), new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							contas.clear();
+							contas.addAll(app.getDatabase().select(Conta.class));
+							notifyDataSetChanged();
+						}
+					});				
+				}
+			});
 		}		
 		
 		debitos = app.getDatabase().runQuery(QuerysUtil.sumTransacoesDebitoFromContaWithDateInterval(cc.getId(),range));
