@@ -7,3 +7,5 @@ assets/db/apps
 *.swp
 money-db
 *.swo
+.gradle
+.idea
