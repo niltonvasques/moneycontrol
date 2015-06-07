@@ -1,0 +1,39 @@
+apply plugin: 'com.android.application'
+
+android {
+    signingConfigs {
+        release
+    }
+    compileSdkVersion 22
+    buildToolsVersion "23.0.0 rc2"
+    defaultConfig {
+        applicationId "br.niltonvasques.moneycontrolbeta"
+        minSdkVersion 11
+        targetSdkVersion 17
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            signingConfig signingConfigs.release
+        }
+    }
+}
+
+dependencies {
+    compile project(':androidBootstrap')
+    compile 'com.android.support:appcompat-v7:18.0.0'
+    compile files('libs/hellocharts-library-1.5.5.jar')
+}
+
+
+// specify signing properties on the command line
+if (hasProperty('storeFile')) {
+    println 'Generating a signed package.'
+    android.signingConfigs.release.storeFile = file(storeFile)
+    android.signingConfigs.release.storePassword = storePassword
+    android.signingConfigs.release.keyAlias = keyAlias
+    android.signingConfigs.release.keyPassword = keyPassword
+} else {
+    android.buildTypes.release.signingConfig = null
+}
