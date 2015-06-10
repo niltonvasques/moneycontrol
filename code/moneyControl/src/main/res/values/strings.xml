@@ -202,7 +202,11 @@
 	
 	<!-- pagar_fatura_dialog_title -->
 	<string name="pagar_fatura_dialog_title">Pagar Fatura</string>
-
+    <string name="add_transacao_dialog_parcelar">Parcelar?</string>
+    <string name="add_transacao_dialog_parcelas">Parcelas:</string>
+    <string name="transacoes_message_title">Atenção!</string>
+    <string name="fragment_transacoes_remove_transacao_message">Deseja excluir esta transação?</string>
+    <string name="fragment_transacoes_remove_parcelas_message">Deseja excluir todas as parcelas?</string>
 
 
 </resources>

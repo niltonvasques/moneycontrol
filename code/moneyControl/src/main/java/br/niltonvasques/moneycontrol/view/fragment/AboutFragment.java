@@ -5,6 +5,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import br.niltonvasques.moneycontrol.MainActivity;
+import br.niltonvasques.moneycontrol.activity.NVFragmentActivity;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
 import br.niltonvasques.moneycontrol.database.DatabaseHandler;
 import br.niltonvasques.moneycontrolbeta.R;
@@ -25,8 +28,14 @@ public class AboutFragment extends Fragment{
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 	}
-	
-	
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		((NVFragmentActivity)getActivity()).getSupportActionBar().setIcon(R.drawable.ic_launcher);
+		((NVFragmentActivity)getActivity()).getSupportActionBar().setTitle(getResources().getStringArray(R.array.menu_array)[MainActivity.RELATORIOS_ITEM_MENU]);
+	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {

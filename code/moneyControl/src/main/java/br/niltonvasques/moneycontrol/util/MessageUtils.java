@@ -18,15 +18,21 @@ import android.app.DatePickerDialog.OnDateSetListener;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -40,6 +46,7 @@ import br.niltonvasques.moneycontrol.database.QuerysUtil;
 import br.niltonvasques.moneycontrol.database.bean.Ativo;
 import br.niltonvasques.moneycontrol.database.bean.CartaoCredito;
 import br.niltonvasques.moneycontrol.database.bean.CategoriaTransacao;
+import br.niltonvasques.moneycontrol.database.bean.Compra;
 import br.niltonvasques.moneycontrol.database.bean.Conta;
 import br.niltonvasques.moneycontrol.database.bean.Fatura;
 import br.niltonvasques.moneycontrol.database.bean.MovimentacaoAtivo;
@@ -128,23 +135,23 @@ public class MessageUtils {
 		}
 		imgIcon.setOnClickListener(new OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
-				Toast.makeText(context, context.getString(R.string.add_conta_dialog_icon_choose_message), Toast.LENGTH_LONG).show();
-				showIconesDialog(context, inflater, new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						try {
-							imgIcon.setImageDrawable(AssetUtil.loadDrawableFromAsset(context, "icons/"+icons[which]));
-							cc.setIcon(icons[which]);
-						}catch(Exception e){
-							e.printStackTrace();
-							MessageUtils.showDefaultErrorMessage(context);
-						}
-					}
-				});
-			}
-		});
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, context.getString(R.string.add_conta_dialog_icon_choose_message), Toast.LENGTH_LONG).show();
+                showIconesDialog(context, inflater, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        try {
+                            imgIcon.setImageDrawable(AssetUtil.loadDrawableFromAsset(context, "icons/" + icons[which]));
+                            cc.setIcon(icons[which]);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            MessageUtils.showDefaultErrorMessage(context);
+                        }
+                    }
+                });
+            }
+        });
 
 		HashMap<String, String> teste = new HashMap<String, String>();
 		ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String, String>>();
@@ -155,22 +162,22 @@ public class MessageUtils {
 
 		final Spinner spinnerTipos = (Spinner) view.findViewById(R.id.addContaDialogSpinnerTipo);
 		spinnerTipos.setAdapter(new ArrayAdapter<TipoConta>(context, android.R.layout.simple_list_item_1, tipos));
-		spinnerTipos.setOnItemSelectedListener( new OnItemSelectedListener() {
+		spinnerTipos.setOnItemSelectedListener(new OnItemSelectedListener() {
 
-			@Override
-			public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long arg3) {
-				TipoConta tipo = (TipoConta)arg0.getItemAtPosition(position);
-				if(tipo.getId() == 4){ //Cartão de Crédito
-					view.findViewById(R.id.addContaDialogLayoutCartaoCredito).setVisibility(View.VISIBLE);
-				}else{
-					view.findViewById(R.id.addContaDialogLayoutCartaoCredito).setVisibility(View.GONE);
-				}
-			}
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long arg3) {
+                TipoConta tipo = (TipoConta) arg0.getItemAtPosition(position);
+                if (tipo.getId() == 4) { //Cartão de Crédito
+                    view.findViewById(R.id.addContaDialogLayoutCartaoCredito).setVisibility(View.VISIBLE);
+                } else {
+                    view.findViewById(R.id.addContaDialogLayoutCartaoCredito).setVisibility(View.GONE);
+                }
+            }
 
-			@Override
-			public void onNothingSelected(AdapterView<?> arg0) {
-			}
-		});
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+            }
+        });
 
 
 		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -280,7 +287,7 @@ public class MessageUtils {
 		final EditText editNome = (EditText) view.findViewById(R.id.editContaDialogEditTxtNome);
 		editNome.setText(conta.getNome());
 		final EditText editSaldo = (EditText) view.findViewById(R.id.editContaDialogEditTxtSaldo);
-		editSaldo.setText(conta.getSaldo()+"");
+		editSaldo.setText(conta.getSaldo() + "");
 
 		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 
@@ -336,12 +343,12 @@ public class MessageUtils {
 
 			@Override
 			public void onClick(View v) {
-				Toast.makeText(context,context.getString(R.string.add_conta_dialog_icon_choose_message), Toast.LENGTH_LONG).show();
+				Toast.makeText(context, context.getString(R.string.add_conta_dialog_icon_choose_message), Toast.LENGTH_LONG).show();
 				showIconesDialog(context, inflater, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						try {
-							imgIcon.setImageDrawable(AssetUtil.loadDrawableFromAsset(context, "icons/"+icons[which]));
+							imgIcon.setImageDrawable(AssetUtil.loadDrawableFromAsset(context, "icons/" + icons[which]));
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
@@ -354,14 +361,14 @@ public class MessageUtils {
 		final EditText editNome = (EditText) view.findViewById(R.id.editCartaoDialogEditTxtNome);
 		editNome.setText(conta.getNome());
 		final EditText editSaldo = (EditText) view.findViewById(R.id.editCartaoDialogEditTxtSaldo);
-		editSaldo.setText(conta.getSaldo()+"");
+		editSaldo.setText(conta.getSaldo() + "");
 		final EditText editTxtLimite = (EditText) view.findViewById(R.id.editCartaoDialogEditTxtLimite);
 		final Spinner spinnerFechamento = (Spinner) view.findViewById(R.id.editCartaoDialogSpinnerFechamento);
 		final Spinner spinnerVencimento = (Spinner) view.findViewById(R.id.editCartaoDialogSpinnerVencimento);
 
 		editTxtLimite.setText(cartao.getLimite()+"");
-		spinnerFechamento.setSelection(cartao.getDia_fechamento()-1);
-		spinnerVencimento.setSelection(cartao.getDia_vencimento()-1);
+		spinnerFechamento.setSelection(cartao.getDia_fechamento() - 1);
+		spinnerVencimento.setSelection(cartao.getDia_vencimento() - 1);
 
 		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 
@@ -379,7 +386,7 @@ public class MessageUtils {
 					limite = Float.valueOf(editTxtLimite.getText().toString());
 					cartao.setLimite(limite);
 					cartao.setDia_fechamento(Integer.valueOf(Integer.valueOf((String)spinnerFechamento.getSelectedItem())));
-					cartao.setDia_vencimento(Integer.valueOf(Integer.valueOf((String)spinnerVencimento.getSelectedItem())));
+					cartao.setDia_vencimento(Integer.valueOf(Integer.valueOf((String) spinnerVencimento.getSelectedItem())));
 					db.update(conta);
 					db.update(cartao);
 
@@ -416,15 +423,15 @@ public class MessageUtils {
 
 		grid.setOnItemClickListener(new OnItemClickListener() {
 
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
-					long arg3) {
-				grid.setTag(position);
-				listener.onClick(alertDialog, (Integer)grid.getTag());
-				alertDialog.cancel();
-			}
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+                                    long arg3) {
+                grid.setTag(position);
+                listener.onClick(alertDialog, (Integer) grid.getTag());
+                alertDialog.cancel();
+            }
 
-		});
+        });
 
 
 		//	    alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -458,6 +465,45 @@ public class MessageUtils {
 		return null;
 	}
 
+	private static class Parcelas{
+		private float valor = 0;
+		private int quantidade = 1;
+
+        public Parcelas(float valor, int qtd){
+            this.valor = valor;
+            this.quantidade = qtd;
+        }
+
+		public float getValor(){
+			return valor;
+		}
+
+        public void setValor(float valor){
+			this.valor = valor;
+		}
+
+        public int getQuantidade(){
+			return quantidade;
+		}
+
+        public void setQuantidade(int qtd){
+			this.quantidade = qtd;
+		}
+
+        public float getValorTotal(){
+			return valor * quantidade;
+		}
+
+        public void setValorTotal(float valorTotal){
+            this.valor = valorTotal / this.quantidade;
+        }
+
+		@Override
+		public String toString() {
+			return quantidade+"X R$ "+MathUtil.round(valor, 2);
+		}
+	}
+
 	@SuppressLint("NewApi")
 	public static void showAddTransacao(final Context context, final LayoutInflater inflater, final DatabaseHandler db, int idConta, final DialogInterface.OnClickListener listener){
 		final AlertDialog.Builder alert = new AlertDialog.Builder(context);
@@ -482,6 +528,51 @@ public class MessageUtils {
 				break;
 			}
 		}
+
+        final List<Parcelas> parcelasList = new ArrayList<Parcelas>();
+        for(int i = 1; i <= 36; i++){
+            parcelasList.add(new Parcelas(0, i));
+        }
+
+        final ArrayAdapter<Parcelas> parcelasAdapter = new ArrayAdapter<Parcelas>(context, android.R.layout.simple_list_item_1, parcelasList);
+        final Spinner spinnerParcelas = (Spinner) view.findViewById(R.id.addTransacaoDialogSpinnerParcelas);
+        spinnerParcelas.setAdapter(parcelasAdapter);
+
+		final CheckBox chkBoxParcelar = (CheckBox) view.findViewById(R.id.addTransacaoDialogCheckBoxParcelas);
+		chkBoxParcelar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    view.findViewById(R.id.addTransacaoDialogLayoutParcelas).setVisibility(View.VISIBLE);
+                } else {
+                    view.findViewById(R.id.addTransacaoDialogLayoutParcelas).setVisibility(View.GONE);
+                }
+            }
+        });
+
+        final EditText editValor = (EditText) view.findViewById(R.id.addTransacaoDialogEditTxtValor);
+        editValor.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                try {
+                    float valor = Float.valueOf(editValor.getText().toString());
+                    for (Parcelas p : parcelasList) {
+                        p.setValorTotal(valor);
+                    }
+                    parcelasAdapter.notifyDataSetChanged();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
 		final Spinner spinnerTipos = (Spinner) view.findViewById(R.id.addTransacaoDialogSpinnerTipo);
 		spinnerTipos.setAdapter(new ArrayAdapter<TipoTransacao>(context, android.R.layout.simple_list_item_1, tipos));
@@ -533,27 +624,46 @@ public class MessageUtils {
 				try{
 					SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
-					EditText editValor = (EditText) view.findViewById(R.id.addTransacaoDialogEditTxtValor);
 					EditText editDescricao = (EditText) view.findViewById(R.id.addTransacaoDialogEditTxtDescrição);
+                    CategoriaTransacao cat = (CategoriaTransacao) spinnerCategoria.getSelectedItem();
+                    Conta cc = (Conta) spinnerContas.getSelectedItem();
 
-					try{
-						float valor = Float.valueOf(editValor.getText().toString());
-						t.setValor(valor);
-					}catch(Exception e){
-						e.printStackTrace();
-					}
-
-					t.setDescricao(editDescricao.getText().toString());
-
-					CategoriaTransacao cat = (CategoriaTransacao) spinnerCategoria.getSelectedItem();
-					t.setId_CategoriaTransacao(cat.getId());
-
-					Conta cc = (Conta) spinnerContas.getSelectedItem();
-					t.setId_Conta(cc.getId());
-
-					t.setData(format.format(value.getTime()));
-
-					db.insert(t);
+                    float valor = Float.valueOf(editValor.getText().toString());
+                    if(chkBoxParcelar.isChecked()){
+                        Parcelas p = (Parcelas)spinnerParcelas.getSelectedItem();
+                        Compra compra = new Compra();
+                        compra.setData(format.format(value.getTime()));
+                        compra.setDescricao(editDescricao.getText().toString());
+                        compra.setId_CategoriaTransacao(cat.getId());
+                        compra.setId_Conta(cc.getId());
+                        compra.setParcelas(p.getQuantidade());
+                        compra.setValor(valor);
+                        db.insert(compra);
+                        double total = 0;
+                        double prestacao = MathUtil.round(p.getValor(), 2);
+                        for(int i = 1; i <= p.getQuantidade(); i++){
+                            total += prestacao;
+                            if(total > valor){
+                                prestacao -= Math.abs(total-valor);
+                            }
+                            Transacao tr = new Transacao();
+                            tr.setValor((float)prestacao);
+                            tr.setDescricao(compra.getDescricao() + " " + i + "/" + p.getQuantidade());
+                            tr.setId_CategoriaTransacao(compra.getId_CategoriaTransacao());
+                            tr.setId_Conta(compra.getId_Conta());
+                            tr.setData(format.format(value.getTime()));
+                            tr.setId_Compra(compra.getId());
+                            db.insert(tr);
+                            value.add(Calendar.MONTH, 1);
+                        }
+                    }else {
+                        t.setValor(valor);
+                        t.setDescricao(editDescricao.getText().toString());
+                        t.setId_CategoriaTransacao(cat.getId());
+                        t.setId_Conta(cc.getId());
+                        t.setData(format.format(value.getTime()));
+                        db.insert(t);
+                    }
 				}catch(Exception e){
 					e.printStackTrace();
 					MessageUtils.showDefaultErrorMessage(context);
@@ -712,7 +822,7 @@ public class MessageUtils {
 
 		final EditText editValor = (EditText) view.findViewById(R.id.addTransacaoDialogEditTxtValor);
 		final EditText editDescricao = (EditText) view.findViewById(R.id.addTransacaoDialogEditTxtDescrição);
-		editValor.setText(t.getValor()+"");
+		editValor.setText(t.getValor() + "");
 		editDescricao.setText(t.getDescricao());		
 
 		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {

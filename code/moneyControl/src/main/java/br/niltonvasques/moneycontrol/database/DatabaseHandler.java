@@ -257,7 +257,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 	public boolean deleteConta(Conta cc) {
 		SQLiteDatabase db = this.getWritableDatabase();
 
-		int count = db.delete("Conta", "id = "+cc.getId(), null);
+		int count = db.delete("Conta", "id = " + cc.getId(), null);
 
 		db.close();
 		return count > 0;
@@ -289,6 +289,23 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 
 		return count > 0;
 	}
+
+    public <T> boolean delete(T cc, String where) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+
+        int count = 0;
+        try {
+
+            count = db.delete(cc.getClass().getSimpleName(), where, null);
+
+            db.close();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+
+        return count > 0;
+    }
 
 	public <T> List<T> select(Class<T> type){
 

@@ -19,6 +19,9 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import br.niltonvasques.moneycontrol.MainActivity;
+import br.niltonvasques.moneycontrol.activity.NVFragmentActivity;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
 import br.niltonvasques.moneycontrol.database.DatabaseHandler;
 import br.niltonvasques.moneycontrol.database.QuerysUtil;
@@ -117,7 +120,14 @@ public class OrcamentoFragment extends Fragment{
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 	}
-	
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		((NVFragmentActivity)getActivity()).getSupportActionBar().setIcon(R.drawable.ic_launcher);
+		((NVFragmentActivity)getActivity()).getSupportActionBar().setTitle(getResources().getStringArray(R.array.menu_array)[MainActivity.ORCAMENTO_ITEM_MENU]);
+	}
+
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.main_activity_actions, menu);

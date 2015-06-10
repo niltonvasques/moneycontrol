@@ -31,6 +31,8 @@ import android.widget.Toast;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import br.niltonvasques.moneycontrol.database.bean.Compra;
 import br.niltonvasques.moneycontrolbeta.R;
 import br.niltonvasques.moneycontrol.activity.NVFragmentActivity;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
@@ -163,11 +165,20 @@ public class TransacoesByContaFragment extends Fragment{
 
 			public boolean onItemLongClick(android.widget.AdapterView<?> arg0, View arg1, final int position, long arg3) {
 				longClick = true;
-				MessageUtils.showMessageYesNo(getActivity(), "Atenção!", "Deseja excluir esta transação?", new OnClickListener() {
+                final Transacao t = transacoes.get(position);
+                final boolean parcelado = t.getId_Compra() > 0;
+				MessageUtils.showMessageYesNo(getActivity(), app.getString(R.string.transacoes_message_title),
+                        app.getString( parcelado ? R.string.fragment_transacoes_remove_parcelas_message : R.string.fragment_transacoes_remove_transacao_message), new OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						Transacao t = transacoes.get(position);
-						db.delete(t);
+						if(parcelado){
+							db.delete(t, "id_Compra = "+t.getId_Compra());
+                            Compra compra = new Compra();
+                            compra.setId(t.getId_Compra());
+                            db.delete(compra);
+						}else {
+							db.delete(t);
+						}
 						update();
 					}
 				}, new DialogInterface.OnDismissListener() {					
