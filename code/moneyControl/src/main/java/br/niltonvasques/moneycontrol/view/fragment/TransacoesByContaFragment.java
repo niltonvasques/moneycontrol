@@ -309,13 +309,13 @@ public class TransacoesByContaFragment extends Fragment{
             range = cartaoDateRange;
         }
 
-		String debitos = db.runQuery(QuerysUtil.sumTransacoesDebitoFromContaWithDateInterval(idConta,cartaoDateRange.getTime()));
-		String creditos = db.runQuery(QuerysUtil.sumTransacoesCreditoFromContaWithDateInterval(idConta,cartaoDateRange.getTime()));
+		String debitos = db.runQuery(QuerysUtil.sumTransacoesDebitoFromContaWithDateInterval(idConta,range.getTime()));
+		String creditos = db.runQuery(QuerysUtil.sumTransacoesCreditoFromContaWithDateInterval(idConta,range.getTime()));
 
 		if(debitos != null && debitos.length() > 0)  debitoSum = Float.valueOf(debitos);
 		if(creditos != null && creditos.length() > 0) creditoSum = Float.valueOf(creditos);
 
-		String saldo = db.runQuery(QuerysUtil.computeSaldoFromContaBeforeDate(idConta,cartaoDateRange.getTime()));
+		String saldo = db.runQuery(QuerysUtil.computeSaldoFromContaBeforeDate(idConta,range.getTime()));
 		float saldoAnterior = 0;
 		if(saldo != null && saldo.length() > 0) saldoAnterior = Float.valueOf(saldo);
 
