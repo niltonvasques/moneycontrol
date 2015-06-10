@@ -77,7 +77,8 @@ public class ContaAdapter extends BaseAdapter{
 		try {
 //			imgIcon.setImageDrawable();
 			imgIcon.setImage(AssetUtil.loadBitmapFromAsset(app, "icons/"+cc.getIcon()));
-		} catch (IOException e) {
+		} catch (Exception e) {
+			System.out.println("icon: "+cc.getIcon());
 			e.printStackTrace();
 		}
 		
