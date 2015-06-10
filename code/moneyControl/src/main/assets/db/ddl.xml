@@ -63,7 +63,7 @@
 <datatype>DECIMAL</datatype>
 <default>NULL</default></row>
 <row name="icon" null="1" autoincrement="0">
-<datatype>VARCHAR(100)</datatype>
+<datatype>VARCHAR(200)</datatype>
 <default>NULL</default></row>
 <row name="id_TipoConta" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
@@ -98,6 +98,13 @@
 <row name="descricao" null="1" autoincrement="0">
 <datatype>VARCHAR</datatype>
 <default>NULL</default></row>
+<row name="id_Compra" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="Compra" row="id" />
+</row>
+<row name="executada" null="0" autoincrement="0">
+<datatype>bit</datatype>
+<default>1</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
@@ -222,7 +229,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="798" y="497" name="DespesasFuturas">
+<table x="791" y="590" name="DespesasFuturas">
 <row name="id" null="0" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -260,6 +267,34 @@
 <row name="valor" null="0" autoincrement="0">
 <datatype>DECIMAL</datatype>
 <default>NULL</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="616" y="347" name="Compra">
+<row name="id" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="valor" null="1" autoincrement="0">
+<datatype>DECIMAL</datatype>
+<default>NULL</default></row>
+<row name="parcelas" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>1</default></row>
+<row name="data" null="0" autoincrement="0">
+<datatype>DATE</datatype>
+<default>'NULL'</default></row>
+<row name="descricao" null="1" autoincrement="0">
+<datatype>VARCHAR</datatype>
+<default>NULL</default></row>
+<row name="id_Conta" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="Conta" row="id" />
+</row>
+<row name="id_CategoriaTransacao" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="CategoriaTransacao" row="id" />
+</row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
