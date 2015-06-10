@@ -51,36 +51,6 @@
     <string name="add_conta_dialog_nome_hint">nome da conta</string>
     <string name="add_conta_dialog_saldo_hint">saldo inicial</string>
     <string name="add_conta_dialog_icon_choose_message">Escolha um ícone!</string>
-    <string-array name="add_conta_dialog_days">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
-        <item>7</item>
-        <item>8</item>
-        <item>9</item>
-        <item>10</item>
-        <item>11</item>
-        <item>12</item>
-        <item>13</item>
-        <item>14</item>
-        <item>15</item>
-        <item>16</item>
-        <item>17</item>
-        <item>18</item>
-        <item>19</item>
-        <item>20</item>
-        <item>21</item>
-        <item>22</item>
-        <item>23</item>
-        <item>24</item>
-        <item>25</item>
-        <item>26</item>
-        <item>27</item>
-        <item>28</item>
-    </string-array>
     
     <!-- Editar Conta -->
     <string name="edit_conta_dialog_title">Editar Conta</string>
@@ -194,7 +164,7 @@
     
     <!-- Change Dialog -->
     <string name="news_change_dialog_title">Novidades da versão</string>
-	<string name="news_change_dialog_body">-Adicionado a possibilidade de edição das datas do cartão.\n- Corrigido o cálculo da fatura do cartão.\n- Melhorado o layout da tela principal.\n- Adicionado botão para pagamento da fatura do cartão.\n- Melhorado o gráfico dos relatórios.</string>
+	<string name="news_change_dialog_body">-Permitido parcelar compras.\n-Adicionado a possibilidade de edição das datas do cartão.\n- Corrigido o cálculo da fatura do cartão.\n- Melhorado o layout da tela principal.\n- Adicionado botão para pagamento da fatura do cartão.\n- Melhorado o gráfico dos relatórios.</string>
     
 	<!--  Error Dialog -->
 	<string name="dialog_error_message_title">Atenção!</string>
@@ -202,7 +172,11 @@
 	
 	<!-- pagar_fatura_dialog_title -->
 	<string name="pagar_fatura_dialog_title">Pagar Fatura</string>
-
+    <string name="add_transacao_dialog_parcelar">Parcelar?</string>
+    <string name="add_transacao_dialog_parcelas">Parcelas:</string>
+    <string name="transacoes_message_title">Atenção!</string>
+    <string name="fragment_transacoes_remove_transacao_message">Deseja excluir esta transação?</string>
+    <string name="fragment_transacoes_remove_parcelas_message">Deseja excluir todas as parcelas?</string>
 
 
 </resources>

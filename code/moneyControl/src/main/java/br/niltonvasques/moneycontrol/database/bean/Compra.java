@@ -1,16 +1,15 @@
 package br.niltonvasques.moneycontrol.database.bean;
 
-public class Transacao {
+public class Compra {
 
 	private int id;
 	private float valor;
 	private String data;
+	private int parcelas;
 	private int id_Conta;
-	private int id_Bem;
-	private int id_CategoriaTransacao;
 	private String descricao;
-	private int id_Compra;
-	private boolean executada;
+	private int id_CategoriaTransacao;
+
 	
 	public int getId() {
 		return id;
@@ -36,18 +35,7 @@ public class Transacao {
 	public void setId_Conta(int id_Conta) {
 		this.id_Conta = id_Conta;
 	}
-	public int getId_Bem() {
-		return id_Bem;
-	}
-	public void setId_Bem(int id_Bem) {
-		this.id_Bem = id_Bem;
-	}
-	public int getId_CategoriaTransacao() {
-		return id_CategoriaTransacao;
-	}
-	public void setId_CategoriaTransacao(int id_CategoriaTransacao) {
-		this.id_CategoriaTransacao = id_CategoriaTransacao;
-	}
+
 	public String getDescricao() {
 		return descricao;
 	}
@@ -55,20 +43,19 @@ public class Transacao {
 		this.descricao = descricao;
 	}
 
-
-	public int getId_Compra() {
-		return id_Compra;
+	public int getParcelas() {
+		return parcelas;
 	}
 
-	public void setId_Compra(int id_Compra) {
-		this.id_Compra = id_Compra;
+	public void setParcelas(int parcelas) {
+		this.parcelas = parcelas;
 	}
 
-	public boolean isExecutada() {
-		return executada;
+	public int getId_CategoriaTransacao() {
+		return id_CategoriaTransacao;
 	}
 
-	public void setExecutada(boolean executada) {
-		this.executada = executada;
+	public void setId_CategoriaTransacao(int id_CategoriaTransacao) {
+		this.id_CategoriaTransacao = id_CategoriaTransacao;
 	}
 }
