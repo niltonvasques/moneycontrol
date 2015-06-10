@@ -91,7 +91,7 @@ public class ContasFragment extends Fragment{
 		listViewContas.setOnItemLongClickListener(new OnItemLongClickListener() {
 			@Override
 			public boolean onItemLongClick(AdapterView<?> arg0, View arg1,final int position, long arg3) {
-				MessageUtils.showMessageYesNo(getActivity(), "Atenção!", "Deseja excuir esta conta?", new OnClickListener() {
+				MessageUtils.showMessageYesNo(getActivity(), app.getString(R.string.contas_fragment_message_dialog_atention_title), app.getString(R.string.contas_fragment_remove_account_msg), new OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						db.deleteConta(contas.get(position));
