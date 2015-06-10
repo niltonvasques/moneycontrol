@@ -15,6 +15,7 @@
         <item>Categorias</item>
         <item>Investimentos</item>
         <item>Relatórios</item>
+        <item>Contas a pagar</item>
         <item>Sobre</item>
     </string-array>
     
@@ -177,6 +178,15 @@
     <string name="transacoes_message_title">Atenção!</string>
     <string name="fragment_transacoes_remove_transacao_message">Deseja excluir esta transação?</string>
     <string name="fragment_transacoes_remove_parcelas_message">Deseja excluir todas as parcelas?</string>
+    <string name="add_conta_a_pagar_dialog_title">Adicionar conta a pagar</string>
+    <string name="add_conta_a_pagar_dialog_periodo">Repetição</string>
+
+    <string-array name="bill_period_array">
+        <item>Única vez</item>
+        <item>Semanalmente</item>
+        <item>Mensalmente</item>
+        <item>Anualmente</item>
+    </string-array>
 
 
 </resources>
