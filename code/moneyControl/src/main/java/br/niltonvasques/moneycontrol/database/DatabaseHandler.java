@@ -230,6 +230,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 			} while (c.moveToNext());
 		}
 
+        c.close();
 		db.close(); // Closing database connection
 	}
 
@@ -337,6 +338,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 			e.printStackTrace();
 		}
 
+        c.close();
 		db.close(); // Closing database connection		
 
 		return items;
@@ -350,9 +352,11 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 		Cursor c = db.rawQuery(query, null);
 		if(c.moveToFirst()){
 			db.close();
-			return c.getString(0);
+			String result = c.getString(0);
+            c.close();
+            return result;
 		}
-
+        c.close();
 		return "";
 	}
 

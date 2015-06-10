@@ -131,6 +131,7 @@ public class ReportReceitasDespesasFragment extends Fragment{
 	        		axisValues.add(new AxisValue(i++).setLabel(getResources().getStringArray(R.array.months)[month-1]));
 	        	} while (c2.moveToNext());
 	        }
+			c2.close();
 	        
 	    	Cursor c1 = app.getDatabase().runQueryCursor(QuerysUtil.reportHistoryReceitasByYear(year));
 	    	if (c1.moveToFirst()) {

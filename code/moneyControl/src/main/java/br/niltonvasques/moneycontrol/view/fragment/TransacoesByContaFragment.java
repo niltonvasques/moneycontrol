@@ -127,10 +127,8 @@ public class TransacoesByContaFragment extends Fragment{
 		}
 	}
 
-
 	private boolean longClick = false;
 	private void configureComponents() {
-
 
 		monthView.setListener(new ChangeMonthListener() {
 			@Override
@@ -323,7 +321,6 @@ public class TransacoesByContaFragment extends Fragment{
 		((TextView)myFragmentView.findViewById(R.id.transacoesActivityTxtCreditosSum)).setText("R$ "+String.format("%.2f",creditoSum));
 		((TextView)myFragmentView.findViewById(R.id.transacoesActivityTxtSaldoSum)).setText("R$ "+String.format("%.2f",(saldoAnterior+creditoSum-debitoSum)));
 	}
-
 
 	private void updateCollection() {
 		groupList.clear();

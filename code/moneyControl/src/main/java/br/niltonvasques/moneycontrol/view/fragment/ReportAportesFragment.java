@@ -118,6 +118,7 @@ public class ReportAportesFragment extends Fragment{
 	        		columns.add(column);
 	        	} while (c2.moveToNext());
 	        }
+			c2.close();
 
 	    	ColumnChartData data = new ColumnChartData(columns);
 	    	Axis axisX = new Axis(axisValues).setHasLines(true);

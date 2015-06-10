@@ -109,6 +109,7 @@ public class ReportAtivosByMonthFragment extends Fragment{
 				values.add(sliceValue);
 			} while (c.moveToNext());
 		}
+		c.close();
     	PieChartData data = new PieChartData(values);
     	data.setHasLabels(true);
     	return data;

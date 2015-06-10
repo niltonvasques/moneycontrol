@@ -124,6 +124,7 @@ public class ReportCategoriasFragment extends Fragment{
 						values.add(new PointValue(month-1, valor));
 					} while (c.moveToNext());
 				}
+				c.close();
 				Line line = new Line(values);
 				line.setColor(ChartUtils.nextColor());
 				lines.add(line);
