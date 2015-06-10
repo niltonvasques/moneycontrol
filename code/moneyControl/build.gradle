@@ -7,7 +7,7 @@ android {
     compileSdkVersion 22
     buildToolsVersion "23.0.0 rc2"
     defaultConfig {
-        applicationId "br.niltonvasques.moneycontrolbeta"
+        applicationId "br.niltonvasques.moneycontrol"
         minSdkVersion 11
         targetSdkVersion 17
     }
@@ -23,7 +23,6 @@ android {
 dependencies {
     compile project(':androidBootstrap')
     compile 'com.android.support:appcompat-v7:18.0.0'
-//    compile files('libs/hellocharts-library-1.5.5.jar')
     compile 'com.github.lecho:hellocharts-library:1.5.5@aar'
 }
 

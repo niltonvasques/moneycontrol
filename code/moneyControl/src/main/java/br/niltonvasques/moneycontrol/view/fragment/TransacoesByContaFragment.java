@@ -32,6 +32,7 @@ import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import br.niltonvasques.moneycontrol.database.bean.CartaoCredito;
 import br.niltonvasques.moneycontrol.database.bean.Compra;
 import br.niltonvasques.moneycontrolbeta.R;
 import br.niltonvasques.moneycontrol.activity.NVFragmentActivity;
@@ -138,9 +139,9 @@ public class TransacoesByContaFragment extends Fragment{
 			}
 		});
 
-		transacoes = db.select(Transacao.class,QuerysUtil.whereTransacaoFromContaWithDateInterval(idConta, monthView.getDateRange().getTime()));
+        transacoes = selectTransacoes();
 
-		listAdapter = new TransacaoAdapter(transacoes, inflater, app);
+        listAdapter = new TransacaoAdapter(transacoes, inflater, app);
 		listViewTransacoes.setAdapter(listAdapter);
 		listViewTransacoes.setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -214,7 +215,31 @@ public class TransacoesByContaFragment extends Fragment{
 
 	}
 
-	private void loadComponentsFromXml() {
+    private GregorianCalendar cartaoDateRange = null;
+    private List<Transacao> selectTransacoes() {
+        List<Transacao> trs = new ArrayList<Transacao>();
+        if(conta.getId_TipoConta() == 4){
+            updateCartaoRange();
+            trs = db.select(Transacao.class, QuerysUtil.whereTransacaoFromContaWithDateInterval(idConta, cartaoDateRange.getTime()));
+        }else{
+            trs = db.select(Transacao.class,QuerysUtil.whereTransacaoFromContaWithDateInterval(idConta, monthView.getDateRange().getTime()));
+        }
+        return trs;
+    }
+
+    private void updateCartaoRange() {
+        CartaoCredito cartao = app.getDatabase().select(CartaoCredito.class, " WHERE id_Conta = "+conta.getId()).get(0);
+        cartaoDateRange = (GregorianCalendar)monthView.getDateRange().clone();
+        if(cartao.getDia_fechamento() <= cartao.getDia_vencimento())
+            cartaoDateRange.add(GregorianCalendar.MONTH, -2);
+        else
+            cartaoDateRange.add(GregorianCalendar.MONTH, -3);
+        cartaoDateRange.set(GregorianCalendar.DAY_OF_MONTH, cartao.getDia_fechamento());
+        cartaoDateRange.add(GregorianCalendar.MONTH, 1);
+        cartaoDateRange.add(GregorianCalendar.DAY_OF_MONTH, 1);
+    }
+
+    private void loadComponentsFromXml() {
 		monthView 	= (ChangeMonthView) myFragmentView.findViewById(R.id.transacoesFragmentChangeMonthView);
 		listViewTransacoes = (ListView) myFragmentView.findViewById(R.id.transacoesActivityListViewTransacoes);
 		expandableListView = (ExpandableListView) myFragmentView.findViewById(R.id.transacoesFragmentExpandableListViewTransacoes);
@@ -268,21 +293,29 @@ public class TransacoesByContaFragment extends Fragment{
 	private void update(){
 
 		transacoes.clear();
-		transacoes.addAll(db.select(Transacao.class,QuerysUtil.whereTransacaoFromContaWithDateInterval(idConta, monthView.getDateRange().getTime())));
-		listAdapter.notifyDataSetChanged();
+		transacoes.addAll(selectTransacoes());
+        ;
+        listAdapter.notifyDataSetChanged();
 
-		updateCollection();
-		expandableAdapter.notifyDataSetChanged();
+        updateCollection();
+        expandableAdapter.notifyDataSetChanged();
 
 		float debitoSum = 0;
 		float creditoSum = 0;
-		String debitos = db.runQuery(QuerysUtil.sumTransacoesDebitoFromContaWithDateInterval(idConta,monthView.getDateRange().getTime()));
-		String creditos = db.runQuery(QuerysUtil.sumTransacoesCreditoFromContaWithDateInterval(idConta,monthView.getDateRange().getTime()));
+
+        GregorianCalendar range = monthView.getDateRange();
+        if(cartaoDateRange != null){
+            updateCartaoRange();
+            range = cartaoDateRange;
+        }
+
+		String debitos = db.runQuery(QuerysUtil.sumTransacoesDebitoFromContaWithDateInterval(idConta,cartaoDateRange.getTime()));
+		String creditos = db.runQuery(QuerysUtil.sumTransacoesCreditoFromContaWithDateInterval(idConta,cartaoDateRange.getTime()));
 
 		if(debitos != null && debitos.length() > 0)  debitoSum = Float.valueOf(debitos);
 		if(creditos != null && creditos.length() > 0) creditoSum = Float.valueOf(creditos);
 
-		String saldo = db.runQuery(QuerysUtil.computeSaldoFromContaBeforeDate(idConta, monthView.getDateRange().getTime()));
+		String saldo = db.runQuery(QuerysUtil.computeSaldoFromContaBeforeDate(idConta,cartaoDateRange.getTime()));
 		float saldoAnterior = 0;
 		if(saldo != null && saldo.length() > 0) saldoAnterior = Float.valueOf(saldo);
 
@@ -297,10 +330,16 @@ public class TransacoesByContaFragment extends Fragment{
 		groupList.addAll(db.select(CategoriaTransacao.class));
 		categoriasCollection.clear();
 
+        GregorianCalendar range = monthView.getDateRange();
+        if(cartaoDateRange != null){
+            updateCartaoRange();
+            range = cartaoDateRange;
+        }
+
 		List<CategoriaTransacao> emptys = new ArrayList<CategoriaTransacao>();
 
 		for (CategoriaTransacao categoria : groupList) {
-			childList = db.select(Transacao.class, QuerysUtil.whereTransacaoFromContaWithDateIntervalAndCategoria(idConta, categoria.getId(), monthView.getDateRange().getTime()));
+			childList = db.select(Transacao.class, QuerysUtil.whereTransacaoFromContaWithDateIntervalAndCategoria(idConta, categoria.getId(), range.getTime()));
 			if(childList.isEmpty()){
 				emptys.add(categoria);
 			}else{
