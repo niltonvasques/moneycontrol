@@ -48,6 +48,7 @@ import br.niltonvasques.moneycontrol.database.bean.CartaoCredito;
 import br.niltonvasques.moneycontrol.database.bean.CategoriaTransacao;
 import br.niltonvasques.moneycontrol.database.bean.Compra;
 import br.niltonvasques.moneycontrol.database.bean.Conta;
+import br.niltonvasques.moneycontrol.database.bean.ContaAPagar;
 import br.niltonvasques.moneycontrol.database.bean.Fatura;
 import br.niltonvasques.moneycontrol.database.bean.MovimentacaoAtivo;
 import br.niltonvasques.moneycontrol.database.bean.Orcamento;
@@ -1745,6 +1746,8 @@ public class MessageUtils {
         final Spinner spinnerCategoria = (Spinner) view.findViewById(R.id.addContaAPagarDialogSpinnerCategoria);
         spinnerCategoria.setAdapter(new ArrayAdapter<CategoriaTransacao>(context, android.R.layout.simple_list_item_1, categorias));
 
+		final Spinner spinnerRepeticao = (Spinner) view.findViewById(R.id.addContaAPagarDialogSpinnerPeriodo);
+
         view.findViewById(R.id.addContaAPagarDialogBtnAddCategoria).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1770,41 +1773,14 @@ public class MessageUtils {
                     CategoriaTransacao cat = (CategoriaTransacao) spinnerCategoria.getSelectedItem();
 
                     float valor = Float.valueOf(editValor.getText().toString());
-//                    if(chkBoxParcelar.isChecked()){
-//                        Parcelas p = (Parcelas)spinnerParcelas.getSelectedItem();
-//                        Compra compra = new Compra();
-//                        compra.setData(format.format(value.getTime()));
-//                        compra.setDescricao(editDescricao.getText().toString());
-//                        compra.setId_CategoriaTransacao(cat.getId());
-//                        compra.setId_Conta(cc.getId());
-//                        compra.setParcelas(p.getQuantidade());
-//                        compra.setValor(valor);
-//                        db.insert(compra);
-//                        double total = 0;
-//                        double prestacao = MathUtil.round(p.getValor(), 2);
-//                        for(int i = 1; i <= p.getQuantidade(); i++){
-//                            total += prestacao;
-//                            if(total > valor){
-//                                prestacao -= Math.abs(total-valor);
-//                            }
-//                            Transacao tr = new Transacao();
-//                            tr.setValor((float)prestacao);
-//                            tr.setDescricao(compra.getDescricao() + " " + i + "/" + p.getQuantidade());
-//                            tr.setId_CategoriaTransacao(compra.getId_CategoriaTransacao());
-//                            tr.setId_Conta(compra.getId_Conta());
-//                            tr.setData(format.format(value.getTime()));
-//                            tr.setId_Compra(compra.getId());
-//                            db.insert(tr);
-//                            value.add(Calendar.MONTH, 1);
-//                        }
-//                    }else {
-//                        t.setValor(valor);
-//                        t.setDescricao(editDescricao.getText().toString());
-//                        t.setId_CategoriaTransacao(cat.getId());
-//                        t.setId_Conta(cc.getId());
-//                        t.setData(format.format(value.getTime()));
-//                        db.insert(t);
-//                    }
+					ContaAPagar c = new ContaAPagar();
+                    c.setStatus(true);
+					c.setId_CategoriaTransacao(cat.getId());
+					c.setValor(valor);
+					c.setDescricao(editDescricao.getText().toString());
+					c.setData(format.format(value.getTime()));
+					c.setId_Repeticao(spinnerRepeticao.getSelectedItemPosition()+1);
+					db.insert(c);
                 }catch(Exception e){
                     e.printStackTrace();
                     MessageUtils.showDefaultErrorMessage(context);

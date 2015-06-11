@@ -404,5 +404,17 @@ public class QuerysUtil {
 		return "SELECT SUM(valor) FROM Orcamento "+whereOrcamentoOnMonth(date);
 	}
 
+	public static final String lastContaPagaOnMonth(int id_ContaAPagar, Date date){
+        return "SELECT data FROM Transacao WHERE id_ContaAPagar = 1 " +
+                "AND strftime(\"%m-%Y\", data) = strftime(\"%m-%Y\", '" +DateUtil.sqlDateFormat().format(date)+"') " +
+                "ORDER BY data DESC LIMIT 1";
+    }
+
+    public static String whereContasAPagarAfterDate(Date date){
+        return "WHERE status = 1 " +
+                "AND data <= date('" +DateUtil.sqlDateFormat().format(date)+"') "+
+                "ORDER BY data DESC, id	DESC";
+    }
+
 	
 }

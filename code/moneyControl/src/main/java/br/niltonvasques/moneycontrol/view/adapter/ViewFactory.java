@@ -20,6 +20,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import br.niltonvasques.moneycontrol.database.bean.ContaAPagar;
 import br.niltonvasques.moneycontrolbeta.R;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
 import br.niltonvasques.moneycontrol.database.QuerysUtil;
@@ -191,6 +193,57 @@ public class ViewFactory {
 		txtNome.setText(c.getNome());
 		txtSaldo.setText("R$ "+String.format("%.2f", tr.getValor()));
 		
+		return view;
+	}
+
+	public static View createContaAPagarItemView(ContaAPagar tr, GregorianCalendar range, MoneyControlApp app, LayoutInflater inflater){
+		View view = inflater.inflate(R.layout.conta_a_pagar_list_item, null);
+
+		TextView txtNome = (TextView) view.findViewById(R.id.contaAPagarListItemTxtDescricao);
+		TextView txtSaldo = (TextView) view.findViewById(R.id.contaAPagarListItemTxtValor);
+		TextView txtData = (TextView) view.findViewById(R.id.contaAPagarListItemTxtData);
+		FontAwesomeText fontAwesome = (FontAwesomeText) view.findViewById(R.id.contaAPagarListItemFontAwe);
+
+        GregorianCalendar contaData = new GregorianCalendar();
+        try {
+            contaData.setTime(DateUtil.sqlDateFormat().parse(tr.getData()));
+            contaData.set(Calendar.MONTH, range.get(Calendar.MONTH));
+            contaData.set(Calendar.YEAR, range.get(Calendar.YEAR));
+            ViewUtil.adjustDateOnTextView(txtData, contaData);
+//			txtData.setText(txtData.getText().toString()+(c != null ? " - "+c.getNome() : ""));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+//
+		String data = app.getDatabase().runQuery(QuerysUtil.lastContaPagaOnMonth(tr.getId(), range.getTime()));
+        System.out.println("DATA: "+data);
+
+        GregorianCalendar now = new GregorianCalendar();
+
+        boolean paid = data != null && !data.equals("");
+        boolean delayed = now.compareTo(contaData) > 0 && now.get(Calendar.DAY_OF_MONTH) > contaData.get(Calendar.DAY_OF_MONTH);
+//
+//		CategoriaTransacao c = app.getCategoriasTransacao().get(tr.getId_CategoriaTransacao());
+//
+		if(!paid && !delayed) {
+            txtSaldo.setTextColor(app.getResources().getColor(R.color.amber));
+            fontAwesome.setTextColor(app.getResources().getColor(R.color.amber));
+            fontAwesome.setIcon("fa-warning");
+        }else if(!paid && delayed){
+            txtSaldo.setTextColor(Color.RED);
+            fontAwesome.setTextColor(Color.RED);
+            fontAwesome.setIcon("fa-times");
+		}else{
+			txtSaldo.setTextColor(app.getResources().getColor(R.color.dark_green));
+			fontAwesome.setTextColor(app.getResources().getColor(R.color.dark_green));
+			fontAwesome.setIcon("fa-check");
+            view.findViewById(R.id.contaAPagarListItemBtnPagarFatura).setVisibility(View.GONE);
+		}
+//
+		txtNome.setText(tr.getDescricao());
+		txtSaldo.setText("R$ "+String.format("%.2f", tr.getValor()));
+
+
 		return view;
 	}
 

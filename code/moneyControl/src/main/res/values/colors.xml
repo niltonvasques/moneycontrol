@@ -3,5 +3,6 @@
     <color name="dark_green">#04a800</color>
     <color name="hello_chart_red">#FF4444</color>
     <color name="hello_chart_green">#99CC00</color>
+    <color name="amber">#ffc107</color>
     
 </resources>
