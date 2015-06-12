@@ -9,13 +9,15 @@ public class ContaAPagar {
 	private int id_Repeticao;
 	private String descricao;
     private boolean status;
-	
+	private int quantidade;
+
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
 	}
+
 	public float getValor() {
 		return valor;
 	}
@@ -57,4 +59,12 @@ public class ContaAPagar {
     public void setStatus(boolean status) {
         this.status = status;
     }
+
+	public int getQuantidade() {
+		return quantidade;
+	}
+
+	public void setQuantidade(int quantidade) {
+		this.quantidade = quantidade;
+	}
 }

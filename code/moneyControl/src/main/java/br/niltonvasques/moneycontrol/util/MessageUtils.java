@@ -37,6 +37,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -731,6 +732,7 @@ public class MessageUtils {
 
 		final TextView txtViewTitle = (TextView)view.findViewById(R.id.addTransacaoDialogTxtViewTitle);
 		txtViewTitle.setText(R.string.edit_transacao_dialog_title);
+        view.findViewById(R.id.addTransacaoDialogLayoutParcelar).setVisibility(View.GONE);
 
 		final Button btnDate = (Button)view.findViewById(R.id.addTransacaoDialogBtnData);
 		ViewUtil.adjustDateOnTextView(btnDate, value);
@@ -772,7 +774,7 @@ public class MessageUtils {
 		final Spinner spinnerCategoria = (Spinner) view.findViewById(R.id.addTransacaoDialogSpinnerCategoria);
 		final Spinner spinnerContas = (Spinner) view.findViewById(R.id.addTransacaoDialogSpinnerConta);
 		final Button btnAddCategory = (Button) 		    view.findViewById(R.id.addTransacaoDialogBtnAddCategoria);
-		if(c.isSystem()){
+		if(c.isSystem() || t.getId_Compra() > 0){
 			view.findViewById(R.id.addTransacaoDialogLayoutTipo).setVisibility(View.GONE);
 			view.findViewById(R.id.addTransacaoDialogLayoutCategoria).setVisibility(View.GONE);
 			view.findViewById(R.id.addTransacaoDialogLayoutConta).setVisibility(View.GONE);
@@ -1743,11 +1745,29 @@ public class MessageUtils {
         final List<CategoriaTransacao> categorias = db.select(CategoriaTransacao.class, QuerysUtil.whereNoSystemCategorias(2));
 
         final EditText editValor = (EditText) view.findViewById(R.id.addContaAPagarDialogEditTxtValor);
+		final EditText editQuantidade = (EditText) view.findViewById(R.id.addContaAPagarDialogEditTxtQuantidade);
+		editQuantidade.setText("1");
 
         final Spinner spinnerCategoria = (Spinner) view.findViewById(R.id.addContaAPagarDialogSpinnerCategoria);
         spinnerCategoria.setAdapter(new ArrayAdapter<CategoriaTransacao>(context, android.R.layout.simple_list_item_1, categorias));
 
+        final LinearLayout qtdLayout = (LinearLayout) view.findViewById(R.id.addContaAPagarDialogLayoutQuantidade);
 		final Spinner spinnerRepeticao = (Spinner) view.findViewById(R.id.addContaAPagarDialogSpinnerPeriodo);
+		spinnerRepeticao.setOnItemSelectedListener(new OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				if(position > 0){
+					qtdLayout.setVisibility(View.VISIBLE);
+				}else{
+					qtdLayout.setVisibility(View.GONE);
+				}
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+
+			}
+		});
 
         view.findViewById(R.id.addContaAPagarDialogBtnAddCategoria).setOnClickListener(new OnClickListener() {
             @Override
@@ -1774,13 +1794,15 @@ public class MessageUtils {
                     CategoriaTransacao cat = (CategoriaTransacao) spinnerCategoria.getSelectedItem();
 
                     float valor = Float.valueOf(editValor.getText().toString());
+					int qtd = Integer.valueOf(editQuantidade.getText().toString());
 					ContaAPagar c = new ContaAPagar();
                     c.setStatus(true);
 					c.setId_CategoriaTransacao(cat.getId());
 					c.setValor(valor);
 					c.setDescricao(editDescricao.getText().toString());
 					c.setData(format.format(value.getTime()));
-					c.setId_Repeticao(spinnerRepeticao.getSelectedItemPosition()+1);
+					c.setId_Repeticao(spinnerRepeticao.getSelectedItemPosition() + 1);
+					c.setQuantidade(qtd);
 					db.insert(c);
                 }catch(Exception e){
                     e.printStackTrace();

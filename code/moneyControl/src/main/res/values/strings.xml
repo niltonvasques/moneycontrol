@@ -181,6 +181,8 @@
     <string name="add_conta_a_pagar_dialog_title">Adicionar conta a pagar</string>
     <string name="add_conta_a_pagar_dialog_periodo">Repetição</string>
     <string name="conta_a_pagar_dialog_pagar_fatura_desc">"Pagamento da conta: "</string>
+    <string name="add_conta_a_pagar_dialog_quantidade">Quantidade:</string>
+    <string name="add_conta_a_pagar_dialog_hint_quantidade">5 vezes</string>
 
     <string-array name="bill_period_array">
         <item>Única vez</item>

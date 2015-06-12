@@ -1,14 +1,5 @@
 package br.niltonvasques.moneycontrol.view.adapter;
 
-import java.text.ParseException;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
-
-import com.beardedhen.androidbootstrap.BootstrapButton;
-import com.beardedhen.androidbootstrap.FontAwesomeText;
-
 import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
@@ -18,22 +9,30 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import br.niltonvasques.moneycontrol.database.bean.ContaAPagar;
-import br.niltonvasques.moneycontrolbeta.R;
+import com.beardedhen.androidbootstrap.BootstrapButton;
+import com.beardedhen.androidbootstrap.FontAwesomeText;
+
+import java.text.ParseException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
+
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
 import br.niltonvasques.moneycontrol.database.QuerysUtil;
 import br.niltonvasques.moneycontrol.database.bean.Ativo;
 import br.niltonvasques.moneycontrol.database.bean.CategoriaTransacao;
+import br.niltonvasques.moneycontrol.database.bean.ContaAPagar;
 import br.niltonvasques.moneycontrol.database.bean.MovimentacaoAtivo;
 import br.niltonvasques.moneycontrol.database.bean.Orcamento;
 import br.niltonvasques.moneycontrol.database.bean.Transacao;
 import br.niltonvasques.moneycontrol.util.DateUtil;
 import br.niltonvasques.moneycontrol.util.MessageUtils;
 import br.niltonvasques.moneycontrol.util.ViewUtil;
+import br.niltonvasques.moneycontrolbeta.R;
 
 public class ViewFactory {
 	
@@ -80,8 +79,7 @@ public class ViewFactory {
 		TextView txtProfit = (TextView) view.findViewById(R.id.ativoListItemTxtProfit);
 //		TextView txtData = (TextView) view.findViewById(R.id.transacaoListItemTxtData);
 		Button btnNewEvent = (Button) view.findViewById(R.id.ativoListItemBtnNewEvent);
-		
-		
+
 //		String tipo = app.getDatabase().runQuery(QuerysUtil.checkTipoAtivo(ativo.getId()));
 		
 		List<MovimentacaoAtivo> movimentacoes = app.getDatabase().select(MovimentacaoAtivo.class, QuerysUtil.whereLastMovimentacoesAtivoOrderByDateDesc(ativo.getId(), dateRange));
@@ -164,7 +162,7 @@ public class ViewFactory {
 		TextView txtRealizado = (TextView) view.findViewById(R.id.orcamentoListItemTxtValorRealizado);
 		TextView txtRestante = (TextView) view.findViewById(R.id.orcamentoListItemTxtValorRestante);
 		ProgressBar progress = (ProgressBar) view.findViewById(R.id.orcamentoListItemProgressBar);
-//		progress.getProgressDrawable().setColorFilter(Color.RED, Mode.MULTIPLY);
+		progress.getProgressDrawable().setColorFilter(app.getResources().getColor(R.color.amber), Mode.MULTIPLY);
 		
 //		String tipo = app.getDatabase().runQuery(QuerysUtil.checkTipoTransacao(tr.getId()));
 		
@@ -206,16 +204,16 @@ public class ViewFactory {
 		TextView txtData = (TextView) view.findViewById(R.id.contaAPagarListItemTxtData);
 		FontAwesomeText fontAwesome = (FontAwesomeText) view.findViewById(R.id.contaAPagarListItemFontAwe);
 
-        final GregorianCalendar contaData = new GregorianCalendar();
-        try {
-            contaData.setTime(DateUtil.sqlDateFormat().parse(tr.getData()));
-            contaData.set(Calendar.MONTH, range.get(Calendar.MONTH));
-            contaData.set(Calendar.YEAR, range.get(Calendar.YEAR));
-            ViewUtil.adjustDateOnTextView(txtData, contaData);
+		final GregorianCalendar contaData = new GregorianCalendar();
+		try {
+			contaData.setTime(DateUtil.sqlDateFormat().parse(tr.getData()));
+			contaData.set(Calendar.MONTH, range.get(Calendar.MONTH));
+			contaData.set(Calendar.YEAR, range.get(Calendar.YEAR));
+			ViewUtil.adjustDateOnTextView(txtData, contaData);
 //			txtData.setText(txtData.getText().toString()+(c != null ? " - "+c.getNome() : ""));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 //
 		String id = app.getDatabase().runQuery(QuerysUtil.checkContaPagaOnDate(tr.getId(), contaData.getTime()));
         System.out.println("DATA: "+id);

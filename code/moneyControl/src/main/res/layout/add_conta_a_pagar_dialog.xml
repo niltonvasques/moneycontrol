@@ -140,8 +140,30 @@
 				        android:layout_weight="7"
                         android:entries="@array/bill_period_array"/>
 			    </LinearLayout>
-			    
-			    
+
+				<LinearLayout
+					android:id="@+id/addContaAPagarDialogLayoutQuantidade"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:orientation="horizontal"
+					android:gravity="center">
+
+					<TextView
+						android:layout_width="0dp"
+						android:layout_height="wrap_content"
+						android:layout_weight="3"
+						android:text="@string/add_conta_a_pagar_dialog_quantidade"/>
+
+					<EditText
+						android:id="@+id/addContaAPagarDialogEditTxtQuantidade"
+						android:layout_width="0dp"
+						android:layout_height="wrap_content"
+						android:layout_weight="7"
+						android:gravity="center"
+						android:inputType="number"
+						android:hint="@string/add_conta_a_pagar_dialog_hint_quantidade"/>
+				</LinearLayout>
+
 		    </LinearLayout>
 		    
 	    </LinearLayout>

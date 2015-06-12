@@ -78,7 +78,8 @@ data DATE NOT NULL  DEFAULT 'NULL',
 descricao VARCHAR(200) NOT NULL  DEFAULT 'NULL',
 status bit NOT NULL  DEFAULT 1,
 id_Repeticao INTEGER DEFAULT NULL REFERENCES Repeticao (id),
-id_CategoriaTransacao INTEGER DEFAULT NULL REFERENCES CategoriaTransacao (id)
+id_CategoriaTransacao INTEGER DEFAULT NULL REFERENCES CategoriaTransacao (id),
+quantidade INTEGER NOT NULL  DEFAULT 1
 );
 
 CREATE TABLE Orcamento (

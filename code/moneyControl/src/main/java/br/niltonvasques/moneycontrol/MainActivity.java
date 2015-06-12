@@ -75,13 +75,13 @@ public class MainActivity extends NVFragmentActivity {
 		mDrawerList.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position,long arg3) {
-				switchContent(position);				
+				switchContent(position);
 				mDrawerLayout.closeDrawer(mDrawerList);
 
 
 			}
 
-			
+
 		});
 
 		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,

@@ -229,7 +229,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="1456" y="577" name="ContaAPagar">
+<table x="1434" y="552" name="ContaAPagar">
 <row name="id" null="0" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -253,6 +253,9 @@
 <datatype>INTEGER</datatype>
 <default>NULL</default><relation table="CategoriaTransacao" row="id" />
 </row>
+<row name="quantidade" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>1</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>

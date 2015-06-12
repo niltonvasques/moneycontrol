@@ -38,17 +38,18 @@
 
                 <TextView
                     android:id="@+id/transacaoListItemTxtValor"
+                    style="@style/TextViewItem"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/default_currency_value"
-                    android:textColor="#ff0000" />
+                    android:textColor="@color/red" />
 
                 <com.beardedhen.androidbootstrap.FontAwesomeText
                     android:id="@+id/transacaoListItemFontAwe"
+                    style="@style/TextViewItem"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#ff0000"
-                    android:textSize="15sp"
+                    android:textColor="@color/red"
                     fontawesometext:fa_icon="fa-arrow-down" />
             </LinearLayout>
         </LinearLayout>
