@@ -318,7 +318,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 
     public boolean deleteTransacao(Transacao t){
         ContaPaga cp = new ContaPaga();
-        return delete(cp, "WHERE id_Transacao = "+t.getId()) && delete(t);
+        return delete(cp, "id_Transacao = "+t.getId()) && delete(t);
     }
 
 	public <T> List<T> select(Class<T> type){
