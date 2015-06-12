@@ -37,7 +37,7 @@
 		<type label="SET" length="1" sql="SET" quote=""/>
 		<type label="Bit" length="0" sql="bit" quote=""/>
 	</group>
-</datatypes><table x="1146" y="288" name="Bem">
+</datatypes><table x="614" y="309" name="Bem">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -105,18 +105,11 @@
 <datatype>INTEGER</datatype>
 <default>NULL</default><relation table="Compra" row="id" />
 </row>
-<row name="id_DespesasFuturas" null="0" autoincrement="0">
-<datatype>INTEGER</datatype>
-<default>NULL</default></row>
-<row name="id_ContaAPagar" null="0" autoincrement="0">
-<datatype>INTEGER</datatype>
-<default>NULL</default><relation table="ContaAPagar" row="id" />
-</row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
 </table>
-<table x="1546" y="739" name="TipoTransacao">
+<table x="1384" y="851" name="TipoTransacao">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -127,7 +120,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="1351" y="369" name="TipoBem">
+<table x="385" y="327" name="TipoBem">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -236,7 +229,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="1156" y="474" name="ContaAPagar">
+<table x="1456" y="577" name="ContaAPagar">
 <row name="id" null="0" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -310,13 +303,32 @@
 <part>id</part>
 </key>
 </table>
-<table x="1394" y="552" name="Repeticao">
+<table x="1694" y="659" name="Repeticao">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
 <row name="tipo" null="0" autoincrement="0">
 <datatype>VARCHAR(50)</datatype>
 <default>'NULL'</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="1188" y="501" name="ContaPaga">
+<row name="id" null="0" autoincrement="1">
+<datatype>INTEGER</datatype>
+</row>
+<row name="id_ContaAPagar" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="ContaAPagar" row="id" />
+</row>
+<row name="id_Transacao" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="Transacao" row="id" />
+</row>
+<row name="vencimento" null="0" autoincrement="0">
+<datatype>DATE</datatype>
+</row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>

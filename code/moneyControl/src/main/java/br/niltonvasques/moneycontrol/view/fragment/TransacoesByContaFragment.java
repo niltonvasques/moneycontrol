@@ -176,7 +176,7 @@ public class TransacoesByContaFragment extends Fragment{
                             compra.setId(t.getId_Compra());
                             db.delete(compra);
 						}else {
-							db.delete(t);
+							db.deleteTransacao(t);
 						}
 						update();
 					}

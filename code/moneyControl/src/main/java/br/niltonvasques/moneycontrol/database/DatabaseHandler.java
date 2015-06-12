@@ -18,6 +18,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import br.niltonvasques.moneycontrol.database.bean.Conta;
+import br.niltonvasques.moneycontrol.database.bean.ContaPaga;
+import br.niltonvasques.moneycontrol.database.bean.Transacao;
 
 public class DatabaseHandler extends SQLiteOpenHelper{
 
@@ -27,7 +29,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 
 	private static final String DDL_FILENAME = "db/ddl.sql";
 
-	private static final int DATABASE_VERSION = 18;
+	private static final int DATABASE_VERSION = 19;
 
 	private static final String DATABASE_NAME = "money-db";
 
@@ -211,6 +213,8 @@ public class DatabaseHandler extends SQLiteOpenHelper{
             DatabaseUtil.execSqlFromFile(db, context, DATABASE_UPDATE_PATTERN+17+".sql");
         case 17:
             DatabaseUtil.execSqlFromFile(db, context, DATABASE_UPDATE_PATTERN+18+".sql");
+        case 18:
+            DatabaseUtil.execSqlFromFile(db, context, DATABASE_UPDATE_PATTERN+19+".sql");
 
 		default:
 			break;
@@ -310,6 +314,11 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         }
 
         return count > 0;
+    }
+
+    public boolean deleteTransacao(Transacao t){
+        ContaPaga cp = new ContaPaga();
+        return delete(cp, "WHERE id_Transacao = "+t.getId()) && delete(t);
     }
 
 	public <T> List<T> select(Class<T> type){

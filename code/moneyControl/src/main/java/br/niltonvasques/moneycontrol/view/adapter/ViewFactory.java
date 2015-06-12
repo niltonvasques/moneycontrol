@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.beardedhen.androidbootstrap.FontAwesomeText;
 
 import android.content.Context;
@@ -196,7 +197,8 @@ public class ViewFactory {
 		return view;
 	}
 
-	public static View createContaAPagarItemView(ContaAPagar tr, GregorianCalendar range, MoneyControlApp app, LayoutInflater inflater){
+	public static View createContaAPagarItemView(final Context context, final ContaAPagar tr, final GregorianCalendar range, final MoneyControlApp app, final LayoutInflater inflater,
+                                                 final DialogInterface.OnClickListener listener){
 		View view = inflater.inflate(R.layout.conta_a_pagar_list_item, null);
 
 		TextView txtNome = (TextView) view.findViewById(R.id.contaAPagarListItemTxtDescricao);
@@ -204,7 +206,7 @@ public class ViewFactory {
 		TextView txtData = (TextView) view.findViewById(R.id.contaAPagarListItemTxtData);
 		FontAwesomeText fontAwesome = (FontAwesomeText) view.findViewById(R.id.contaAPagarListItemFontAwe);
 
-        GregorianCalendar contaData = new GregorianCalendar();
+        final GregorianCalendar contaData = new GregorianCalendar();
         try {
             contaData.setTime(DateUtil.sqlDateFormat().parse(tr.getData()));
             contaData.set(Calendar.MONTH, range.get(Calendar.MONTH));
@@ -215,12 +217,12 @@ public class ViewFactory {
             e.printStackTrace();
         }
 //
-		String data = app.getDatabase().runQuery(QuerysUtil.lastContaPagaOnMonth(tr.getId(), range.getTime()));
-        System.out.println("DATA: "+data);
+		String id = app.getDatabase().runQuery(QuerysUtil.checkContaPagaOnDate(tr.getId(), contaData.getTime()));
+        System.out.println("DATA: "+id);
 
         GregorianCalendar now = new GregorianCalendar();
 
-        boolean paid = data != null && !data.equals("");
+        boolean paid = id != null && !id.equals("");
         boolean delayed = now.compareTo(contaData) > 0 && now.get(Calendar.DAY_OF_MONTH) > contaData.get(Calendar.DAY_OF_MONTH);
 //
 //		CategoriaTransacao c = app.getCategoriasTransacao().get(tr.getId_CategoriaTransacao());
@@ -241,7 +243,15 @@ public class ViewFactory {
 		}
 //
 		txtNome.setText(tr.getDescricao());
-		txtSaldo.setText("R$ "+String.format("%.2f", tr.getValor()));
+		txtSaldo.setText("R$ " + String.format("%.2f", tr.getValor()));
+
+        BootstrapButton btn = (BootstrapButton) view.findViewById(R.id.contaAPagarListItemBtnPagarFatura);
+        btn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    MessageUtils.showPagarConta(context, inflater, app.getDatabase(), tr, contaData,listener);
+            }
+        });
 
 
 		return view;

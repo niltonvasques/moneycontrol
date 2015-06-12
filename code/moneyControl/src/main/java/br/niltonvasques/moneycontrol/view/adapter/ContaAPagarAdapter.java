@@ -1,5 +1,7 @@
 package br.niltonvasques.moneycontrol.view.adapter;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +20,10 @@ public class ContaAPagarAdapter extends BaseAdapter{
 	private List<ContaAPagar> contasAPagar;
 	private LayoutInflater inflater;
 	private GregorianCalendar dateRange;
+    private Context context;
 
-	public ContaAPagarAdapter(List<ContaAPagar> contasAPagar, GregorianCalendar dateRange, LayoutInflater inflater, MoneyControlApp app) {
+	public ContaAPagarAdapter(Context context, List<ContaAPagar> contasAPagar, GregorianCalendar dateRange, LayoutInflater inflater, MoneyControlApp app) {
+        this.context = context;
 		this.contasAPagar = contasAPagar;
         this.dateRange = dateRange;
 		this.inflater = inflater;
@@ -51,7 +55,12 @@ public class ContaAPagarAdapter extends BaseAdapter{
 
 		ContaAPagar tr = (ContaAPagar) getItem(position);
 		
-		return ViewFactory.createContaAPagarItemView(tr, dateRange, app, inflater);
+		return ViewFactory.createContaAPagarItemView(context, tr, dateRange, app, inflater, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                notifyDataSetChanged();
+            }
+        });
 	}
 
 }

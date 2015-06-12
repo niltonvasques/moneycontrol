@@ -405,9 +405,15 @@ public class QuerysUtil {
 	}
 
 	public static final String lastContaPagaOnMonth(int id_ContaAPagar, Date date){
-        return "SELECT data FROM Transacao WHERE id_ContaAPagar = 1 " +
+        return "SELECT data FROM Transacao WHERE id_ContaAPagar = "+id_ContaAPagar+" "+
                 "AND strftime(\"%m-%Y\", data) = strftime(\"%m-%Y\", '" +DateUtil.sqlDateFormat().format(date)+"') " +
                 "ORDER BY data DESC LIMIT 1";
+    }
+
+    public static final String checkContaPagaOnDate(int id_ContaAPagar, Date vencimento){
+        return "SELECT id_Transacao FROM ContaPaga WHERE id_ContaAPagar = " +id_ContaAPagar+" "+
+                "AND strftime(\"%d-%m-%Y\", vencimento) = strftime(\"%d-%m-%Y\", '" +DateUtil.sqlDateFormat().format(vencimento)+"') " +
+                "LIMIT 1";
     }
 
     public static String whereContasAPagarAfterDate(Date date){

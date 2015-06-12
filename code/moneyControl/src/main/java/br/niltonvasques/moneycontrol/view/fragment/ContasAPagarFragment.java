@@ -117,7 +117,7 @@ public class ContasAPagarFragment extends Fragment{
 
         contas = db.select(ContaAPagar.class, QuerysUtil.whereContasAPagarAfterDate(getCalendarLastDay().getTime()));
 
-        listAdapter = new ContaAPagarAdapter(contas, monthView.getDateRange(), inflater, app);
+        listAdapter = new ContaAPagarAdapter(getActivity(), contas, monthView.getDateRange(), inflater, app);
         listViewContas.setAdapter(listAdapter);
 
         listViewContas.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {

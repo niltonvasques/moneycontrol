@@ -180,6 +180,7 @@
     <string name="fragment_transacoes_remove_parcelas_message">Deseja excluir todas as parcelas?</string>
     <string name="add_conta_a_pagar_dialog_title">Adicionar conta a pagar</string>
     <string name="add_conta_a_pagar_dialog_periodo">Repetição</string>
+    <string name="conta_a_pagar_dialog_pagar_fatura_desc">"Pagamento da conta: "</string>
 
     <string-array name="bill_period_array">
         <item>Única vez</item>
