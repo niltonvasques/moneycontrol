@@ -51,7 +51,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 		}
 
 		System.out.println("DatabaseHandler() ver: "+DATABASE_VERSION);
-		
+
 		/*
 		 * Uncomment to recover an backup database
 		 */

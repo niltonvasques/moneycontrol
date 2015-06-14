@@ -431,19 +431,24 @@ public class QuerysUtil {
         String lastDay = DateUtil.sqlDateFormat().format(date);
         String firstDay = DateUtil.sqlDateFormat().format(first.getTime());
 		return
-            "WHERE status = 1 " +
-                " AND data <= date('" +lastDay+ "')  "+
-                " AND (  "+
-                "     ( id_Repeticao = 1 AND strftime('%m-%Y', data) = strftime('%m-%Y', date('" +lastDay+ "')) 	 "+
-                "     ) OR "+
-                "     ( id_Repeticao = 2 AND quantidade > ((julianday(date('" +firstDay+ "')) - julianday(data) )/7) 	 "+
-                "     ) OR "+
-                "     ( id_Repeticao = 4 AND quantidade > (strftime('%Y', date('" +lastDay+ "')) - strftime('%Y', data)) 	 "+
-                "     ) OR "+
-                "     ( id_Repeticao = 3  "+
-                "       AND quantidade > (((strftime('%Y', date('" +lastDay+ "')) - strftime('%Y', data))*12)+(strftime('%m', date('" +lastDay+ "')) - strftime('%m', data)))  "+
-                "     ) "+
-                " ) "+
+            "WHERE " +
+                "(     status = 1 " +
+                "      AND data <= date('" +lastDay+ "')  "+
+                "      AND (  "+
+                "          ( id_Repeticao = 1 AND strftime('%m-%Y', data) = strftime('%m-%Y', date('" +lastDay+ "')) 	 "+
+                "          ) OR "+
+                "          ( id_Repeticao = 2 AND quantidade > ((julianday(date('" +firstDay+ "')) - julianday(data) )/7) 	 "+
+                "          ) OR "+
+                "          ( id_Repeticao = 4 AND quantidade > (strftime('%Y', date('" +lastDay+ "')) - strftime('%Y', data)) 	 "+
+                "          ) OR "+
+                "          ( id_Repeticao = 3  "+
+                "            AND quantidade > (((strftime('%Y', date('" +lastDay+ "')) - strftime('%Y', data))*12)+(strftime('%m', date('" +lastDay+ "')) - strftime('%m', data)))  "+
+                "          ) "+
+                "      ) "+
+                " ) OR " +
+                "( " +
+                "   ( SELECT vencimento FROM ContaPaga WHERE id_ContaAPagar = ContaAPagar.id AND strftime('%m-%Y', vencimento) = strftime('%m-%Y', date('" +lastDay+ "')) ) IS NOT NULL" +
+                ")" +
             " ORDER BY data DESC, id	DESC";
 	}
 
