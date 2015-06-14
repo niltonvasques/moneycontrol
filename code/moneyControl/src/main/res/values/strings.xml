@@ -11,11 +11,11 @@
     <string-array name="menu_array">
         <item>Capital</item>
         <item>Transações</item>
-        <item>Orçamento</item>
+        <item>Contas a pagar</item>
+        <item>Planejamento do mês</item>
         <item>Categorias</item>
         <item>Investimentos</item>
         <item>Relatórios</item>
-        <item>Contas a pagar</item>
         <item>Sobre</item>
     </string-array>
     

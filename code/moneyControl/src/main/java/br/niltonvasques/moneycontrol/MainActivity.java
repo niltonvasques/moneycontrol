@@ -37,11 +37,11 @@ public class MainActivity extends NVFragmentActivity {
 	
 	public static final int CONTAS_ITEM_MENU 			= 0;
 	public static final int TRANSACOES_ITEM_MENU 		= 1;
-	public static final int ORCAMENTO_ITEM_MENU 		= 2;
-	public static final int CATEGORIAS_ITEM_MENU 		= 3;
-	public static final int INVESTIMENTOS_ITEM_MENU 	= 4;
-	public static final int RELATORIOS_ITEM_MENU 		= 5;
-	public static final int CONTAS_A_PAGAR_ITEM_MENU 	= 6;
+	public static final int CONTAS_A_PAGAR_ITEM_MENU 	= 2;
+	public static final int ORCAMENTO_ITEM_MENU 		= 3;
+	public static final int CATEGORIAS_ITEM_MENU 		= 4;
+	public static final int INVESTIMENTOS_ITEM_MENU 	= 5;
+	public static final int RELATORIOS_ITEM_MENU 		= 6;
 	public static final int SOBRE_ITEM_MENU 			= 7;
 
 	private static final String TAG = "[MainActivity]";
