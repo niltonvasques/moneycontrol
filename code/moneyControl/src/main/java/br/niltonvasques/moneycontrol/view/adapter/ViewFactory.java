@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.PorterDuff.Mode;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -35,6 +36,8 @@ import br.niltonvasques.moneycontrol.util.ViewUtil;
 import br.niltonvasques.moneycontrolbeta.R;
 
 public class ViewFactory {
+
+	private static final String TAG = "[ViewFactory]";
 	
 	public static View createTransacaoItemView(Transacao tr, MoneyControlApp app, LayoutInflater inflater){
 		View view = inflater.inflate(R.layout.transacao_list_item, null);
@@ -206,6 +209,7 @@ public class ViewFactory {
 
 		final GregorianCalendar contaData = new GregorianCalendar();
 		try {
+			Log.d(TAG, "create conta " + tr.getDescricao() + " " + tr.getData());
 			contaData.setTime(DateUtil.sqlDateFormat().parse(tr.getData()));
 			contaData.set(Calendar.MONTH, range.get(Calendar.MONTH));
 			contaData.set(Calendar.YEAR, range.get(Calendar.YEAR));
@@ -237,7 +241,7 @@ public class ViewFactory {
 			txtSaldo.setTextColor(app.getResources().getColor(R.color.dark_green));
 			fontAwesome.setTextColor(app.getResources().getColor(R.color.dark_green));
 			fontAwesome.setIcon("fa-check");
-            view.findViewById(R.id.contaAPagarListItemBtnPagarFatura).setVisibility(View.GONE);
+            view.findViewById(R.id.contaAPagarListItemBtnPagarFatura).setVisibility(View.INVISIBLE);
 		}
 //
 		txtNome.setText(tr.getDescricao());

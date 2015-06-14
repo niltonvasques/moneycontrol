@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -22,6 +24,7 @@ import java.util.List;
 import br.niltonvasques.moneycontrol.MainActivity;
 import br.niltonvasques.moneycontrol.activity.NVFragmentActivity;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
+import br.niltonvasques.moneycontrol.business.ContaAPagarBusiness;
 import br.niltonvasques.moneycontrol.database.DatabaseHandler;
 import br.niltonvasques.moneycontrol.database.QuerysUtil;
 import br.niltonvasques.moneycontrol.database.bean.Conta;
@@ -114,15 +117,21 @@ public class ContasAPagarFragment extends Fragment{
                 update();
             }
         });
+        contas = new ArrayList<ContaAPagar>();
+        try {
+            contas.addAll(ContaAPagarBusiness.getContaAPagarsOnMonth(db, monthView.getDateRange(), getCalendarLastDay()));
+        }catch (Exception e){
+            e.printStackTrace();
+            MessageUtils.showDefaultErrorMessage(getActivity());
+        }
 
-        contas = db.select(ContaAPagar.class, QuerysUtil.whereContasAPagarAfterDate(getCalendarLastDay().getTime()));
 
         listAdapter = new ContaAPagarAdapter(getActivity(), contas, monthView.getDateRange(), inflater, app);
         listViewContas.setAdapter(listAdapter);
 
         listViewContas.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,final int position, long arg3) {
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1, final int position, long arg3) {
                 MessageUtils.showMessageYesNo(getActivity(), app.getString(R.string.contas_fragment_message_dialog_atention_title), app.getString(R.string.contas_fragment_remove_account_msg), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -138,7 +147,7 @@ public class ContasAPagarFragment extends Fragment{
 
         listViewContas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int position,long arg3) {
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 //                Fragment fragment = new TransacoesByContaFragment();
 //                Bundle args = new Bundle();
 //                args.putInt("conta", contas.get(position).getId());
@@ -150,9 +159,13 @@ public class ContasAPagarFragment extends Fragment{
     }
 
     private void update(){
-        GregorianCalendar tmp = getCalendarLastDay();
         contas.clear();
-        contas.addAll(db.select(ContaAPagar.class, QuerysUtil.whereContasAPagarAfterDate(tmp.getTime())));
+        try {
+            contas.addAll(ContaAPagarBusiness.getContaAPagarsOnMonth(db, monthView.getDateRange(), getCalendarLastDay()));
+        }catch (Exception e){
+            e.printStackTrace();
+            MessageUtils.showDefaultErrorMessage(getActivity());
+        }
         listAdapter.notifyDataSetChanged();
     }
 
@@ -162,6 +175,5 @@ public class ContasAPagarFragment extends Fragment{
         tmp.add(Calendar.DAY_OF_MONTH, -1);
         return tmp;
     }
-
 
 }

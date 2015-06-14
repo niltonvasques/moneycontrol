@@ -1,6 +1,6 @@
 package br.niltonvasques.moneycontrol.database.bean;
 
-public class ContaAPagar {
+public class ContaAPagar implements Cloneable{
 
 	private int id;
 	private float valor;
@@ -67,4 +67,14 @@ public class ContaAPagar {
 	public void setQuantidade(int quantidade) {
 		this.quantidade = quantidade;
 	}
+
+    @Override
+    public Object clone() {
+        try {
+            return super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

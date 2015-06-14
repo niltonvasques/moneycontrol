@@ -30,8 +30,7 @@ public class ContaAPagarAdapter extends BaseAdapter{
 		this.app = app;
 	}
 
-    public void setDateRange(GregorianCalendar dateRange){
-        this.dateRange = dateRange;
+    public void setDateRange(GregorianCalendar dateRange){ this.dateRange = dateRange;
     }
 	
 	@Override

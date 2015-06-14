@@ -1760,12 +1760,12 @@ public class MessageUtils {
 					qtdLayout.setVisibility(View.VISIBLE);
 				}else{
 					qtdLayout.setVisibility(View.GONE);
+                    editQuantidade.setText("1");
 				}
 			}
 
 			@Override
 			public void onNothingSelected(AdapterView<?> parent) {
-
 			}
 		});
 
