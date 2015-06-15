@@ -90,7 +90,7 @@
         </LinearLayout>
         
         <ProgressBar 
-            style="@android:style/Widget.Holo.Light.ProgressBar.Horizontal"
+            style="@android:style/Widget.ProgressBar.Horizontal"
             android:id="@+id/orcamentoListItemProgressBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

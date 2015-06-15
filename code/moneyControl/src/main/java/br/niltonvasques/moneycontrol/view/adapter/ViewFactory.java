@@ -165,7 +165,8 @@ public class ViewFactory {
 		TextView txtRealizado = (TextView) view.findViewById(R.id.orcamentoListItemTxtValorRealizado);
 		TextView txtRestante = (TextView) view.findViewById(R.id.orcamentoListItemTxtValorRestante);
 		ProgressBar progress = (ProgressBar) view.findViewById(R.id.orcamentoListItemProgressBar);
-		progress.getProgressDrawable().setColorFilter(app.getResources().getColor(R.color.amber), Mode.MULTIPLY);
+//		progress.getProgressDrawable().setColorFilter(app.getResources().getColor(R.color.amber), Mode.SRC_IN);
+		progress.setProgressDrawable(app.getResources().getDrawable(R.drawable.progress_bar_custom));
 		
 //		String tipo = app.getDatabase().runQuery(QuerysUtil.checkTipoTransacao(tr.getId()));
 		
