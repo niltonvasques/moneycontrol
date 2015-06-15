@@ -33,7 +33,7 @@ public class AboutFragment extends Fragment{
 	public void onResume() {
 		super.onResume();
 		((NVFragmentActivity)getActivity()).getSupportActionBar().setIcon(R.drawable.ic_launcher);
-		((NVFragmentActivity)getActivity()).getSupportActionBar().setTitle(getResources().getStringArray(R.array.menu_array)[MainActivity.RELATORIOS_ITEM_MENU]);
+		((NVFragmentActivity)getActivity()).getSupportActionBar().setTitle(getResources().getStringArray(R.array.menu_array)[MainActivity.SOBRE_ITEM_MENU]);
 	}
 
 	@Override

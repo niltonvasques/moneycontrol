@@ -157,15 +157,15 @@
     
     <!-- AboutFragment -->
     <string name="about_fragment_version">Versão:</string>
-    <string name="about_fragment_author_title">Desenvolvedores</string>
+    <string name="about_fragment_author_title">Desenvolvedor</string>
     <string name="about_fragment_author">Nilton Vasques</string>
     <string name="about_fragment_coworkers_title">Colaboradores</string>
-    <string name="about_fragment_coworkers">Joseni Oliveira</string>    
-    <string name="about_fragment_license">2014 - Todos os direitos reservados</string>
+    <string name="about_fragment_coworkers">Larissa Kiana\nJoseni Oliveira</string>
+    <string name="about_fragment_license">2014~2015 - Todos os direitos reservados</string>
     
     <!-- Change Dialog -->
     <string name="news_change_dialog_title">Novidades da versão</string>
-	<string name="news_change_dialog_body">-Nova funcionalidade de contas a pagar.\n-Permitido parcelar compras.</string>
+	<string name="news_change_dialog_body">-Gerenciamento de contas a pagar.\n-Adicionado o parcelamento de compras.\n-Melhorado o layout de algumas telas.\n-Corrigido alguns bugs.</string>
     
 	<!--  Error Dialog -->
 	<string name="dialog_error_message_title">Atenção!</string>
