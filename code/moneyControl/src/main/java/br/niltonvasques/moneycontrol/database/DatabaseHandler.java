@@ -18,6 +18,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import br.niltonvasques.moneycontrol.database.bean.Conta;
+import br.niltonvasques.moneycontrol.database.bean.ContaPaga;
+import br.niltonvasques.moneycontrol.database.bean.Transacao;
 
 public class DatabaseHandler extends SQLiteOpenHelper{
 
@@ -27,7 +29,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 
 	private static final String DDL_FILENAME = "db/ddl.sql";
 
-	private static final int DATABASE_VERSION = 16;
+	private static final int DATABASE_VERSION = 20;
 
 	private static final String DATABASE_NAME = "money-db";
 
@@ -49,7 +51,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 		}
 
 		System.out.println("DatabaseHandler() ver: "+DATABASE_VERSION);
-		
+
 		/*
 		 * Uncomment to recover an backup database
 		 */
@@ -182,34 +184,42 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		switch (oldVersion) {
-		case 1:
-		case 2:
-			DatabaseUtil.execSqlFromFile(db, context, DATABASE_UPDATE_PATTERN+3+".sql");
-		case 3:
-			DatabaseUtil.execSqlFromFile(db, context, DATABASE_UPDATE_PATTERN+4+".sql");
-		case 4:
-			DatabaseUtil.execSqlFromFile(db, context, DATABASE_UPDATE_PATTERN+5+".sql");
-		case 5:
-			DatabaseUtil.execSqlFromFile(db, context, DATABASE_UPDATE_PATTERN+6+".sql");
-		case 6:
-			DatabaseUtil.execSqlFromFile(db, context, DATABASE_UPDATE_PATTERN+7+".sql");
-		case 7:
-			DatabaseUtil.execSqlFromFile(db, context, DATABASE_UPDATE_PATTERN+8+".sql");
-		case 8:
-			DatabaseUtil.execSqlFromFile(db, context, DATABASE_UPDATE_PATTERN+9+".sql");
-		case 10:
-			DatabaseUtil.execSqlFromFile(db, context, DATABASE_UPDATE_PATTERN+11+".sql");
-		case 11:
-			DatabaseUtil.execSqlFromFile(db, context, DATABASE_UPDATE_PATTERN+12+".sql");
-		case 13:
-			DatabaseUtil.execSqlFromFile(db, context, DATABASE_UPDATE_PATTERN+14+".sql");
-		case 14:
-			DatabaseUtil.execSqlFromFile(db, context, DATABASE_UPDATE_PATTERN+15+".sql");
-		case 15:
-			DatabaseUtil.execSqlFromFile(db, context, DATABASE_UPDATE_PATTERN+16+".sql");
+			case 1:
+			case 2:
+				DatabaseUtil.execSqlFromFile(db, context, DATABASE_UPDATE_PATTERN+3+".sql");
+			case 3:
+				DatabaseUtil.execSqlFromFile(db, context, DATABASE_UPDATE_PATTERN+4+".sql");
+			case 4:
+				DatabaseUtil.execSqlFromFile(db, context, DATABASE_UPDATE_PATTERN+5+".sql");
+			case 5:
+				DatabaseUtil.execSqlFromFile(db, context, DATABASE_UPDATE_PATTERN+6+".sql");
+			case 6:
+				DatabaseUtil.execSqlFromFile(db, context, DATABASE_UPDATE_PATTERN+7+".sql");
+			case 7:
+				DatabaseUtil.execSqlFromFile(db, context, DATABASE_UPDATE_PATTERN+8+".sql");
+			case 8:
+				DatabaseUtil.execSqlFromFile(db, context, DATABASE_UPDATE_PATTERN+9+".sql");
+			case 10:
+				DatabaseUtil.execSqlFromFile(db, context, DATABASE_UPDATE_PATTERN+11+".sql");
+			case 11:
+				DatabaseUtil.execSqlFromFile(db, context, DATABASE_UPDATE_PATTERN+12+".sql");
+			case 13:
+				DatabaseUtil.execSqlFromFile(db, context, DATABASE_UPDATE_PATTERN+14+".sql");
+			case 14:
+				DatabaseUtil.execSqlFromFile(db, context, DATABASE_UPDATE_PATTERN+15+".sql");
+			case 15:
+				DatabaseUtil.execSqlFromFile(db, context, DATABASE_UPDATE_PATTERN+16+".sql");
+			case 16:
+				DatabaseUtil.execSqlFromFile(db, context, DATABASE_UPDATE_PATTERN+17+".sql");
+			case 17:
+				DatabaseUtil.execSqlFromFile(db, context, DATABASE_UPDATE_PATTERN+18+".sql");
+			case 18:
+				DatabaseUtil.execSqlFromFile(db, context, DATABASE_UPDATE_PATTERN+19+".sql");
+			case 19:
+				DatabaseUtil.execSqlFromFile(db, context, DATABASE_UPDATE_PATTERN+20+".sql");
 
-		default:
-			break;
+			default:
+				break;
 		}
 
 	}
@@ -306,6 +316,12 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         }
 
         return count > 0;
+    }
+
+    public boolean deleteTransacao(Transacao t){
+        ContaPaga cp = new ContaPaga();
+        delete(cp, "id_Transacao = "+t.getId());
+		return delete(t);
     }
 
 	public <T> List<T> select(Class<T> type){

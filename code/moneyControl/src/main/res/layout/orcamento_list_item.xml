@@ -45,7 +45,7 @@
 		                android:layout_width="0dp"
 		                android:layout_height="wrap_content"
 		                android:layout_weight="5"
-		                android:textColor="@color/dark_green"
+		                android:textColor="@color/green"
 		                android:text="@string/default_currency_value"/>
 	            </LinearLayout>
 	            
@@ -64,7 +64,7 @@
 		                android:layout_width="0dp"
 		                android:layout_height="wrap_content"
 		                android:layout_weight="5"
-		                android:textColor="#ff0000"
+		                android:textColor="@color/red"
 		                android:text="@string/default_currency_value"/>
 	            </LinearLayout>
 	            
@@ -83,7 +83,7 @@
 		                android:layout_width="0dp"
 		                android:layout_height="wrap_content"
 		                android:layout_weight="5"
-		                android:textColor="@color/dark_green"
+		                android:textColor="@color/green"
 		                android:text="@string/default_currency_value"/>
 	            </LinearLayout>
             </LinearLayout>	          
@@ -95,6 +95,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:progress="50"
+			android:progressDrawable="@drawable/progress_bar_custom"
             android:max="100"/>
     </LinearLayout>
 </RelativeLayout>

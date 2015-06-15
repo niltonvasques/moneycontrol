@@ -1,6 +1,8 @@
 package br.niltonvasques.moneycontrol.database;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import br.niltonvasques.moneycontrol.util.DateUtil;
 
@@ -402,6 +404,52 @@ public class QuerysUtil {
 	
 	public static final String sumOrcamentoOnMonth(Date date){
 		return "SELECT SUM(valor) FROM Orcamento "+whereOrcamentoOnMonth(date);
+	}
+
+	public static final String lastContaPagaOnMonth(int id_ContaAPagar, Date date){
+        return "SELECT data FROM Transacao WHERE id_ContaAPagar = "+id_ContaAPagar+" "+
+                "AND strftime(\"%m-%Y\", data) = strftime(\"%m-%Y\", '" +DateUtil.sqlDateFormat().format(date)+"') " +
+                "ORDER BY data DESC LIMIT 1";
+    }
+
+    public static final String checkContaPagaOnDate(int id_ContaAPagar, Date vencimento){
+        return "SELECT id_Transacao FROM ContaPaga WHERE id_ContaAPagar = " +id_ContaAPagar+" "+
+                "AND strftime(\"%d-%m-%Y\", vencimento) = strftime(\"%d-%m-%Y\", '" +DateUtil.sqlDateFormat().format(vencimento)+"') " +
+                "LIMIT 1";
+    }
+
+    public static String whereContasAPagarAfterDate(Date date){
+        return "WHERE status = 1 " +
+                "AND data <= date('" +DateUtil.sqlDateFormat().format(date)+"') "+
+                "ORDER BY data DESC, id	DESC";
+    }
+
+	public static String whereContasAPagarOnMonth(Date date){
+		GregorianCalendar first = new GregorianCalendar();
+		first.setTime(date);
+		first.set(Calendar.DAY_OF_MONTH, 1);
+        String lastDay = DateUtil.sqlDateFormat().format(date);
+        String firstDay = DateUtil.sqlDateFormat().format(first.getTime());
+		return
+            "WHERE " +
+                "(     status = 1 " +
+                "      AND data <= date('" +lastDay+ "')  "+
+                "      AND (  "+
+                "          ( id_Repeticao = 1 AND strftime('%m-%Y', data) = strftime('%m-%Y', date('" +lastDay+ "')) 	 "+
+                "          ) OR "+
+                "          ( id_Repeticao = 2 AND quantidade > ((julianday(date('" +firstDay+ "')) - julianday(data) )/7) 	 "+
+                "          ) OR "+
+                "          ( id_Repeticao = 4 AND quantidade > (strftime('%Y', date('" +lastDay+ "')) - strftime('%Y', data)) 	 "+
+                "          ) OR "+
+                "          ( id_Repeticao = 3  "+
+                "            AND quantidade > (((strftime('%Y', date('" +lastDay+ "')) - strftime('%Y', data))*12)+(strftime('%m', date('" +lastDay+ "')) - strftime('%m', data)))  "+
+                "          ) "+
+                "      ) "+
+                " ) OR " +
+                "( " +
+                "   ( SELECT vencimento FROM ContaPaga WHERE id_ContaAPagar = ContaAPagar.id AND strftime('%m-%Y', vencimento) = strftime('%m-%Y', date('" +lastDay+ "')) ) IS NOT NULL" +
+                ")" +
+            " ORDER BY data DESC, id	DESC";
 	}
 
 	

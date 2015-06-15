@@ -32,6 +32,7 @@ import br.niltonvasques.moneycontrol.app.MoneyControlApp;
 import br.niltonvasques.moneycontrol.database.DatabaseHandler;
 import br.niltonvasques.moneycontrol.database.QuerysUtil;
 import br.niltonvasques.moneycontrol.database.bean.CategoriaTransacao;
+import br.niltonvasques.moneycontrol.database.bean.ContaPaga;
 import br.niltonvasques.moneycontrol.database.bean.Transacao;
 import br.niltonvasques.moneycontrol.util.DateUtil;
 import br.niltonvasques.moneycontrol.util.MessageUtils;
@@ -134,7 +135,7 @@ public class TransacoesFragment extends Fragment{
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						Transacao t = transacoes.get(position);
-						db.delete(t);
+                        db.deleteTransacao(t);
 						update();
 					}
 				}, new DialogInterface.OnDismissListener() {					

@@ -37,7 +37,7 @@
 		<type label="SET" length="1" sql="SET" quote=""/>
 		<type label="Bit" length="0" sql="bit" quote=""/>
 	</group>
-</datatypes><table x="1146" y="288" name="Bem">
+</datatypes><table x="614" y="309" name="Bem">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -52,7 +52,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="463" y="178" name="Conta">
+<table x="284" y="103" name="Conta">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -73,7 +73,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="794" y="229" name="Transacao">
+<table x="859" y="195" name="Transacao">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -98,18 +98,18 @@
 <row name="descricao" null="1" autoincrement="0">
 <datatype>VARCHAR</datatype>
 <default>NULL</default></row>
+<row name="executada" null="0" autoincrement="0">
+<datatype>bit</datatype>
+<default>1</default></row>
 <row name="id_Compra" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <default>NULL</default><relation table="Compra" row="id" />
 </row>
-<row name="executada" null="0" autoincrement="0">
-<datatype>bit</datatype>
-<default>1</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
 </table>
-<table x="1475" y="565" name="TipoTransacao">
+<table x="1384" y="851" name="TipoTransacao">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -120,7 +120,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="1351" y="369" name="TipoBem">
+<table x="385" y="327" name="TipoBem">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -132,7 +132,7 @@
 </key>
 <comment>O bem pode ser do tipo passivo ou ativo.</comment>
 </table>
-<table x="266" y="361" name="TipoConta">
+<table x="61" y="180" name="TipoConta">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -144,7 +144,7 @@
 </key>
 <comment>Conta Corrente, Poupança, Cartão de Crédito e etc.</comment>
 </table>
-<table x="1176" y="595" name="CategoriaTransacao">
+<table x="1134" y="720" name="CategoriaTransacao">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -163,7 +163,7 @@
 </key>
 <comment>Saúde, Moradia, Alimentação e etc.</comment>
 </table>
-<table x="102" y="149" name="CartaoCredito">
+<table x="65" y="18" name="CartaoCredito">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -229,7 +229,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="791" y="590" name="DespesasFuturas">
+<table x="1434" y="552" name="ContaAPagar">
 <row name="id" null="0" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -240,20 +240,27 @@
 <datatype>DATE</datatype>
 <default>'NULL'</default></row>
 <row name="descricao" null="0" autoincrement="0">
-<datatype>VARCHAR</datatype>
+<datatype>VARCHAR(200)</datatype>
 <default>'NULL'</default></row>
 <row name="status" null="0" autoincrement="0">
-<datatype>BINARY</datatype>
-<default>'0'</default></row>
+<datatype>bit</datatype>
+<default>1</default></row>
+<row name="id_Repeticao" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="Repeticao" row="id" />
+</row>
 <row name="id_CategoriaTransacao" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <default>NULL</default><relation table="CategoriaTransacao" row="id" />
 </row>
+<row name="quantidade" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>1</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
 </table>
-<table x="816" y="769" name="Orcamento">
+<table x="521" y="722" name="Orcamento">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -271,7 +278,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="616" y="347" name="Compra">
+<table x="369" y="495" name="Compra">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -294,6 +301,36 @@
 <row name="id_CategoriaTransacao" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <default>NULL</default><relation table="CategoriaTransacao" row="id" />
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="1694" y="659" name="Repeticao">
+<row name="id" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="tipo" null="0" autoincrement="0">
+<datatype>VARCHAR(50)</datatype>
+<default>'NULL'</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="1188" y="501" name="ContaPaga">
+<row name="id" null="0" autoincrement="1">
+<datatype>INTEGER</datatype>
+</row>
+<row name="id_ContaAPagar" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="ContaAPagar" row="id" />
+</row>
+<row name="id_Transacao" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="Transacao" row="id" />
+</row>
+<row name="vencimento" null="0" autoincrement="0">
+<datatype>DATE</datatype>
 </row>
 <key type="PRIMARY" name="">
 <part>id</part>

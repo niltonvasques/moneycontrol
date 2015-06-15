@@ -28,7 +28,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
-                android:textColor="@color/dark_green"
+                android:textColor="@color/green"
                 android:text="@string/default_currency_value"/>
             
         </LinearLayout>

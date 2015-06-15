@@ -1,0 +1,2 @@
+ALTER TABLE ContaAPagar ADD quantidade INTEGER NOT NULL  DEFAULT 1;
+

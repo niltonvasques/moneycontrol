@@ -37,6 +37,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -48,6 +49,8 @@ import br.niltonvasques.moneycontrol.database.bean.CartaoCredito;
 import br.niltonvasques.moneycontrol.database.bean.CategoriaTransacao;
 import br.niltonvasques.moneycontrol.database.bean.Compra;
 import br.niltonvasques.moneycontrol.database.bean.Conta;
+import br.niltonvasques.moneycontrol.database.bean.ContaAPagar;
+import br.niltonvasques.moneycontrol.database.bean.ContaPaga;
 import br.niltonvasques.moneycontrol.database.bean.Fatura;
 import br.niltonvasques.moneycontrol.database.bean.MovimentacaoAtivo;
 import br.niltonvasques.moneycontrol.database.bean.Orcamento;
@@ -729,6 +732,7 @@ public class MessageUtils {
 
 		final TextView txtViewTitle = (TextView)view.findViewById(R.id.addTransacaoDialogTxtViewTitle);
 		txtViewTitle.setText(R.string.edit_transacao_dialog_title);
+        view.findViewById(R.id.addTransacaoDialogLayoutParcelar).setVisibility(View.GONE);
 
 		final Button btnDate = (Button)view.findViewById(R.id.addTransacaoDialogBtnData);
 		ViewUtil.adjustDateOnTextView(btnDate, value);
@@ -770,7 +774,7 @@ public class MessageUtils {
 		final Spinner spinnerCategoria = (Spinner) view.findViewById(R.id.addTransacaoDialogSpinnerCategoria);
 		final Spinner spinnerContas = (Spinner) view.findViewById(R.id.addTransacaoDialogSpinnerConta);
 		final Button btnAddCategory = (Button) 		    view.findViewById(R.id.addTransacaoDialogBtnAddCategoria);
-		if(c.isSystem()){
+		if(c.isSystem() || t.getId_Compra() > 0){
 			view.findViewById(R.id.addTransacaoDialogLayoutTipo).setVisibility(View.GONE);
 			view.findViewById(R.id.addTransacaoDialogLayoutCategoria).setVisibility(View.GONE);
 			view.findViewById(R.id.addTransacaoDialogLayoutConta).setVisibility(View.GONE);
@@ -1032,47 +1036,47 @@ public class MessageUtils {
 
 		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				try{
-					SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-					EditText editValor = (EditText) view.findViewById(R.id.transferenciaDialogEditTxtValor);
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                try {
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                    EditText editValor = (EditText) view.findViewById(R.id.transferenciaDialogEditTxtValor);
 
-					float valor = Float.valueOf(editValor.getText().toString());
-					tCredito.setValor(valor);
-					tDebito.setValor(valor);
+                    float valor = Float.valueOf(editValor.getText().toString());
+                    tCredito.setValor(valor);
+                    tDebito.setValor(valor);
 
-					Conta cDebito = (Conta) spinnerContasOrigem.getSelectedItem();
-					tDebito.setId_Conta(cDebito.getId());
+                    Conta cDebito = (Conta) spinnerContasOrigem.getSelectedItem();
+                    tDebito.setId_Conta(cDebito.getId());
 
-					Conta cCredito = (Conta) spinnerContasDestino.getSelectedItem();
-					tCredito.setId_Conta(cCredito.getId());
-					//				
-					tCredito.setDescricao("Transferência de "+cDebito.getNome());
-					tDebito.setDescricao("Transferência p/ "+cCredito.getNome());
+                    Conta cCredito = (Conta) spinnerContasDestino.getSelectedItem();
+                    tCredito.setId_Conta(cCredito.getId());
+                    //
+                    tCredito.setDescricao("Transferência de " + cDebito.getNome());
+                    tDebito.setDescricao("Transferência p/ " + cCredito.getNome());
 
-					tCredito.setId_CategoriaTransacao(transfCatCredito.getId());
-					tDebito.setId_CategoriaTransacao(transfCatDebito.getId());
+                    tCredito.setId_CategoriaTransacao(transfCatCredito.getId());
+                    tDebito.setId_CategoriaTransacao(transfCatDebito.getId());
 
-					tCredito.setData(format.format(value.getTime()));
-					tDebito.setData(format.format(value.getTime()));
+                    tCredito.setData(format.format(value.getTime()));
+                    tDebito.setData(format.format(value.getTime()));
 
-					db.insert(tCredito);
-					db.insert(tDebito);
-				}catch(Exception e){
-					e.printStackTrace();
-					MessageUtils.showDefaultErrorMessage(context);
-				}
+                    db.insert(tCredito);
+                    db.insert(tDebito);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    MessageUtils.showDefaultErrorMessage(context);
+                }
 
-				listener.onClick(dialog, which);
-			}
-		});
+                listener.onClick(dialog, which);
+            }
+        });
 
 		alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int whichButton) {
-				dialog.cancel();
-			}
-		});
+            public void onClick(DialogInterface dialog, int whichButton) {
+                dialog.cancel();
+            }
+        });
 
 
 		OnDateSetListener dateListener = new DatePickerDialog.OnDateSetListener() {
@@ -1100,11 +1104,11 @@ public class MessageUtils {
 		}
 
 		btnDate.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				dateDialog.show();				
-			}
-		});
+            @Override
+            public void onClick(View v) {
+                dateDialog.show();
+            }
+        });
 
 
 
@@ -1136,7 +1140,7 @@ public class MessageUtils {
 		spinnerContasOrigem.setAdapter(new ArrayAdapter<Conta>(context, android.R.layout.simple_list_item_1, contas));
 		spinnerContasOrigem.setSelection(0);
 		final EditText editValor = (EditText) view.findViewById(R.id.transferenciaDialogEditTxtValor);
-		editValor.setText(fatura.getValor()+"");
+		editValor.setText(MathUtil.round(fatura.getValor(), 2) + "");
 
 		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 
@@ -1346,10 +1350,10 @@ public class MessageUtils {
 		});
 
 		alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int whichButton) {
-				dialog.cancel();
-			}
-		});
+            public void onClick(DialogInterface dialog, int whichButton) {
+                dialog.cancel();
+            }
+        });
 
 
 		OnDateSetListener dateListener = new DatePickerDialog.OnDateSetListener() {
@@ -1377,11 +1381,11 @@ public class MessageUtils {
 		}
 
 		btnDate.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				dateDialog.show();				
-			}
-		});
+            @Override
+            public void onClick(View v) {
+                dateDialog.show();
+            }
+        });
 
 		alert.show();        
 	}
@@ -1632,7 +1636,7 @@ public class MessageUtils {
 		spinnerTipos.setSelection(startCat);
 
 		final EditText editNome = (EditText) view.findViewById(R.id.addOrcamentoDialogEditTxtValor);
-		editNome.setText(c.getValor()+"");
+		editNome.setText(c.getValor() + "");
 
 
 		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -1727,5 +1731,221 @@ public class MessageUtils {
 		}
 		return dpd;
 	}
+
+    @SuppressLint("NewApi")
+    public static void showAddContaAPagar(final Context context, final LayoutInflater inflater, final DatabaseHandler db, final DialogInterface.OnClickListener listener){
+        final AlertDialog.Builder alert = new AlertDialog.Builder(context);
+        final View view = inflater.inflate(R.layout.add_conta_a_pagar_dialog, null);
+        alert.setView(view);
+
+        final GregorianCalendar value = new GregorianCalendar();
+        final Button btnDate = (Button)view.findViewById(R.id.addContaAPagarDialogBtnData);
+        ViewUtil.adjustDateOnTextView(btnDate, value);
+
+        final List<CategoriaTransacao> categorias = db.select(CategoriaTransacao.class, QuerysUtil.whereNoSystemCategorias(2));
+
+        final EditText editValor = (EditText) view.findViewById(R.id.addContaAPagarDialogEditTxtValor);
+		final EditText editQuantidade = (EditText) view.findViewById(R.id.addContaAPagarDialogEditTxtQuantidade);
+		editQuantidade.setText("1");
+
+        final Spinner spinnerCategoria = (Spinner) view.findViewById(R.id.addContaAPagarDialogSpinnerCategoria);
+        spinnerCategoria.setAdapter(new ArrayAdapter<CategoriaTransacao>(context, android.R.layout.simple_list_item_1, categorias));
+
+        final LinearLayout qtdLayout = (LinearLayout) view.findViewById(R.id.addContaAPagarDialogLayoutQuantidade);
+		final Spinner spinnerRepeticao = (Spinner) view.findViewById(R.id.addContaAPagarDialogSpinnerPeriodo);
+		spinnerRepeticao.setOnItemSelectedListener(new OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				if(position > 0){
+					qtdLayout.setVisibility(View.VISIBLE);
+				}else{
+					qtdLayout.setVisibility(View.GONE);
+                    editQuantidade.setText("1");
+				}
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+			}
+		});
+
+        view.findViewById(R.id.addContaAPagarDialogBtnAddCategoria).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MessageUtils.showAddCategoria(context, inflater, db, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        categorias.clear();
+                        categorias.addAll(db.select(CategoriaTransacao.class, QuerysUtil.whereNoSystemCategorias(2)));
+                        ((ArrayAdapter)spinnerCategoria.getAdapter()).notifyDataSetChanged();
+                    }
+                });
+            }
+        });
+
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                try{
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
+                    EditText editDescricao = (EditText) view.findViewById(R.id.addContaAPagarDialogEditTxtDescrição);
+                    CategoriaTransacao cat = (CategoriaTransacao) spinnerCategoria.getSelectedItem();
+
+                    float valor = Float.valueOf(editValor.getText().toString());
+					int qtd = Integer.valueOf(editQuantidade.getText().toString());
+					ContaAPagar c = new ContaAPagar();
+                    c.setStatus(true);
+					c.setId_CategoriaTransacao(cat.getId());
+					c.setValor(valor);
+					c.setDescricao(editDescricao.getText().toString());
+					c.setData(format.format(value.getTime()));
+					c.setId_Repeticao(spinnerRepeticao.getSelectedItemPosition() + 1);
+					c.setQuantidade(qtd);
+					db.insert(c);
+                }catch(Exception e){
+                    e.printStackTrace();
+                    MessageUtils.showDefaultErrorMessage(context);
+                }
+
+                listener.onClick(dialog, which);
+            }
+        });
+
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                dialog.cancel();
+            }
+        });
+
+        OnDateSetListener dateListener = new DatePickerDialog.OnDateSetListener() {
+
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                Calendar c = Calendar.getInstance();
+                c.set(Calendar.YEAR, year);
+                c.set(Calendar.MONTH, monthOfYear);
+                c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                value.set(Calendar.YEAR, year);
+                value.set(Calendar.MONTH, monthOfYear);
+                value.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                ViewUtil.adjustDateOnTextView(btnDate, value);
+
+            }
+        };
+
+        final DatePickerDialog dateDialog = new DatePickerDialog(context, dateListener,
+                value.get(Calendar.YEAR),
+                value.get(Calendar.MONTH),
+                value.get(Calendar.DAY_OF_MONTH));
+
+        btnDate.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dateDialog.show();
+            }
+        });
+
+        alert.show();
+    }
+
+    @SuppressLint("NewApi")
+    public static void showPagarConta(final Context context, final LayoutInflater inflater, final DatabaseHandler db, final ContaAPagar fatura, final GregorianCalendar vencimento,
+                                      final DialogInterface.OnClickListener listener){
+        final AlertDialog.Builder alert = new AlertDialog.Builder(context);
+        final View view = inflater.inflate(R.layout.pagar_conta_dialog, null);
+        alert.setView(view);
+
+        final GregorianCalendar value = (GregorianCalendar) vencimento.clone();
+
+        final Button btnDate = (Button)view.findViewById(R.id.transferenciaDialogBtnData);
+        ViewUtil.adjustDateOnTextView(btnDate, value);
+
+        final Transacao tDebito = new Transacao();
+
+        final List<Conta> contas = db.select(Conta.class);
+
+        final Spinner spinnerContasOrigem = (Spinner) view.findViewById(R.id.transferenciaDialogSpinnerContaOrigem);
+        spinnerContasOrigem.setAdapter(new ArrayAdapter<Conta>(context, android.R.layout.simple_list_item_1, contas));
+        spinnerContasOrigem.setSelection(0);
+        final EditText editValor = (EditText) view.findViewById(R.id.transferenciaDialogEditTxtValor);
+        editValor.setText(MathUtil.round(fatura.getValor(),2) + "");
+
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                try{
+                    float valor = Float.valueOf(editValor.getText().toString());
+                    tDebito.setValor(valor);
+
+                    Conta cDebito = (Conta) spinnerContasOrigem.getSelectedItem();
+                    tDebito.setId_Conta(cDebito.getId());
+
+                    tDebito.setDescricao(context.getString(R.string.conta_a_pagar_dialog_pagar_fatura_desc) + fatura.getDescricao());
+
+                    tDebito.setId_CategoriaTransacao(fatura.getId_CategoriaTransacao());
+
+                    tDebito.setData(format.format(value.getTime()));
+
+                    db.insert(tDebito);
+
+                    ContaPaga cp = new ContaPaga();
+                    cp.setId_ContaAPagar(fatura.getId());
+                    cp.setId_Transacao(tDebito.getId());
+                    cp.setVencimento(format.format(vencimento.getTime()));
+
+                    db.insert(cp);
+                }catch(Exception e){
+                    e.printStackTrace();
+                    MessageUtils.showDefaultErrorMessage(context);
+                }
+
+                listener.onClick(dialog, which);
+            }
+        });
+
+        alert.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                dialog.cancel();
+            }
+        });
+
+
+        OnDateSetListener dateListener = new DatePickerDialog.OnDateSetListener() {
+
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                Calendar c = Calendar.getInstance();
+                c.set(Calendar.YEAR, year);
+                c.set(Calendar.MONTH, monthOfYear);
+                c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                value.set(Calendar.YEAR, year);
+                value.set(Calendar.MONTH, monthOfYear);
+                value.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                ViewUtil.adjustDateOnTextView(btnDate, value);
+
+            }
+        };
+
+        final DatePickerDialog dateDialog = new DatePickerDialog(context, dateListener,
+                value.get(Calendar.YEAR),
+                value.get(Calendar.MONTH),
+                value.get(Calendar.DAY_OF_MONTH));
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
+            dateDialog.getDatePicker().setMaxDate(Calendar.getInstance().getTimeInMillis());
+        }
+
+        btnDate.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dateDialog.show();
+            }
+        });
+
+        alert.show();
+    }
 
 }

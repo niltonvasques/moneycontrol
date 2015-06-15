@@ -33,3 +33,7 @@ INSERT INTO Ativo (id, nome) VALUES(8, 'Fundos Imobiliários');
 INSERT INTO Conta (id, nome, saldo, icon, id_TipoConta) VALUES (1, 'Carteira', 0, 'carteira_icon.jpg', 5);
 
 
+INSERT INTO Repeticao (id, tipo) VALUES (1, "Uma vez");
+INSERT INTO Repeticao (id, tipo) VALUES (2, "Semanalmente");
+INSERT INTO Repeticao (id, tipo) VALUES (3, "Mensalmente");
+INSERT INTO Repeticao (id, tipo) VALUES (4, "Anualmente");

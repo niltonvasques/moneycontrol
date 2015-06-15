@@ -9,6 +9,15 @@ import br.niltonvasques.moneycontrol.database.bean.Fatura;
 import br.niltonvasques.moneycontrol.database.bean.Fatura.Status;
 
 public class CartaoBusiness {
+
+    public static GregorianCalendar computeRangeFatura(GregorianCalendar monthRange, CartaoCredito c){
+        GregorianCalendar d = (GregorianCalendar) monthRange.clone();
+        if(c.getDia_fechamento() <= c.getDia_vencimento())
+            d.add(GregorianCalendar.MONTH, -1);
+        else
+            d.add(GregorianCalendar.MONTH, -2);
+        return d;
+    }
 	
 	public static Fatura computeFatura(DatabaseHandler db, CartaoCredito cc, GregorianCalendar date){
 		GregorianCalendar cartaoDateRange = (GregorianCalendar) date.clone();
@@ -48,6 +57,7 @@ public class CartaoBusiness {
 			fat.setStatus(Status.PENDENTE);
 		}
 		fat.setLimite(limite);
+		fat.setValorPago(pagsF);
 		
 		return fat;
 	}

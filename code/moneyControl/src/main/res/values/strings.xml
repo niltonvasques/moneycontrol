@@ -11,7 +11,8 @@
     <string-array name="menu_array">
         <item>Capital</item>
         <item>Transações</item>
-        <item>Orçamento</item>
+        <item>Contas a pagar</item>
+        <item>Planejamento do mês</item>
         <item>Categorias</item>
         <item>Investimentos</item>
         <item>Relatórios</item>
@@ -164,7 +165,7 @@
     
     <!-- Change Dialog -->
     <string name="news_change_dialog_title">Novidades da versão</string>
-	<string name="news_change_dialog_body">-Permitido parcelar compras.\n-Adicionado a possibilidade de edição das datas do cartão.\n- Corrigido o cálculo da fatura do cartão.\n- Melhorado o layout da tela principal.\n- Adicionado botão para pagamento da fatura do cartão.\n- Melhorado o gráfico dos relatórios.</string>
+	<string name="news_change_dialog_body">-Nova funcionalidade de contas a pagar.\n-Permitido parcelar compras.</string>
     
 	<!--  Error Dialog -->
 	<string name="dialog_error_message_title">Atenção!</string>
@@ -177,6 +178,19 @@
     <string name="transacoes_message_title">Atenção!</string>
     <string name="fragment_transacoes_remove_transacao_message">Deseja excluir esta transação?</string>
     <string name="fragment_transacoes_remove_parcelas_message">Deseja excluir todas as parcelas?</string>
+    <string name="add_conta_a_pagar_dialog_title">Adicionar conta a pagar</string>
+    <string name="add_conta_a_pagar_dialog_periodo">Repetição</string>
+    <string name="conta_a_pagar_dialog_pagar_fatura_desc">"Pagamento da conta: "</string>
+    <string name="add_conta_a_pagar_dialog_quantidade">Quantidade:</string>
+    <string name="add_conta_a_pagar_dialog_hint_quantidade">5 vezes</string>
+    <string name="pagar_conta_dialog_title">Pagar Conta</string>
+
+    <string-array name="bill_period_array">
+        <item>Única vez</item>
+        <item>Semanalmente</item>
+        <item>Mensalmente</item>
+        <item>Anualmente</item>
+    </string-array>
 
 
 </resources>

@@ -24,6 +24,7 @@ import br.niltonvasques.moneycontrol.util.DateUtil;
 import br.niltonvasques.moneycontrol.util.MessageUtils;
 import br.niltonvasques.moneycontrol.view.fragment.AboutFragment;
 import br.niltonvasques.moneycontrol.view.fragment.CategoriasFragment;
+import br.niltonvasques.moneycontrol.view.fragment.ContasAPagarFragment;
 import br.niltonvasques.moneycontrol.view.fragment.ContasFragment;
 import br.niltonvasques.moneycontrol.view.fragment.InvestimentosFragment;
 import br.niltonvasques.moneycontrol.view.fragment.OrcamentoFragment;
@@ -36,11 +37,12 @@ public class MainActivity extends NVFragmentActivity {
 	
 	public static final int CONTAS_ITEM_MENU 			= 0;
 	public static final int TRANSACOES_ITEM_MENU 		= 1;
-	public static final int ORCAMENTO_ITEM_MENU 		= 2;
-	public static final int CATEGORIAS_ITEM_MENU 		= 3;
-	public static final int INVESTIMENTOS_ITEM_MENU 	= 4;
-	public static final int RELATORIOS_ITEM_MENU 		= 5;
-	public static final int SOBRE_ITEM_MENU 			= 6;
+	public static final int CONTAS_A_PAGAR_ITEM_MENU 	= 2;
+	public static final int ORCAMENTO_ITEM_MENU 		= 3;
+	public static final int CATEGORIAS_ITEM_MENU 		= 4;
+	public static final int INVESTIMENTOS_ITEM_MENU 	= 5;
+	public static final int RELATORIOS_ITEM_MENU 		= 6;
+	public static final int SOBRE_ITEM_MENU 			= 7;
 
 	private static final String TAG = "[MainActivity]";
 
@@ -73,13 +75,13 @@ public class MainActivity extends NVFragmentActivity {
 		mDrawerList.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position,long arg3) {
-				switchContent(position);				
+				switchContent(position);
 				mDrawerLayout.closeDrawer(mDrawerList);
 
 
 			}
 
-			
+
 		});
 
 		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
@@ -182,6 +184,8 @@ public class MainActivity extends NVFragmentActivity {
 			changeFragment(new OrcamentoFragment());
 		}else if(mDrawerItens[position].equals(mDrawerItens[SOBRE_ITEM_MENU])){
 			changeFragment(new AboutFragment());
+		}else if(mDrawerItens[position].equals(mDrawerItens[CONTAS_A_PAGAR_ITEM_MENU])){
+			changeFragment(new ContasAPagarFragment());
 		}
 	}
 	
