@@ -23,5 +23,4 @@
     android:paddingRight="16dp"
     android:padding="10dp"
     android:textSize="16sp"
-    android:textStyle="bold"
     android:textColor="#ffffff"/>

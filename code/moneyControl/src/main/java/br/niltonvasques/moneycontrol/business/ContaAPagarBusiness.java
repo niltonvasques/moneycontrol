@@ -40,6 +40,12 @@ public class ContaAPagarBusiness {
                 Log.d(TAG, "qtd: " + qtd);
                 gC.add(Calendar.DAY_OF_MONTH, (int) shiftDays);
                 c.setData(DateUtil.sqlDateFormat().format(gC.getTime()));
+                if(!c.isStatus()) { // Caso seja semanal, mostrar apenas os pagos
+                    String id = db.runQuery(QuerysUtil.checkContaPagaOnDate(c.getId(), gC.getTime()));
+                    boolean paid = id != null && !id.equals("");
+                    if (!paid)
+                        contasList.remove(c);
+                }
                 qtd++;
                 int restDaysOnMonth = tmp.get(Calendar.DAY_OF_MONTH) - gC.get(Calendar.DAY_OF_MONTH);
                 int max = Math.min(c.getQuantidade() - (int)qtd, restDaysOnMonth / 7 );
@@ -48,8 +54,15 @@ public class ContaAPagarBusiness {
                     ContaAPagar cp = (ContaAPagar) c.clone();
                     gC.add(Calendar.DAY_OF_MONTH, 7);
                     cp.setData(DateUtil.sqlDateFormat().format(gC.getTime()));
-                    Log.d(TAG, "ADD " + cp.getDescricao()+ " - " +cp.getData());
-                    newItems.add(cp);
+                    Log.d(TAG, "ADD " + cp.getDescricao() + " - " + cp.getData());
+                    if(!cp.isStatus()){
+                        String id = db.runQuery(QuerysUtil.checkContaPagaOnDate(cp.getId(), gC.getTime()));
+                        boolean paid = id != null && !id.equals("");
+                        if(paid)
+                            newItems.add(cp);
+                    }else {
+                        newItems.add(cp);
+                    }
                 }
             }
         }
