@@ -128,7 +128,7 @@ public class MessageUtils {
 		final String[] icons = getIconsNameOnAsset(context);
 
 		final Conta cc = new Conta();
-		cc.setIcon("bb_icon.jpg");
+		cc.setIcon(icons[0]);
 
 		final ImageView imgIcon = (ImageView) view.findViewById(R.id.addContaDialogImgIcon);
 		try {
@@ -182,21 +182,25 @@ public class MessageUtils {
             }
         });
 
+		final EditText editNome = (EditText) view.findViewById(R.id.addContaDialogEditTxtNome);
+		final EditText editSaldo = (EditText) view.findViewById(R.id.addContaDialogEditTxtSaldo);
+
+		editSaldo.setText("0");
 
 		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				try{
-					EditText editNome = (EditText) view.findViewById(R.id.addContaDialogEditTxtNome);
-					EditText editSaldo = (EditText) view.findViewById(R.id.addContaDialogEditTxtSaldo);
-
 					String ccNome = editNome.getText().toString();
 					cc.setNome(ccNome);
 					TipoConta tConta = (TipoConta) spinnerTipos.getSelectedItem();
 					cc.setId_TipoConta(tConta.getId());
 
-					float saldo = Float.valueOf(editSaldo.getText().toString());
+					float saldo = 0;
+					if(!editSaldo.getText().toString().equals("")){
+						saldo = Float.valueOf(editSaldo.getText().toString());
+					}
 					cc.setSaldo(saldo);
 
 					db.insertConta(cc);
@@ -301,8 +305,10 @@ public class MessageUtils {
 					String ccNome = editNome.getText().toString();
 					conta.setNome(ccNome);
 
-					float saldo = Float.valueOf(editSaldo.getText().toString());
-					conta.setSaldo(saldo);
+                    if(!editSaldo.getText().toString().equals("")){
+                        float saldo = Float.valueOf(editSaldo.getText().toString());
+                        conta.setSaldo(saldo);
+                    }
 					db.update(conta);
 				}catch(Exception e){
 					e.printStackTrace();
@@ -382,8 +388,10 @@ public class MessageUtils {
 					String ccNome = editNome.getText().toString();
 					conta.setNome(ccNome);
 
-					float saldo = Float.valueOf(editSaldo.getText().toString());
-					conta.setSaldo(saldo);
+                    if(!editSaldo.getText().toString().equals("")){
+                        float saldo = Float.valueOf(editSaldo.getText().toString());
+                        conta.setSaldo(saldo);
+                    }
 
 					float limite = 0;
 					limite = Float.valueOf(editTxtLimite.getText().toString());
