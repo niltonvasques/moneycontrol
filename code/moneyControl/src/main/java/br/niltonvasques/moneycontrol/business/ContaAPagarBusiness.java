@@ -5,11 +5,15 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
 
 import br.niltonvasques.moneycontrol.database.DatabaseHandler;
 import br.niltonvasques.moneycontrol.database.QuerysUtil;
+import br.niltonvasques.moneycontrol.database.bean.CartaoCredito;
+import br.niltonvasques.moneycontrol.database.bean.Conta;
 import br.niltonvasques.moneycontrol.database.bean.ContaAPagar;
+import br.niltonvasques.moneycontrol.database.bean.Fatura;
 import br.niltonvasques.moneycontrol.util.DateUtil;
 import br.niltonvasques.moneycontrol.util.MessageUtils;
 
@@ -64,6 +68,30 @@ public class ContaAPagarBusiness {
                         newItems.add(cp);
                     }
                 }
+            }
+        }
+        List<Conta> cartoes = db.select(Conta.class, "WHERE id_TipoConta = 4");
+        for (Conta c : cartoes){
+            CartaoCredito cartao = db.select(CartaoCredito.class, " WHERE id_Conta = "+c.getId()).get(0);
+            GregorianCalendar d = CartaoBusiness.computeRangeFatura(range, cartao);
+            Fatura f = CartaoBusiness.computeFatura(db, cartao, d);
+            f.setDate(range);
+            if(f.getStatus() != Fatura.Status.NENHUM) {
+                ContaAPagar cp = new ContaAPagar();
+                d.add(Calendar.MONTH, 1);
+                d.set(Calendar.DAY_OF_MONTH, cartao.getDia_vencimento());
+                cp.setTipo(ContaAPagar.Tipo.CARTAO_DE_CREDITO);
+                cp.setData(DateUtil.sqlDateFormat().format(d.getTime()));
+                cp.setDescricao(c.getNome());
+                cp.setValor(f.getValor());
+                cp.setId_Repeticao(1);
+                cp.setQuantidade(1);
+                cp.setId_CategoriaTransacao(1);
+                cp.setStatus(true);
+                HashMap<String, Object> params = new HashMap<String, Object>();
+                params.put("fatura", f);
+                cp.setParams(params);
+                newItems.add(cp);
             }
         }
         contasList.addAll(newItems);

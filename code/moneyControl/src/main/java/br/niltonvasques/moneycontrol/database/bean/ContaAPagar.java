@@ -1,6 +1,12 @@
 package br.niltonvasques.moneycontrol.database.bean;
 
+import java.util.HashMap;
+
 public class ContaAPagar implements Cloneable{
+
+	public enum Tipo{
+		NORMAL, CARTAO_DE_CREDITO;
+	}
 
 	private int id;
 	private float valor;
@@ -10,6 +16,8 @@ public class ContaAPagar implements Cloneable{
 	private String descricao;
     private boolean status;
 	private int quantidade;
+	private Tipo tipo = Tipo.NORMAL;
+	private HashMap<String, Object> params;
 
 	public int getId() {
 		return id;
@@ -68,7 +76,23 @@ public class ContaAPagar implements Cloneable{
 		this.quantidade = quantidade;
 	}
 
-    @Override
+	public Tipo getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(Tipo tipo) {
+		this.tipo = tipo;
+	}
+
+	public HashMap<String, Object> getParams() {
+		return params;
+	}
+
+	public void setParams(HashMap<String, Object> params) {
+		this.params = params;
+	}
+
+	@Override
     public Object clone() {
         try {
             return super.clone();

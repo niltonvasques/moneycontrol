@@ -1140,7 +1140,7 @@ public class MessageUtils {
 		spinnerContasOrigem.setAdapter(new ArrayAdapter<Conta>(context, android.R.layout.simple_list_item_1, contas));
 		spinnerContasOrigem.setSelection(0);
 		final EditText editValor = (EditText) view.findViewById(R.id.transferenciaDialogEditTxtValor);
-		editValor.setText(fatura.getValor() + "");
+		editValor.setText(MathUtil.round(fatura.getValor(), 2) + "");
 
 		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 
@@ -1854,7 +1854,7 @@ public class MessageUtils {
     public static void showPagarConta(final Context context, final LayoutInflater inflater, final DatabaseHandler db, final ContaAPagar fatura, final GregorianCalendar vencimento,
                                       final DialogInterface.OnClickListener listener){
         final AlertDialog.Builder alert = new AlertDialog.Builder(context);
-        final View view = inflater.inflate(R.layout.pagar_fatura_dialog, null);
+        final View view = inflater.inflate(R.layout.pagar_conta_dialog, null);
         alert.setView(view);
 
         final GregorianCalendar value = (GregorianCalendar) vencimento.clone();

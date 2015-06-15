@@ -183,6 +183,7 @@
     <string name="conta_a_pagar_dialog_pagar_fatura_desc">"Pagamento da conta: "</string>
     <string name="add_conta_a_pagar_dialog_quantidade">Quantidade:</string>
     <string name="add_conta_a_pagar_dialog_hint_quantidade">5 vezes</string>
+    <string name="pagar_conta_dialog_title">Pagar Conta</string>
 
     <string-array name="bill_period_array">
         <item>Única vez</item>
