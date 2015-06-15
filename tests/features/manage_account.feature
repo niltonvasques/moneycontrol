@@ -33,3 +33,13 @@ Feature: Manage accounts
     And I press "Ok"
     Then I should see "Bradesco"
     Then I should see "$ 269,00"
+
+  Scenario: Add a credit card account 
+    When I press view with id "action_add" 
+    Then I see "Adicionar conta"
+    When I enter text "VISA" into field with id "addContaDialogEditTxtNome"
+    And I enter text "0" into field with id "addContaDialogEditTxtSaldo"
+    And I hide the soft keyboard 
+    And I select "Cartão de Crédito" from "addContaDialogSpinnerTipo" 
+    And I press "Ok"
+    Then I should see "VISA"
