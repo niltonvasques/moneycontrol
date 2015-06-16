@@ -25,9 +25,9 @@ Feature: Manage accounts
     When I press view with id "contaListItemBtnEditConta" 
     Then I see "Editar conta"
     When I clear input field with id "editContaDialogEditTxtNome" 
+    And I enter text "Bradesco" into field with id "editContaDialogEditTxtNome"
     And I clear input field with id "editContaDialogEditTxtSaldo"
     And I hide the soft keyboard 
-    And I enter text "Bradesco" into field with id "editContaDialogEditTxtNome"
     And I enter text "269" into field with id "editContaDialogEditTxtSaldo"
     And I hide the soft keyboard 
     And I press "Ok"

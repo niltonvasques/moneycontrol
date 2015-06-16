@@ -12,6 +12,7 @@ public class CartaoBusiness {
 
     public static GregorianCalendar computeRangeFatura(GregorianCalendar monthRange, CartaoCredito c){
         GregorianCalendar d = (GregorianCalendar) monthRange.clone();
+        d.set(GregorianCalendar.DAY_OF_MONTH, c.getDia_fechamento());
         if(c.getDia_fechamento() <= c.getDia_vencimento())
             d.add(GregorianCalendar.MONTH, -1);
         else
