@@ -76,6 +76,7 @@ public class ContasFragment extends Fragment{
 		listViewContas 		= (ListView) myFragmentView.findViewById(R.id.mainActivityListViewContas);
 	}
 
+	private boolean longClick = false;
 	private void configureComponents() {
         
 		monthView.setListener(new ChangeMonthListener() {
@@ -92,12 +93,18 @@ public class ContasFragment extends Fragment{
 		
 		listViewContas.setOnItemLongClickListener(new OnItemLongClickListener() {
 			@Override
-			public boolean onItemLongClick(AdapterView<?> arg0, View arg1,final int position, long arg3) {
+			public boolean onItemLongClick(AdapterView<?> arg0, View arg1, final int position, long arg3) {
+				longClick = true;
 				MessageUtils.showMessageYesNo(getActivity(), app.getString(R.string.contas_fragment_message_dialog_atention_title), app.getString(R.string.contas_fragment_remove_account_msg), new OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						db.deleteConta(contas.get(position));
 						update();
+					}
+				}, new DialogInterface.OnDismissListener() {
+					@Override
+					public void onDismiss(DialogInterface dialog) {
+						longClick = false;
 					}
 				});
 				return false;
@@ -106,13 +113,15 @@ public class ContasFragment extends Fragment{
 		
 		listViewContas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int position,long arg3) {
-				Fragment fragment = new TransacoesByContaFragment();
-				Bundle args = new Bundle();
-				args.putInt("conta", contas.get(position).getId());
-				args.putString("range", DateUtil.sqlDateFormat().format(monthView.getDateRange().getTime()));
-				fragment.setArguments(args);
-				((NVFragmentActivity)getActivity()).changeFragment(fragment);
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+				if (!longClick) {
+					Fragment fragment = new TransacoesByContaFragment();
+					Bundle args = new Bundle();
+					args.putInt("conta", contas.get(position).getId());
+					args.putString("range", DateUtil.sqlDateFormat().format(monthView.getDateRange().getTime()));
+					fragment.setArguments(args);
+					((NVFragmentActivity) getActivity()).changeFragment(fragment);
+				}
 			}
 		});
 	}

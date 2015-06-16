@@ -131,7 +131,7 @@ public class TransacoesFragment extends Fragment{
 			
 			public boolean onItemLongClick(android.widget.AdapterView<?> arg0, View arg1, final int position, long arg3) {
 				longClick = true;
-				MessageUtils.showMessageYesNo(getActivity(), "Atenção!", "Deseja excluir esta transação?", new OnClickListener() {
+				MessageUtils.showMessageYesNo(getActivity(), app.getString(R.string.fragment_transacao_remove_dialog_title), app.getString(R.string.fragment_transacao_remove_dialog_message), new OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						Transacao t = transacoes.get(position);
