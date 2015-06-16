@@ -25,3 +25,15 @@ The Android app to support your finances control, so you will never more lost th
 ## Know bugs
 * Transfer between accounts #1 
 * Credit card bill
+
+## Team
+
+#### Developer
+* Nilton Vasques 
+
+#### Testers
+* Larissa Kiana
+* Joseni Oliveira
+* Felipe Bittencourt
+
+
