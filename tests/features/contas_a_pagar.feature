@@ -16,6 +16,15 @@ Feature: Invoices
     And I press "Ok"
     Then I should see "Energia"
     And I should see "$ 100,00"
+
+  Scenario: Delete a invoice 
+    When I open menu 
+    And I press "Contas a pagar"
+    Then I see "Contas a pagar"
+    When I long press "Energia"
+    Then I should see "Deseja excluir"
+    And I press "Sim"
+    Then I should not see "Energia"
     
 
     
