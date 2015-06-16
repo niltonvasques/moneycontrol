@@ -184,6 +184,8 @@
     <string name="add_conta_a_pagar_dialog_quantidade">Quantidade:</string>
     <string name="add_conta_a_pagar_dialog_hint_quantidade">5 vezes</string>
     <string name="pagar_conta_dialog_title">Pagar Conta</string>
+    <string name="fragment_transacao_remove_dialog_title">Atenção!</string>
+    <string name="fragment_transacao_remove_dialog_message">Deseja excluir esta transação?</string>
 
     <string-array name="bill_period_array">
         <item>Única vez</item>

@@ -63,7 +63,12 @@ public class DatabaseUtil {
 					}
 					continue;
 				}
-				insert+=fields[i].getName()+( i== fields.length-1 ? ")":",");
+				if( !Modifier.isPrivate(fields[i].getModifiers()) || Modifier.isStatic(fields[i].getModifiers()) ) continue;
+
+				Type t = fields[i].getType();
+				if(t.equals(String.class) || t.equals(int.class) || t.equals(float.class) || t.equals(boolean.class)) { // Skipping another objects
+					insert += fields[i].getName() + (i == fields.length - 1 ? ")" : ",");
+				}
 			}
 			
 			insert+=" VALUES(";
@@ -76,14 +81,19 @@ public class DatabaseUtil {
 					}
 					continue;
 				}
-				fields[i].setAccessible(true);
-				if(fields[i].getType().equals(String.class)){
-					insert+="'"+fields[i].get(classObject)+"'"
-					+( i== fields.length-1 ? ")":",");
-				}else if(fields[i].getType().equals(boolean.class)){
-					insert+= (((Boolean) fields[i].get(classObject)) ? "1":"0")+( i== fields.length-1 ? ")":",");
-				}else{
-					insert+=fields[i].get(classObject)+( i== fields.length-1 ? ")":",");
+				if( !Modifier.isPrivate(fields[i].getModifiers()) || Modifier.isStatic(fields[i].getModifiers()) ) continue;
+
+				Type t = fields[i].getType();
+				if(t.equals(String.class) || t.equals(int.class) || t.equals(float.class) || t.equals(boolean.class)) { // Skipping another objects
+					fields[i].setAccessible(true);
+					if (fields[i].getType().equals(String.class)) {
+						insert += "'" + fields[i].get(classObject) + "'"
+								+ (i == fields.length - 1 ? ")" : ",");
+					} else if (fields[i].getType().equals(boolean.class)) {
+						insert += (((Boolean) fields[i].get(classObject)) ? "1" : "0") + (i == fields.length - 1 ? ")" : ",");
+					} else {
+						insert += fields[i].get(classObject) + (i == fields.length - 1 ? ")" : ",");
+					}
 				}
 			}
 		}catch (Exception e) {

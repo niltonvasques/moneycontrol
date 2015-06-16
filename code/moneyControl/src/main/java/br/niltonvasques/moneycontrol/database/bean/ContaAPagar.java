@@ -9,6 +9,7 @@ public class ContaAPagar implements Cloneable{
 	}
 
 	private int id;
+    private Tipo tipo = Tipo.NORMAL;
 	private float valor;
 	private String data;
 	private int id_CategoriaTransacao;
@@ -16,7 +17,6 @@ public class ContaAPagar implements Cloneable{
 	private String descricao;
     private boolean status;
 	private int quantidade;
-	private Tipo tipo = Tipo.NORMAL;
 	private HashMap<String, Object> params;
 
 	public int getId() {

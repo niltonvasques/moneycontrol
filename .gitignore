@@ -9,3 +9,4 @@ money-db
 *.swo
 .gradle
 .idea
+.irb-history
