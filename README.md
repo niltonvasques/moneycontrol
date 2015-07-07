@@ -23,8 +23,9 @@ The Android app to support your finances control, so you will never more lost th
   * Different kind of investiments ( Funds, Treasure Bills, Stocks )
 
 ## Know bugs
-* Transfer between accounts #1 
-* Credit card bill
+* [Wrong message](https://github.com/niltonvasques/moneycontrol/issues/5)
+* [If user create a account without saldo](https://github.com/niltonvasques/moneycontrol/issues/46)
+* [Chart fonts in low screen devices are too small bug](https://github.com/niltonvasques/moneycontrol/issues/23)
 
 ## Team
 
