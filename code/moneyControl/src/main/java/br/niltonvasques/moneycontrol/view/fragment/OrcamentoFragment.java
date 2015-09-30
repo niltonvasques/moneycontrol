@@ -59,7 +59,6 @@ public class OrcamentoFragment extends Fragment{
 		myFragmentView = inflater.inflate(R.layout.fragment_orcamento, container, false);
 		
 		db = app.getDatabase();
-		
 		loadComponentsFromXml();
 		configureComponents();
 			

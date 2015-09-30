@@ -7,7 +7,7 @@ android {
     compileSdkVersion 22
     buildToolsVersion "23.0.0 rc2"
     defaultConfig {
-        applicationId "br.niltonvasques.moneycontrolbeta"
+        applicationId "br.niltonvasques.moneycontrol"
         minSdkVersion 11
         targetSdkVersion 17
     }
