@@ -412,6 +412,7 @@ public class QuerysUtil {
                 "ORDER BY data DESC LIMIT 1";
     }
 
+
     public static final String checkContaPagaOnDate(int id_ContaAPagar, Date vencimento){
         return "SELECT id_Transacao FROM ContaPaga WHERE id_ContaAPagar = " +id_ContaAPagar+" "+
                 "AND strftime(\"%d-%m-%Y\", vencimento) = strftime(\"%d-%m-%Y\", '" +DateUtil.sqlDateFormat().format(vencimento)+"') " +
@@ -423,6 +424,29 @@ public class QuerysUtil {
                 "AND data <= date('" +DateUtil.sqlDateFormat().format(date)+"') "+
                 "ORDER BY data DESC, id	DESC";
     }
+
+	public static final String sumContasAPagarOnMonth(Date date){
+		return "SELECT SUM(valor) FROM ContaAPagar "+whereContasAPagarOnMonth(date);
+	}
+
+	public static final String sumFaturasPagas(Date date){
+		return "SELECT SUM(valor) FROM Transacao \n" +
+				"WHERE \n" +
+				"strftime(\"%m-%Y\",data) = strftime(\"%m-%Y\", '" +DateUtil.sqlDateFormat().format(date)+"') AND\n" +
+				"id_CategoriaTransacao = (SELECT id FROM CategoriaTransacao WHERE id_TipoTransacao = 1 AND nome like '%Transferência%') AND\n" +
+				"id_Conta IN (SELECT id FROM Conta WHERE id_TipoConta = 4)\n";
+	}
+
+	public static final String sumContasPagaOnMonth(Date date){
+		return "SELECT SUM(valor) " +
+				"FROM (SELECT t.valor FROM ContaPaga p INNER JOIN Transacao t on t.id = p.id_Transacao\n" +
+				"WHERE strftime(\"%m-%Y\",vencimento) = strftime(\"%m-%Y\", '" +DateUtil.sqlDateFormat().format(date)+"'))\n";
+//		return "SELECT SUM(valor) FROM ContaPaga "+whereContasPagaOnMonth(date);
+	}
+
+	public static final String whereContasPagaOnMonth(Date date){
+		return "WHERE strftime(\"%m-%Y\", mes) = strftime(\"%m-%Y\", '" +DateUtil.sqlDateFormat().format(date)+"') ";
+	}
 
 	public static String whereContasAPagarOnMonth(Date date){
 		GregorianCalendar first = new GregorianCalendar();

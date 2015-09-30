@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -156,6 +157,7 @@ public class ContasAPagarFragment extends Fragment{
 //                ((NVFragmentActivity)getActivity()).changeFragment(fragment);
             }
         });
+        update();
     }
 
     private void update(){
@@ -167,6 +169,27 @@ public class ContasAPagarFragment extends Fragment{
             MessageUtils.showDefaultErrorMessage(getActivity());
         }
         listAdapter.notifyDataSetChanged();
+
+        float credito = 0;
+        for(ContaAPagar c : contas){
+            credito += c.getValor();
+        }
+
+        float debito = 0;
+        String contasPagasQuery = db.runQuery(QuerysUtil.sumContasPagaOnMonth(monthView.getDateRange().getTime()));
+        String faturasPagasQuery = db.runQuery(QuerysUtil.sumFaturasPagas(monthView.getDateRange().getTime()));
+        if(contasPagasQuery != null && contasPagasQuery.length() > 0){
+            debito = Float.valueOf(contasPagasQuery);
+        }
+        if(faturasPagasQuery != null && faturasPagasQuery.length() > 0){
+            debito += Float.valueOf(faturasPagasQuery);
+        }
+
+        float restante = credito - debito;
+
+        ((TextView)myFragmentView.findViewById(R.id.contasAPagarFragmentTxtSaldoSum)).setText("R$ "+String.format("%.2f",restante));
+        ((TextView)myFragmentView.findViewById(R.id.contasAPagarFragmentTxtCreditosSum)).setText("R$ " + String.format("%.2f", credito));
+        ((TextView)myFragmentView.findViewById(R.id.contasAPagarFragmentTxtDebitosSum)).setText("R$ " + String.format("%.2f", debito));
     }
 
     private GregorianCalendar getCalendarLastDay() {
