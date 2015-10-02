@@ -188,6 +188,8 @@
     <string name="fragment_transacao_remove_dialog_message">Deseja excluir esta transação?</string>
     <string name="fechamento_dialog_format_error_message_title">Formato inválido</string>
     <string name="fechamento_dialog_format_error_message">O formato do valor é inválido.</string>
+    <string name="fechamento_dialog_wrong_date_error_message">A data de fechamento não pode ser inferior a primeira movimentação do ativo.</string>
+    <string name="fechamento_dialog_wrong_date_error_title">Atenção!</string>
 
     <string-array name="bill_period_array">
         <item>Única vez</item>

@@ -55,12 +55,12 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 		/*
 		 * Uncomment to recover an backup database
 		 */
-		//try {
-		//	createDataBase();
-		//} catch (IOException e) {
-		//	// TODO Auto-generated catch block
-		//	e.printStackTrace();
-		//}
+		try {
+			createDataBase();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void createDataBase() throws IOException

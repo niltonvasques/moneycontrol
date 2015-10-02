@@ -1454,6 +1454,9 @@ public class MessageUtils {
 						lastPatrimonio = lastMovimentacao.getPatrimonio();
 						financeiro = fechamento - lastPatrimonio;
 						cotas = lastMovimentacao.getCotas();
+					}else{
+						MessageUtils.showMessage(context, context.getString(R.string.fechamento_dialog_wrong_date_error_title), context.getString(R.string.fechamento_dialog_wrong_date_error_message));
+						return;
 					}
 
 					movimentacaoAtivo.setFinanceiro(financeiro);

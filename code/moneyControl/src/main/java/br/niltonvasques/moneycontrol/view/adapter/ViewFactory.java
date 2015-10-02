@@ -86,13 +86,14 @@ public class ViewFactory {
         TextView txtNome = (TextView) view.findViewById(R.id.transacaoListItemTxtDescricao);
         TextView txtValor = (TextView) view.findViewById(R.id.ativoListItemTxtPrice);
         TextView txtProfit = (TextView) view.findViewById(R.id.ativoListItemTxtProfit);
+        TextView txtYearProfit = (TextView) view.findViewById(R.id.ativoListItemTxtYearProfit);
 //		TextView txtData = (TextView) view.findViewById(R.id.transacaoListItemTxtData);
         Button btnNewEvent = (Button) view.findViewById(R.id.ativoListItemBtnNewEvent);
 
 //		String tipo = app.getDatabase().runQuery(QuerysUtil.checkTipoAtivo(ativo.getId()));
 
+        //Compute historical profit
         List<MovimentacaoAtivo> movimentacoes = app.getDatabase().select(MovimentacaoAtivo.class, QuerysUtil.whereLastMovimentacoesAtivoOrderByDateDesc(ativo.getId(), dateRange));
-
         if( ! movimentacoes.isEmpty()){
             MovimentacaoAtivo lastMovimentacao = movimentacoes.get(0);
             try {
@@ -120,7 +121,43 @@ public class ViewFactory {
             txtValor.setText("R$ "+String.format("%.2f", 0f));
             txtProfit.setText("0.00 %");
         }
-//		
+
+        GregorianCalendar cal = new GregorianCalendar();
+        cal.setTime(dateRange);
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        cal.add(Calendar.MONTH, 1);
+        cal.add(Calendar.DAY_OF_MONTH, -1);
+
+        List<MovimentacaoAtivo> first = app.getDatabase().select(MovimentacaoAtivo.class, QuerysUtil.whereFirstMovimentacaoAtivoOnYear(ativo.getId(), cal.get(Calendar.YEAR)));
+        List<MovimentacaoAtivo> last = app.getDatabase().select(MovimentacaoAtivo.class, QuerysUtil.whereLastMovimentacaoAtivoOnYear(ativo.getId(), cal.getTime()));
+        if( !last.isEmpty()){
+            try {
+                float profit = 0;
+
+                float lastValorCota = 1, penultValorCota = 1;
+
+                if(!first.isEmpty() && first.get(0).getCotas() != 0)
+                    penultValorCota = first.get(0).getPatrimonio() / first.get(0).getCotas();
+
+                if(last.get(0).getCotas() != 0)
+                    lastValorCota = last.get(0).getPatrimonio() / last.get(0).getCotas();
+
+                profit = ((lastValorCota/penultValorCota)-1)*100;
+
+                txtYearProfit.setText(String.format("%.2f", profit) + " %");
+
+                if(profit < 0){
+                    txtYearProfit.setTextColor(Color.RED);
+                }
+
+            } catch (Exception e) {
+
+            }
+
+        }else{
+            txtYearProfit.setText("0.00 %");
+        }
+//
         txtNome.setText(ativo.getNome());
 //		try {
 //			GregorianCalendar g = new GregorianCalendar();

@@ -55,6 +55,7 @@ public class AtivoAdapter extends BaseAdapter{
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				app.getDatabase().runQuery(QuerysUtil.updateMovimentacaoAtivos(tr.getId()));
+				app.getDatabase().runQuery(QuerysUtil.updateMovimentacaoAtivosWithFinanceiro(tr.getId()));
 				AtivoAdapter.this.notifyDataSetChanged();
 			}
 		});

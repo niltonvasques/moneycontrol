@@ -184,6 +184,7 @@ public class InvestimentosFragment extends Fragment{
 
 		for(Ativo ativo : ativos){
 			db.runQuery(QuerysUtil.updateMovimentacaoAtivos(ativo.getId()));
+			db.runQuery(QuerysUtil.updateMovimentacaoAtivosWithFinanceiro(ativo.getId()));
 		}
 		listAdapter.notifyDataSetChanged();
 

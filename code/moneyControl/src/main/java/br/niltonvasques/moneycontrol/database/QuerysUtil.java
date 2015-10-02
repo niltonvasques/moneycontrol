@@ -450,15 +450,71 @@ public class QuerysUtil {
 
 	public static final String updateMovimentacaoAtivos(int idAtivo){
 		return "UPDATE MovimentacaoAtivo \n" +
-				"SET patrimonio = (SELECT patrimonio FROM MovimentacaoAtivo m WHERE m.data < MovimentacaoAtivo.data AND m.id_Ativo = MovimentacaoAtivo.id_Ativo ORDER BY m.data DESC LIMIT 1)+movimentacao+financeiro,\n" +
-				"cotas_emitidas = movimentacao/(SELECT patrimonio/cotas FROM MovimentacaoAtivo m WHERE m.data < MovimentacaoAtivo.data AND m.id_Ativo = MovimentacaoAtivo.id_Ativo ORDER BY m.data DESC LIMIT 1),\n" +
-				"cotas = movimentacao/(SELECT patrimonio/cotas FROM MovimentacaoAtivo m WHERE m.data < MovimentacaoAtivo.data AND m.id_Ativo = MovimentacaoAtivo.id_Ativo ORDER BY m.data DESC LIMIT 1) + (SELECT cotas FROM MovimentacaoAtivo m WHERE m.data < MovimentacaoAtivo.data AND m.id_Ativo = MovimentacaoAtivo.id_Ativo ORDER BY m.data DESC LIMIT 1)\n" +
-				"WHERE MovimentacaoAtivo.data > (SELECT data FROM MovimentacaoAtivo WHERE id_Ativo = "+idAtivo+" ORDER BY data ASC LIMIT 1) AND MovimentacaoAtivo.id_Ativo = "+idAtivo+" AND financeiro = 0;\n" +
-				"\n" +
-				"UPDATE MovimentacaoAtivo \n" +
+				"SET patrimonio = (\n" +
+				"\t\tSELECT patrimonio \n" +
+				"\t\tFROM MovimentacaoAtivo m \n" +
+				"\t\tWHERE (( m.data = MovimentacaoAtivo.data AND m.id < MovimentacaoAtivo.id ) \n" +
+				"\t\t\tOR m.data < MovimentacaoAtivo.data) \n" +
+				"\t\t\tAND m.id_Ativo = MovimentacaoAtivo.id_Ativo \n" +
+				"\t\t\tORDER BY m.data DESC, m.id DESC LIMIT 1\n" +
+				"\t       ) + movimentacao + financeiro,\n" +
+				"cotas_emitidas = movimentacao / (\n" +
+				"\t\t\tSELECT patrimonio/cotas \n" +
+				"\t\t\tFROM MovimentacaoAtivo m \n" +
+				"\t\t\tWHERE (( m.data = MovimentacaoAtivo.data AND m.id < MovimentacaoAtivo.id ) \n" +
+				"\t\t\tOR m.data < MovimentacaoAtivo.data)  AND m.id_Ativo = MovimentacaoAtivo.id_Ativo ORDER BY m.data DESC, m.id DESC LIMIT 1\n" +
+				"\t\t\t),\n" +
+				"cotas = movimentacao / ( \n" +
+				"\t\t\tSELECT patrimonio/cotas \n" +
+				"\t\t\tFROM MovimentacaoAtivo m \n" +
+				"\t\t\tWHERE (( m.data = MovimentacaoAtivo.data AND m.id < MovimentacaoAtivo.id ) \n" +
+				"\t\t\tOR m.data < MovimentacaoAtivo.data)  AND m.id_Ativo = MovimentacaoAtivo.id_Ativo ORDER BY m.data DESC, m.id DESC LIMIT 1\n" +
+				"\t\t) + (\n" +
+				"\t\t\tSELECT cotas \n" +
+				"\t\t\tFROM MovimentacaoAtivo m \n" +
+				"\t\t\tWHERE (( m.data = MovimentacaoAtivo.data AND m.id < MovimentacaoAtivo.id ) \n" +
+				"\t\t\tOR m.data < MovimentacaoAtivo.data)  AND m.id_Ativo = MovimentacaoAtivo.id_Ativo ORDER BY m.data DESC, m.id DESC LIMIT 1\n" +
+				"\t\t)\n" +
+				"WHERE MovimentacaoAtivo.data > (\n" +
+				"\t\t\tSELECT data \n" +
+				"\t\t\tFROM MovimentacaoAtivo \n" +
+				"\t\t\tWHERE id_Ativo = "+idAtivo+" ORDER BY data ASC LIMIT 1\n" +
+				"\t\t \t) \n" +
+				"\t\t\tAND MovimentacaoAtivo.id_Ativo = "+idAtivo+" AND financeiro = 0;";
+	}
+
+	public static String updateMovimentacaoAtivosWithFinanceiro(int idAtivo){
+		return
+		"UPDATE MovimentacaoAtivo \n" +
 				"SET \n" +
-				"financeiro = patrimonio - (SELECT patrimonio FROM MovimentacaoAtivo m WHERE m.data < MovimentacaoAtivo.data AND m.id_Ativo = MovimentacaoAtivo.id_Ativo ORDER BY m.data DESC LIMIT 1)\n" +
-				"WHERE MovimentacaoAtivo.data > (SELECT data FROM MovimentacaoAtivo WHERE id_Ativo = "+idAtivo+" ORDER BY data ASC LIMIT 1) AND MovimentacaoAtivo.id_Ativo = "+idAtivo+" AND movimentacao = 0;";
+				"financeiro = patrimonio - (\n" +
+				"\t\t\tSELECT patrimonio \n" +
+				"\t\t\tFROM MovimentacaoAtivo m \n" +
+				"\t\t\tWHERE (( m.data = MovimentacaoAtivo.data AND m.id < MovimentacaoAtivo.id ) \n" +
+				"\t\t\tOR m.data < MovimentacaoAtivo.data)  AND m.id_Ativo = MovimentacaoAtivo.id_Ativo ORDER BY m.data DESC, m.id DESC LIMIT 1\n" +
+				"\t\t),\n" +
+				"cotas = (\n" +
+				"\t\t\tSELECT cotas \n" +
+				"\t\t\tFROM MovimentacaoAtivo m \n" +
+				"\t\t\tWHERE (( m.data = MovimentacaoAtivo.data AND m.id < MovimentacaoAtivo.id ) \n" +
+				"\t\t\tOR m.data < MovimentacaoAtivo.data)  AND m.id_Ativo = MovimentacaoAtivo.id_Ativo ORDER BY m.data DESC, m.id DESC LIMIT 1\n" +
+				"\t\t)\n" +
+				"WHERE MovimentacaoAtivo.data > (\n" +
+				"\t\t\tSELECT data \n" +
+				"\t\t\tFROM MovimentacaoAtivo \n" +
+				"\t\t\tWHERE id_Ativo = "+idAtivo+" \n" +
+				"\t\t\tORDER BY data ASC LIMIT 1\n" +
+				"\t\t\t) \n" +
+				"\t\tAND MovimentacaoAtivo.id_Ativo = "+idAtivo+" AND movimentacao = 0;";
+	}
+
+	public static String whereFirstMovimentacaoAtivoOnYear(int idAtivo, int year){
+		year --;
+		return " WHERE id_Ativo = "+idAtivo+" AND strftime(\"%Y\", data) = '"+year+"' ORDER BY data DESC, id DESC LIMIT 1";
+	}
+
+	public static String whereLastMovimentacaoAtivoOnYear(int idAtivo, Date date){
+		return " WHERE id_Ativo = "+idAtivo+" AND data <= '"+DateUtil.sqlDateFormat().format(date)+"' ORDER BY data DESC, id DESC LIMIT 1";
 	}
 
 	public static String whereContasAPagarOnMonth(Date date){
