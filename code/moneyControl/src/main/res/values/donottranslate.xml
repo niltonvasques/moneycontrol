@@ -19,7 +19,7 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- Default text encoding for WebSettings. -->
-    <string name="app_version">0.3.2-alpha</string>
+    <string name="app_version">0.4.2-alpha</string>
 
     <string-array name="add_conta_dialog_days">
         <item>1</item>

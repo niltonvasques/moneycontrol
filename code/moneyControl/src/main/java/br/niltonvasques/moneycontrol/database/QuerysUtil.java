@@ -354,7 +354,7 @@ public class QuerysUtil {
 	
 	public static String whereLastMovimentacaoAtivo(int id_Ativo, Date date){
 		return "WHERE id_Ativo = "+id_Ativo+" " +
-				"AND data < date('" +DateUtil.sqlDateFormat().format(date)+"','+1 month') "+
+				"AND data < '" +DateUtil.sqlDateFormat().format(date)+"' "+
 	   		   	"ORDER BY data DESC	" +
 	   		   	"LIMIT 1";
 	}
@@ -446,6 +446,19 @@ public class QuerysUtil {
 
 	public static final String whereContasPagaOnMonth(Date date){
 		return "WHERE strftime(\"%m-%Y\", mes) = strftime(\"%m-%Y\", '" +DateUtil.sqlDateFormat().format(date)+"') ";
+	}
+
+	public static final String updateMovimentacaoAtivos(int idAtivo){
+		return "UPDATE MovimentacaoAtivo \n" +
+				"SET patrimonio = (SELECT patrimonio FROM MovimentacaoAtivo m WHERE m.data < MovimentacaoAtivo.data AND m.id_Ativo = MovimentacaoAtivo.id_Ativo ORDER BY m.data DESC LIMIT 1)+movimentacao+financeiro,\n" +
+				"cotas_emitidas = movimentacao/(SELECT patrimonio/cotas FROM MovimentacaoAtivo m WHERE m.data < MovimentacaoAtivo.data AND m.id_Ativo = MovimentacaoAtivo.id_Ativo ORDER BY m.data DESC LIMIT 1),\n" +
+				"cotas = movimentacao/(SELECT patrimonio/cotas FROM MovimentacaoAtivo m WHERE m.data < MovimentacaoAtivo.data AND m.id_Ativo = MovimentacaoAtivo.id_Ativo ORDER BY m.data DESC LIMIT 1) + (SELECT cotas FROM MovimentacaoAtivo m WHERE m.data < MovimentacaoAtivo.data AND m.id_Ativo = MovimentacaoAtivo.id_Ativo ORDER BY m.data DESC LIMIT 1)\n" +
+				"WHERE MovimentacaoAtivo.data > (SELECT data FROM MovimentacaoAtivo WHERE id_Ativo = "+idAtivo+" ORDER BY data ASC LIMIT 1) AND MovimentacaoAtivo.id_Ativo = "+idAtivo+" AND financeiro = 0;\n" +
+				"\n" +
+				"UPDATE MovimentacaoAtivo \n" +
+				"SET \n" +
+				"financeiro = patrimonio - (SELECT patrimonio FROM MovimentacaoAtivo m WHERE m.data < MovimentacaoAtivo.data AND m.id_Ativo = MovimentacaoAtivo.id_Ativo ORDER BY m.data DESC LIMIT 1)\n" +
+				"WHERE MovimentacaoAtivo.data > (SELECT data FROM MovimentacaoAtivo WHERE id_Ativo = "+idAtivo+" ORDER BY data ASC LIMIT 1) AND MovimentacaoAtivo.id_Ativo = "+idAtivo+" AND movimentacao = 0;";
 	}
 
 	public static String whereContasAPagarOnMonth(Date date){

@@ -1442,32 +1442,25 @@ public class MessageUtils {
 					try{
 						fechamento = Float.valueOf(editFechamento.getText().toString());
 					}catch(NumberFormatException n){
+						MessageUtils.showMessage(context, context.getString(R.string.fechamento_dialog_format_error_message_title), context.getString(R.string.fechamento_dialog_format_error_message));
+						return;
 					}
 
 					float lastPatrimonio = 0;
-					float valorCota = 1f;
-					float cotas = 0; 
+					float cotas = 0;
 					List<MovimentacaoAtivo> movimentacaoAtivoLast = db.select(MovimentacaoAtivo.class, QuerysUtil.whereLastMovimentacaoAtivo(ativo.getId(), data.getTime()));
 					if(!movimentacaoAtivoLast.isEmpty()){
 						MovimentacaoAtivo lastMovimentacao = movimentacaoAtivoLast.get(0);
 						lastPatrimonio = lastMovimentacao.getPatrimonio();
 						financeiro = fechamento - lastPatrimonio;
-						if(lastMovimentacao.getCotas() != 0){
-							valorCota = (lastPatrimonio + financeiro ) / lastMovimentacao.getCotas();
-							cotas = lastMovimentacao.getCotas();
-						}			
+						cotas = lastMovimentacao.getCotas();
 					}
 
 					movimentacaoAtivo.setFinanceiro(financeiro);
 
-					float cotasEmitidas = movimentacao/valorCota;
-					cotas += cotasEmitidas;
-
-					float total = financeiro + lastPatrimonio;
-
-					movimentacaoAtivo.setCotas_emitidas(cotasEmitidas);
+					movimentacaoAtivo.setCotas_emitidas(0);
 					movimentacaoAtivo.setCotas(cotas);
-					movimentacaoAtivo.setPatrimonio(total + movimentacao);
+					movimentacaoAtivo.setPatrimonio(fechamento);
 					movimentacaoAtivo.setData(format.format(data.getTime()));
 					movimentacaoAtivo.setId_Ativo(ativo.getId());
 

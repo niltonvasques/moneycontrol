@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
+import br.niltonvasques.moneycontrol.database.QuerysUtil;
 import br.niltonvasques.moneycontrol.database.bean.Ativo;
 
 public class AtivoAdapter extends BaseAdapter{
@@ -48,11 +49,12 @@ public class AtivoAdapter extends BaseAdapter{
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		
-		Ativo tr = (Ativo) getItem(position);
+		final Ativo tr = (Ativo) getItem(position);
 		
 		return ViewFactory.createAtivoItemView(tr, context, dateRange.getTime(), app, inflater, new OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
+				app.getDatabase().runQuery(QuerysUtil.updateMovimentacaoAtivos(tr.getId()));
 				AtivoAdapter.this.notifyDataSetChanged();
 			}
 		});

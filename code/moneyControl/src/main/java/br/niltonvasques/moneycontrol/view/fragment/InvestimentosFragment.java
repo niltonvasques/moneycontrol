@@ -21,7 +21,9 @@ import br.niltonvasques.moneycontrol.MainActivity;
 import br.niltonvasques.moneycontrol.activity.NVFragmentActivity;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
 import br.niltonvasques.moneycontrol.database.DatabaseHandler;
+import br.niltonvasques.moneycontrol.database.QuerysUtil;
 import br.niltonvasques.moneycontrol.database.bean.Ativo;
+import br.niltonvasques.moneycontrol.database.bean.MovimentacaoAtivo;
 import br.niltonvasques.moneycontrol.util.DateUtil;
 import br.niltonvasques.moneycontrol.view.adapter.AtivoAdapter;
 import br.niltonvasques.moneycontrol.view.custom.ChangeMonthView;
@@ -179,8 +181,12 @@ public class InvestimentosFragment extends Fragment{
 		ativos.clear();
 //		ativos.addAll(db.select(Ativo.class, " WHERE data < date('"+DateUtil.sqlDateFormat().format(dateRange.getTime())+"','+1 month')"));
 		ativos.addAll(db.select(Ativo.class, "WHERE (SELECT count(*) FROM MovimentacaoAtivo WHERE id_Ativo = Ativo.id) > 0"));
+
+		for(Ativo ativo : ativos){
+			db.runQuery(QuerysUtil.updateMovimentacaoAtivos(ativo.getId()));
+		}
 		listAdapter.notifyDataSetChanged();
-		
+
 		float credito = 0;
 //		String creditoQuery = db.runQuery(QuerysUtil.sumContasCreditoWithDateInterval(dateRange.getTime()));
 //		if(creditoQuery != null && creditoQuery.length() > 0){
