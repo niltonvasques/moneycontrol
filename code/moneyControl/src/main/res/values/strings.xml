@@ -165,7 +165,7 @@
     
     <!-- Change Dialog -->
     <string name="news_change_dialog_title">Novidades da versão</string>
-	<string name="news_change_dialog_body">-Corrigido bug em contas a pagar.\n-Gerenciamento de contas a pagar.\n-Adicionado o parcelamento de compras.\n-Melhorado o layout de algumas telas.\n-Corrigido alguns bugs.</string>
+	<string name="news_change_dialog_body">-Adicionado a soma das contas a pagar.</string>
     
 	<!--  Error Dialog -->
 	<string name="dialog_error_message_title">Atenção!</string>
@@ -186,6 +186,10 @@
     <string name="pagar_conta_dialog_title">Pagar Conta</string>
     <string name="fragment_transacao_remove_dialog_title">Atenção!</string>
     <string name="fragment_transacao_remove_dialog_message">Deseja excluir esta transação?</string>
+    <string name="fechamento_dialog_format_error_message_title">Formato inválido</string>
+    <string name="fechamento_dialog_format_error_message">O formato do valor é inválido.</string>
+    <string name="fechamento_dialog_wrong_date_error_message">A data de fechamento não pode ser inferior a primeira movimentação do ativo.</string>
+    <string name="fechamento_dialog_wrong_date_error_title">Atenção!</string>
 
     <string-array name="bill_period_array">
         <item>Única vez</item>
