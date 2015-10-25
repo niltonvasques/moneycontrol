@@ -2,6 +2,7 @@ package br.niltonvasques.moneycontrol.database;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,6 +21,7 @@ import android.util.Log;
 import br.niltonvasques.moneycontrol.database.bean.Conta;
 import br.niltonvasques.moneycontrol.database.bean.ContaPaga;
 import br.niltonvasques.moneycontrol.database.bean.Transacao;
+import br.niltonvasques.moneycontrol.util.FileUtils;
 
 public class DatabaseHandler extends SQLiteOpenHelper{
 
@@ -62,6 +64,10 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 		//	e.printStackTrace();
 		//}
 	}
+
+	public String getDbPath(){
+		return DB_PATH + DATABASE_NAME;
+	}
 	
 	public void createDataBase() throws IOException
 	{
@@ -86,7 +92,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 	}
 	
     //Check that the database exists here: /data/data/your package/databases/Da Name
-    private boolean checkDataBase()
+    public boolean checkDataBase()
     {
         File dbFile = new File(DB_PATH + DATABASE_NAME);
         Log.v("dbFile", dbFile + "   "+ dbFile.exists());
@@ -108,6 +114,26 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         mOutput.flush();
         mOutput.close();
         mInput.close();
+    }
+
+    /**
+     * Copies the database file at the specified location over the current
+     * internal application database.
+     * */
+    public boolean importDatabase(String dbPath) throws IOException {
+        // Close the SQLiteOpenHelper so it will commit the created empty
+        // database to internal storage.
+        close();
+        File newDb = new File(dbPath);
+        File oldDb = new File(getDbPath());
+        if (newDb.exists()) {
+            FileUtils.copyFile(new FileInputStream(newDb), new FileOutputStream(oldDb));
+            // Access the copied database so SQLiteHelper will cache it and mark
+            // it as created.
+            getWritableDatabase().close();
+            return true;
+        }
+        return false;
     }
 
 	@Override

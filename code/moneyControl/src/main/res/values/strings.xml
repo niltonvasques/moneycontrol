@@ -16,6 +16,7 @@
         <item>Categorias</item>
         <item>Investimentos</item>
         <item>Relatórios</item>
+        <item>Backup</item>
         <item>Sobre</item>
     </string-array>
     
@@ -190,6 +191,8 @@
     <string name="fechamento_dialog_format_error_message">O formato do valor é inválido.</string>
     <string name="fechamento_dialog_wrong_date_error_message">A data de fechamento não pode ser inferior a primeira movimentação do ativo.</string>
     <string name="fechamento_dialog_wrong_date_error_title">Atenção!</string>
+    <string name="fragment_backup_save_backup">Salvar Backup</string>
+    <string name="fragment_backup_restore_backup">Restaurar Backup</string>
 
     <string-array name="bill_period_array">
         <item>Única vez</item>

@@ -23,6 +23,7 @@ import br.niltonvasques.moneycontrol.database.DatabaseHandler;
 import br.niltonvasques.moneycontrol.util.DateUtil;
 import br.niltonvasques.moneycontrol.util.MessageUtils;
 import br.niltonvasques.moneycontrol.view.fragment.AboutFragment;
+import br.niltonvasques.moneycontrol.view.fragment.BackupFragment;
 import br.niltonvasques.moneycontrol.view.fragment.CategoriasFragment;
 import br.niltonvasques.moneycontrol.view.fragment.ContasAPagarFragment;
 import br.niltonvasques.moneycontrol.view.fragment.ContasFragment;
@@ -42,7 +43,8 @@ public class MainActivity extends NVFragmentActivity {
 	public static final int CATEGORIAS_ITEM_MENU 		= 4;
 	public static final int INVESTIMENTOS_ITEM_MENU 	= 5;
 	public static final int RELATORIOS_ITEM_MENU 		= 6;
-	public static final int SOBRE_ITEM_MENU 			= 7;
+	public static final int BACKUP_ITEM_MENU 			= 7;
+	public static final int SOBRE_ITEM_MENU 			= 8;
 
 	private static final String TAG = "[MainActivity]";
 
@@ -184,6 +186,8 @@ public class MainActivity extends NVFragmentActivity {
 			changeFragment(new OrcamentoFragment());
 		}else if(mDrawerItens[position].equals(mDrawerItens[SOBRE_ITEM_MENU])){
 			changeFragment(new AboutFragment());
+		}else if(mDrawerItens[position].equals(mDrawerItens[BACKUP_ITEM_MENU])){
+			changeFragment(new BackupFragment());
 		}else if(mDrawerItens[position].equals(mDrawerItens[CONTAS_A_PAGAR_ITEM_MENU])){
 			changeFragment(new ContasAPagarFragment());
 		}
