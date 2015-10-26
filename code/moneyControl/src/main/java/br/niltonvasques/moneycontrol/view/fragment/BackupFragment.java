@@ -11,17 +11,22 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.devpaul.filepickerlibrary.FilePickerActivity;
+import com.devpaul.filepickerlibrary.enums.FileType;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import br.niltonvasques.moneycontrol.MainActivity;
 import br.niltonvasques.moneycontrol.activity.NVFragmentActivity;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
 import br.niltonvasques.moneycontrol.database.DatabaseHandler;
+import br.niltonvasques.moneycontrol.util.DateUtil;
 import br.niltonvasques.moneycontrol.util.FileUtils;
 import br.niltonvasques.moneycontrol.util.MessageUtils;
 import br.niltonvasques.moneycontrolbeta.R;
@@ -95,17 +100,16 @@ public class BackupFragment extends Fragment{
             String filePath = data.
                     getStringExtra(FilePickerActivity.FILE_EXTRA_DATA_PATH);
             if(filePath != null) {
-                //do something with filePath...
-//                Toast.makeText(getActivity(), "Choose: "+filePath, Toast.LENGTH_LONG).show();
                 File in = new File(db.getDbPath());
-                File out = new File(filePath+"/moneycontrol.mcbk");
+                File out = new File(filePath+"/moneycontrol"+DateUtil.formatCalendarToDate(new GregorianCalendar())+".mcbk");
                 System.out.println(in);
                 System.out.println(out);
                 try {
                     FileInputStream fis = new FileInputStream(in);
                     FileOutputStream fos = new FileOutputStream(out);
                     FileUtils.copyFile(fis, fos);
-                    MessageUtils.showMessage(getActivity(), app.getString(R.string.fragment_backup_success_title), app.getString(R.string.fragment_backup_success_message)+filePath);
+                    MessageUtils.showMessage(getActivity(), app.getString(R.string.fragment_backup_success_title),
+                            app.getString(R.string.fragment_backup_success_message)+out.getPath());
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                     MessageUtils.showDefaultErrorMessage(getActivity());

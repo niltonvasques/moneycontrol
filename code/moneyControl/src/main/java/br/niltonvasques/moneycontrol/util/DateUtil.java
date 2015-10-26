@@ -1,7 +1,9 @@
 package br.niltonvasques.moneycontrol.util;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class DateUtil {
 
@@ -16,4 +18,14 @@ public class DateUtil {
 
 		return (diff / (1000 * 60 * 60 * 24));
 	}
+
+    public static String formatCalendarToDate(GregorianCalendar c){
+        return new StringBuilder()
+                .append(c.get(Calendar.DAY_OF_MONTH)).append("-")
+                .append(c.get(Calendar.MONTH) + 1).append("-")
+                .append(c.get(Calendar.YEAR)).append(" ")
+                .append(c.get(Calendar.HOUR_OF_DAY)).append(":")
+                .append(c.get(Calendar.MINUTE))
+                .toString();
+    }
 }
