@@ -4,11 +4,11 @@ android {
     signingConfigs {
         release
     }
-    compileSdkVersion 22
+    compileSdkVersion 23
     buildToolsVersion "23.0.0 rc2"
     defaultConfig {
         applicationId "br.niltonvasques.moneycontrol"
-        minSdkVersion 11
+        minSdkVersion 16
         targetSdkVersion 17
     }
     buildTypes {
@@ -20,9 +20,14 @@ android {
     }
 }
 
+repositories {
+    maven {url "https://jitpack.io"}
+}
+
 dependencies {
+    compile 'com.github.DeveloperPaul123:FilePickerLibrary:1.0.0'
     compile project(':androidBootstrap')
-    compile 'com.android.support:appcompat-v7:18.0.0'
+    compile 'com.android.support:appcompat-v7:23.0.0'
     compile 'com.github.lecho:hellocharts-library:1.5.5@aar'
 }
 

@@ -16,6 +16,7 @@
         <item>Categorias</item>
         <item>Investimentos</item>
         <item>Relatórios</item>
+        <item>Backup</item>
         <item>Sobre</item>
     </string-array>
     
@@ -165,7 +166,7 @@
     
     <!-- Change Dialog -->
     <string name="news_change_dialog_title">Novidades da versão</string>
-	<string name="news_change_dialog_body">-Adicionado a soma das contas a pagar.</string>
+	<string name="news_change_dialog_body">-Adicionado o backup e restauração dos dados.\n-Adicionado a soma das contas a pagar.</string>
     
 	<!--  Error Dialog -->
 	<string name="dialog_error_message_title">Atenção!</string>
@@ -190,6 +191,11 @@
     <string name="fechamento_dialog_format_error_message">O formato do valor é inválido.</string>
     <string name="fechamento_dialog_wrong_date_error_message">A data de fechamento não pode ser inferior a primeira movimentação do ativo.</string>
     <string name="fechamento_dialog_wrong_date_error_title">Atenção!</string>
+    <string name="fragment_backup_save_backup">Salvar Backup</string>
+    <string name="fragment_backup_restore_backup">Restaurar Backup</string>
+    <string name="fragment_backup_success_title">Sucesso!!</string>
+    <string name="fragment_backup_success_message">"O backup dos dados foi salvo com sucesso em: "</string>
+    <string name="fragment_backup_success_restore">O backup foi restaurado com sucesso!</string>
 
     <string-array name="bill_period_array">
         <item>Única vez</item>
