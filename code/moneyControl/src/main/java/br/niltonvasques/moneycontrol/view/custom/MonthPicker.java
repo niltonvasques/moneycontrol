@@ -33,7 +33,7 @@ public class MonthPicker extends DatePicker {
 //			View val = (View) ReflectionUtils.getField(field, this);
 //			val.setVisibility(View.GONE);
 //		} catch (Exception ex) {
-//			Log.d(TAG, "Exception when trying to override the field " +
+//////		 //Log.d(TAG, "Exception when trying to override the field " +
 //					"used in the superclass, " + DatePicker.class.getName() +
 //					". Has the field name changed?", ex);
 //		} finally {

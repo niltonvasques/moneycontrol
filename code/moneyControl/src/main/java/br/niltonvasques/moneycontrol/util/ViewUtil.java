@@ -56,7 +56,7 @@ public class ViewUtil {
 		view.setText(
 				new StringBuilder()
 				// Month is 0 based so add 1
-				.append(date.getDisplayName(Calendar.MONDAY,Calendar.LONG, Locale.getDefault())).append("/")				
+				.append(date.getDisplayName(Calendar.MONTH,Calendar.LONG, Locale.getDefault())).append("/")				
 				.append(date.get(Calendar.YEAR)).append(" "));
 		
 	}

@@ -262,7 +262,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 		// looping through all rows and adding to list
 		if (c.moveToFirst()) {
 			do {
-				Log.d(TAG, "TipoBem: id: "+c.getInt(0)+" nome: "+c.getString(1));
+			 //Log.d(TAG, "TipoBem: id: "+c.getInt(0)+" nome: "+c.getString(1));
 			} while (c.moveToNext());
 		}
 
@@ -361,7 +361,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 
 		SQLiteDatabase db = this.getReadableDatabase();
 
-		Log.d(TAG, "SELECT * FROM "+type.getSimpleName()+" "+where);
+		//Log.d(TAG, "SELECT * FROM "+type.getSimpleName()+" "+where);
 
 		Cursor c = db.rawQuery("SELECT * FROM "+type.getSimpleName()+" "+where, null);
 
@@ -389,7 +389,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 	public String runQuery(String query){
 		SQLiteDatabase db = this.getReadableDatabase();
 
-		Log.d(TAG, "runQuery: "+query);
+		//Log.d(TAG, "runQuery: "+query);
 
 		Cursor c = db.rawQuery(query, null);
 		if(c.moveToFirst()){
@@ -405,7 +405,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 	public Cursor runQueryCursor(String query){
 		SQLiteDatabase db = this.getReadableDatabase();
 
-		Log.d(TAG, "runQuery: "+query);
+	 //Log.d(TAG, "runQuery: "+query);
 
 		Cursor c = db.rawQuery(query, null);
 		return c;

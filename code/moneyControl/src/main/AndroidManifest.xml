@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="br.niltonvasques.moneycontrolbeta"
-    android:versionCode="10"
+    android:versionCode="11"
     android:versionName="@string/app_version" >
 
     <uses-sdk
@@ -10,12 +11,14 @@
     
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
     <application
         android:name="br.niltonvasques.moneycontrol.app.MoneyControlApp"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
+        tools:replace="android:theme"
         android:theme="@style/Theme.AppCompat.Light.DarkActionBar" >
         <activity
             android:name="br.niltonvasques.moneycontrol.MainActivity"
@@ -25,7 +28,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <receiver  
+          android:name="br.niltonvasques.moneycontrol.service.MoneyControlReminderScheduler"
+          android:enabled="true" 
+          android:exported="false" android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
         
+        <service 
+          android:name="br.niltonvasques.moneycontrol.service.NotificationService"
+          android:exported="false" 
+          />
     </application>
 
 </manifest>

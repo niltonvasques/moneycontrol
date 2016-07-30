@@ -31,175 +31,177 @@ import br.niltonvasques.moneycontrol.view.fragment.InvestimentosFragment;
 import br.niltonvasques.moneycontrol.view.fragment.OrcamentoFragment;
 import br.niltonvasques.moneycontrol.view.fragment.ReportsFragment;
 import br.niltonvasques.moneycontrol.view.fragment.TransacoesFragment;
+import br.niltonvasques.moneycontrol.service.NotificationService;
 import br.niltonvasques.moneycontrolbeta.R;
 
 @SuppressLint("NewApi")
 public class MainActivity extends NVFragmentActivity {
-	
-	public static final int CONTAS_ITEM_MENU 			= 0;
-	public static final int TRANSACOES_ITEM_MENU 		= 1;
-	public static final int CONTAS_A_PAGAR_ITEM_MENU 	= 2;
-	public static final int ORCAMENTO_ITEM_MENU 		= 3;
-	public static final int CATEGORIAS_ITEM_MENU 		= 4;
-	public static final int INVESTIMENTOS_ITEM_MENU 	= 5;
-	public static final int RELATORIOS_ITEM_MENU 		= 6;
-	public static final int BACKUP_ITEM_MENU 			= 7;
-	public static final int SOBRE_ITEM_MENU 			= 8;
 
-	private static final String TAG = "[MainActivity]";
+    public static final int CONTAS_ITEM_MENU 			= 0;
+    public static final int TRANSACOES_ITEM_MENU 		= 1;
+    public static final int CONTAS_A_PAGAR_ITEM_MENU 	        = 2;
+    public static final int ORCAMENTO_ITEM_MENU 		= 3;
+    public static final int CATEGORIAS_ITEM_MENU 		= 4;
+    public static final int INVESTIMENTOS_ITEM_MENU 	        = 5;
+    public static final int RELATORIOS_ITEM_MENU 		= 6;
+    public static final int BACKUP_ITEM_MENU 			= 7;
+    public static final int SOBRE_ITEM_MENU 			= 8;
 
-	private MoneyControlApp app;
-	private DatabaseHandler db;
+    private static final String TAG = "[MainActivity]";
 
-	private String[] mDrawerItens;
-	private DrawerLayout mDrawerLayout;
-	private ActionBarDrawerToggle mDrawerToggle;
-	private ListView mDrawerList;	
+    private MoneyControlApp app;
+    private DatabaseHandler db;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+    private String[] mDrawerItens;
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mDrawerToggle;
+    private ListView mDrawerList;	
 
-		app = (MoneyControlApp) getApplication();
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-
-		mDrawerItens = getResources().getStringArray(R.array.menu_array);
-		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-		mDrawerList = (ListView) findViewById(R.id.left_drawer);
-
-		// Set the adapter for the list view
-		mDrawerList.setAdapter(new ArrayAdapter<String>(this,R.layout.drawer_list_item, mDrawerItens));
-
-		changeFragment( new ContasFragment() );
-		getSupportActionBar().setTitle(mDrawerItens[CONTAS_ITEM_MENU]);
-
-		mDrawerList.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int position,long arg3) {
-				switchContent(position);
-				mDrawerLayout.closeDrawer(mDrawerList);
+        app = (MoneyControlApp) getApplication();
 
 
-			}
+        mDrawerItens = getResources().getStringArray(R.array.menu_array);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+
+        // Set the adapter for the list view
+        mDrawerList.setAdapter(new ArrayAdapter<String>(this,R.layout.drawer_list_item, mDrawerItens));
+
+        changeFragment( new ContasFragment() );
+        getSupportActionBar().setTitle(mDrawerItens[CONTAS_ITEM_MENU]);
+
+        mDrawerList.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position,long arg3) {
+                switchContent(position);
+                mDrawerLayout.closeDrawer(mDrawerList);
 
 
-		});
+            }
 
-		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-				R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close) {
 
-			/** Called when a drawer has settled in a completely closed state. */
-			public void onDrawerClosed(View view) {
-				super.onDrawerClosed(view);
-				//                getActionBar().setTitle(mTitle);
-				if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
-					//                	getActionBar().setTitle(mDrawerTitle);
-					invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-				}
-			}
+        });
 
-			/** Called when a drawer has settled in a completely open state. */
-			public void onDrawerOpened(View drawerView) {
-				super.onDrawerOpened(drawerView);
-				if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
-					//                	getActionBar().setTitle(mDrawerTitle);
-					invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-				}
-			}
-		};
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+                R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close) {
 
-		// Set the drawer toggle as the DrawerListener
-		mDrawerLayout.setDrawerListener(mDrawerToggle);
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		getSupportActionBar().setHomeButtonEnabled(true);
-		
-		createNewsVersionDialog();
-	}
-	
-	@Override
-	protected void onResume() {
-		super.onResume();
-	}
-	
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                //                getActionBar().setTitle(mTitle);
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
+                    //                	getActionBar().setTitle(mDrawerTitle);
+                    invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+                }
+            }
 
-	@Override
-	protected void onPostCreate(Bundle savedInstanceState) {
-		super.onPostCreate(savedInstanceState);
-		// Sync the toggle state after onRestoreInstanceState has occurred.
-		mDrawerToggle.syncState();
-	}
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
+                    //                	getActionBar().setTitle(mDrawerTitle);
+                    invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+                }
+            }
+        };
 
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-		super.onConfigurationChanged(newConfig);
-		mDrawerToggle.onConfigurationChanged(newConfig);
-	}
+        // Set the drawer toggle as the DrawerListener
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
-	@Override
-	public boolean onPrepareOptionsMenu(Menu menu) {
-		Log.d(TAG, "onPrepareOptionsMenu");
-		// If the nav drawer is open, hide action items related to the content view
-		try{
-		boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-		menu.findItem(R.id.action_add).setVisible(!drawerOpen);
-		menu.findItem(R.id.action_transfer).setVisible(!drawerOpen);
-		}catch(Exception e){}
-		return super.onPrepareOptionsMenu(menu);
-	}
+        createNewsVersionDialog();
+    }
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		Log.d(TAG, "onOptionsItemSelected");
-		if (mDrawerToggle.onOptionsItemSelected(item)) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
+    @Override
+    protected void onResume() {
+        super.onResume();
+        NotificationService.schedulerNotification(this);
+    }
 
-	@Override
-	public int getFragmentContentID() {
-		return R.id.content_frame;
-	}
-	
-	private void switchContent(int position) {
-		getSupportActionBar().setIcon(R.drawable.ic_launcher);
-		getSupportActionBar().setTitle(mDrawerItens[position]);
-		
-		if(mDrawerItens[position].equals(mDrawerItens[CONTAS_ITEM_MENU])){
-			changeFragment( new ContasFragment() );
-		}else if(mDrawerItens[position].equals(mDrawerItens[CATEGORIAS_ITEM_MENU])){
-			changeFragment(new CategoriasFragment());
-		}else if(mDrawerItens[position].equals(mDrawerItens[RELATORIOS_ITEM_MENU])){
-			changeFragment(new ReportsFragment());
-		}else if(mDrawerItens[position].equals(mDrawerItens[TRANSACOES_ITEM_MENU])){
-			GregorianCalendar dateRange = new GregorianCalendar();
-			dateRange.set(GregorianCalendar.DAY_OF_MONTH, 1);
-			Fragment fragment = new TransacoesFragment();
-			Bundle args = new Bundle();
-			args.putString("range", DateUtil.sqlDateFormat().format(dateRange.getTime()));
-			fragment.setArguments(args);
-			changeFragment(fragment);
-		}else if(mDrawerItens[position].equals(mDrawerItens[INVESTIMENTOS_ITEM_MENU])){
-			changeFragment(new InvestimentosFragment());
-		}else if(mDrawerItens[position].equals(mDrawerItens[ORCAMENTO_ITEM_MENU])){
-			changeFragment(new OrcamentoFragment());
-		}else if(mDrawerItens[position].equals(mDrawerItens[SOBRE_ITEM_MENU])){
-			changeFragment(new AboutFragment());
-		}else if(mDrawerItens[position].equals(mDrawerItens[BACKUP_ITEM_MENU])){
-			changeFragment(new BackupFragment());
-		}else if(mDrawerItens[position].equals(mDrawerItens[CONTAS_A_PAGAR_ITEM_MENU])){
-			changeFragment(new ContasAPagarFragment());
-		}
-	}
-	
-	private void createNewsVersionDialog() {
-		if(!app.isAlreadyShowNewsChangeDialog()){
-			String title = getString(R.string.news_change_dialog_title)+" "+getString(R.string.app_version);
-			String message = getString(R.string.news_change_dialog_body);
-			MessageUtils.showMessage(this, title, message);
-			app.alreadyShowChangeDialog();
-		}
-	}
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        //Log.d(TAG, "onPrepareOptionsMenu");
+        // If the nav drawer is open, hide action items related to the content view
+        try{
+            boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+            menu.findItem(R.id.action_add).setVisible(!drawerOpen);
+            menu.findItem(R.id.action_transfer).setVisible(!drawerOpen);
+        }catch(Exception e){}
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        //Log.d(TAG, "onOptionsItemSelected");
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public int getFragmentContentID() {
+        return R.id.content_frame;
+    }
+
+    private void switchContent(int position) {
+        getSupportActionBar().setIcon(R.drawable.ic_launcher);
+        getSupportActionBar().setTitle(mDrawerItens[position]);
+
+        if(mDrawerItens[position].equals(mDrawerItens[CONTAS_ITEM_MENU])){
+            changeFragment( new ContasFragment() );
+        }else if(mDrawerItens[position].equals(mDrawerItens[CATEGORIAS_ITEM_MENU])){
+            changeFragment(new CategoriasFragment());
+        }else if(mDrawerItens[position].equals(mDrawerItens[RELATORIOS_ITEM_MENU])){
+            changeFragment(new ReportsFragment());
+        }else if(mDrawerItens[position].equals(mDrawerItens[TRANSACOES_ITEM_MENU])){
+            GregorianCalendar dateRange = new GregorianCalendar();
+            dateRange.set(GregorianCalendar.DAY_OF_MONTH, 1);
+            Fragment fragment = new TransacoesFragment();
+            Bundle args = new Bundle();
+            args.putString("range", DateUtil.sqlDateFormat().format(dateRange.getTime()));
+            fragment.setArguments(args);
+            changeFragment(fragment);
+        }else if(mDrawerItens[position].equals(mDrawerItens[INVESTIMENTOS_ITEM_MENU])){
+            changeFragment(new InvestimentosFragment());
+        }else if(mDrawerItens[position].equals(mDrawerItens[ORCAMENTO_ITEM_MENU])){
+            changeFragment(new OrcamentoFragment());
+        }else if(mDrawerItens[position].equals(mDrawerItens[SOBRE_ITEM_MENU])){
+            changeFragment(new AboutFragment());
+        }else if(mDrawerItens[position].equals(mDrawerItens[BACKUP_ITEM_MENU])){
+            changeFragment(new BackupFragment());
+        }else if(mDrawerItens[position].equals(mDrawerItens[CONTAS_A_PAGAR_ITEM_MENU])){
+            changeFragment(new ContasAPagarFragment());
+        }
+    }
+
+    private void createNewsVersionDialog() {
+        if(!app.isAlreadyShowNewsChangeDialog()){
+            String title = getString(R.string.news_change_dialog_title)+" "+getString(R.string.app_version);
+            String message = getString(R.string.news_change_dialog_body);
+            MessageUtils.showMessage(this, title, message);
+            app.alreadyShowChangeDialog();
+        }
+    }
 
 }

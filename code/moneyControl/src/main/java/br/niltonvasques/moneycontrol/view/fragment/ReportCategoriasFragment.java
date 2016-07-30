@@ -82,7 +82,7 @@ public class ReportCategoriasFragment extends Fragment{
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		Log.d(TAG, "onOptionsItemSelected");
+	 //Log.d(TAG, "onOptionsItemSelected");
 	    // Handle presses on the action bar items
 	    switch (item.getItemId()) {
 	        case R.id.action_add:
@@ -119,8 +119,8 @@ public class ReportCategoriasFragment extends Fragment{
 						float valor = c.getFloat(0);
 						int month = Integer.valueOf(c.getString(1));
 						int year = c.getInt(2);
-						Log.d(TAG, "createDataset string: month: "+c.getString(1)+" year: "+c.getString(2));
-						Log.d(TAG, "createDataset: month: "+month+" year: "+year);
+						//Log.d(TAG, "createDataset string: month: "+c.getString(1)+" year: "+c.getString(2));
+						//Log.d(TAG, "createDataset: month: "+month+" year: "+year);
 						values.add(new PointValue(month-1, valor));
 					} while (c.moveToNext());
 				}

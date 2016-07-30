@@ -7,25 +7,39 @@ import java.util.GregorianCalendar;
 
 public class DateUtil {
 
-	public static final SimpleDateFormat sqlDateFormat(){
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-		return format;
-	}
+    public static final SimpleDateFormat sqlDateFormat(){
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        return format;
+    }
 
-	public static final long diffDays(Date src, Date dst){
-		// Get msec from each, and subtract.
-		long diff = dst.getTime() - src.getTime();
+    public static final long diffDays(Date src, Date dst){
+        // Get msec from each, and subtract.
+        long diff = dst.getTime() - src.getTime();
 
-		return (diff / (1000 * 60 * 60 * 24));
-	}
+        return (diff / (1000 * 60 * 60 * 24));
+    }
 
     public static String formatCalendarToDate(GregorianCalendar c){
         return new StringBuilder()
-                .append(c.get(Calendar.DAY_OF_MONTH)).append("-")
-                .append(c.get(Calendar.MONTH) + 1).append("-")
-                .append(c.get(Calendar.YEAR)).append(" ")
-                .append(c.get(Calendar.HOUR_OF_DAY)).append(":")
-                .append(c.get(Calendar.MINUTE))
-                .toString();
+            .append(c.get(Calendar.DAY_OF_MONTH)).append("-")
+            .append(c.get(Calendar.MONTH) + 1).append("-")
+            .append(c.get(Calendar.YEAR)).append(" ")
+            .append(c.get(Calendar.HOUR_OF_DAY)).append(":")
+            .append(c.get(Calendar.MINUTE))
+            .toString();
+    }
+
+    public static final GregorianCalendar getLastDayFromCurrentMonth(){
+        GregorianCalendar lastDay = new GregorianCalendar();
+        lastDay.set(Calendar.DAY_OF_MONTH, 1);
+        lastDay.add(Calendar.MONTH, 1);
+        lastDay.add(Calendar.DAY_OF_MONTH, -1);
+        return lastDay;
+    }
+
+    public static final GregorianCalendar getFirstDayFromCurrentMonth(){
+        GregorianCalendar firstDay = new GregorianCalendar();
+        firstDay.set(Calendar.DAY_OF_MONTH, 1);
+        return firstDay;
     }
 }

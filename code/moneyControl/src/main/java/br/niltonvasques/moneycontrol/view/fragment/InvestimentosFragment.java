@@ -86,7 +86,7 @@ public class InvestimentosFragment extends Fragment{
 //		ativos = db.select(Ativo.class, " WHERE data < date('"+DateUtil.sqlDateFormat().format(dateRange.getTime())+"','+1 month')");
         ativos = db.select(Ativo.class, "WHERE (SELECT count(*) FROM MovimentacaoAtivo WHERE id_Ativo = Ativo.id) > 0");
         for (Ativo a : ativos) {
-			Log.i(TAG, a.toString());
+			////Log.i(TAG, a.toString());
 		}
 		
 		listAdapter = new AtivoAdapter(ativos, getActivity(), monthView.getDateRange(), inflater, app);

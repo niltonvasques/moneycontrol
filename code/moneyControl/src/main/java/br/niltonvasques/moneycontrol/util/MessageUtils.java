@@ -159,7 +159,7 @@ public class MessageUtils {
 		HashMap<String, String> teste = new HashMap<String, String>();
 		ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String, String>>();
 
-		Log.d(TAG, TipoConta.class.getSimpleName());
+	 //Log.d(TAG, TipoConta.class.getSimpleName());
 
 		List<TipoConta> tipos = db.select(TipoConta.class);
 
@@ -281,7 +281,7 @@ public class MessageUtils {
 			}
 		});
 
-		Log.d(TAG, TipoConta.class.getSimpleName());
+		//Log.d(TAG, TipoConta.class.getSimpleName());
 
 		List<TipoConta> tipos = db.select(TipoConta.class);
 
@@ -467,7 +467,7 @@ public class MessageUtils {
 		try {
 			String[] iconss = context.getAssets().list("icons");
 			for (String string : iconss) {
-				Log.d(TAG, string);
+				//Log.d(TAG, string);
 			}
 			return iconss;
 		} catch (IOException e) {
@@ -920,7 +920,7 @@ public class MessageUtils {
 		final View view = inflater.inflate(R.layout.add_categoria_dialog, null);
 		alert.setView(view);
 
-		Log.d(TAG, TipoConta.class.getSimpleName());
+	 //Log.d(TAG, TipoConta.class.getSimpleName());
 
 		List<TipoTransacao> tipos = db.select(TipoTransacao.class);
 
@@ -966,7 +966,7 @@ public class MessageUtils {
 		final View view = inflater.inflate(R.layout.add_categoria_dialog, null);
 		alert.setView(view);
 
-		Log.d(TAG, TipoConta.class.getSimpleName());
+	 //Log.d(TAG, TipoConta.class.getSimpleName());
 
 		List<TipoTransacao> tipos = db.select(TipoTransacao.class);
 
@@ -1233,7 +1233,7 @@ public class MessageUtils {
 		final View view = inflater.inflate(R.layout.report_categorias_by_month_dialog, null);
 		alert.setView(view);
 
-		Log.d(TAG, TipoConta.class.getSimpleName());
+	 //Log.d(TAG, TipoConta.class.getSimpleName());
 
 		List<CategoriaTransacao> tipos = db.select(CategoriaTransacao.class);
 
@@ -1528,7 +1528,7 @@ public class MessageUtils {
 		final Button btnDate = (Button)view.findViewById(R.id.orcamentoDialogBtnData);
 		ViewUtil.adjustMonthTextView(btnDate, value);
 
-		Log.d(TAG, TipoConta.class.getSimpleName());
+	 //Log.d(TAG, TipoConta.class.getSimpleName());
 
 		List<CategoriaTransacao> tipos = db.select(CategoriaTransacao.class, "WHERE id_TipoTransacao = 2");
 
@@ -1623,7 +1623,7 @@ public class MessageUtils {
 		final Button btnDate = (Button)view.findViewById(R.id.orcamentoDialogBtnData);
 		ViewUtil.adjustMonthTextView(btnDate, value);
 
-		Log.d(TAG, TipoConta.class.getSimpleName());
+	 //Log.d(TAG, TipoConta.class.getSimpleName());
 
 		List<CategoriaTransacao> tipos = db.select(CategoriaTransacao.class, "WHERE id_TipoTransacao = 2");
 

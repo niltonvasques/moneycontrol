@@ -29,7 +29,7 @@ public class ContaAPagarBusiness {
         GregorianCalendar gC = (GregorianCalendar) range.clone();
         List<ContaAPagar> newItems = new ArrayList<ContaAPagar>();
         for(ContaAPagar c : contasList){
-            Log.d(TAG, "Conta: " + c.getDescricao() + " repeticao: " + c.getId_Repeticao());
+            //Log.d(TAG, "Conta: " + c.getDescricao() + " repeticao: " + c.getId_Repeticao());
             if(c.getId_Repeticao() == 2){ // SEMANAL
                 long diffDays = DateUtil.diffDays(DateUtil.sqlDateFormat().parse(c.getData()), range.getTime());
                 long shiftDays = 7 - diffDays % 7;
@@ -38,10 +38,10 @@ public class ContaAPagarBusiness {
                     shiftDays = 0;
                     gC.setTime(DateUtil.sqlDateFormat().parse(c.getData()));
                 }
-                Log.d(TAG, "diffDays " + diffDays + " shiftDays: " + shiftDays);
+                //Log.d(TAG, "diffDays " + diffDays + " shiftDays: " + shiftDays);
                 diffDays += shiftDays;
                 long qtd = diffDays / 7;
-                Log.d(TAG, "qtd: " + qtd);
+                //Log.d(TAG, "qtd: " + qtd);
                 gC.add(Calendar.DAY_OF_MONTH, (int) shiftDays);
                 c.setData(DateUtil.sqlDateFormat().format(gC.getTime()));
                 if(!c.isStatus()) { // Caso seja semanal, mostrar apenas os pagos
@@ -53,12 +53,12 @@ public class ContaAPagarBusiness {
                 qtd++;
                 int restDaysOnMonth = tmp.get(Calendar.DAY_OF_MONTH) - gC.get(Calendar.DAY_OF_MONTH);
                 int max = Math.min(c.getQuantidade() - (int)qtd, restDaysOnMonth / 7 );
-                Log.d(TAG, "restDaysOnMonth: " + restDaysOnMonth + " max: " + max);
+                //Log.d(TAG, "restDaysOnMonth: " + restDaysOnMonth + " max: " + max);
                 for(int i = 0; i < max; i++ ){
                     ContaAPagar cp = (ContaAPagar) c.clone();
                     gC.add(Calendar.DAY_OF_MONTH, 7);
                     cp.setData(DateUtil.sqlDateFormat().format(gC.getTime()));
-                    Log.d(TAG, "ADD " + cp.getDescricao() + " - " + cp.getData());
+                    //Log.d(TAG, "ADD " + cp.getDescricao() + " - " + cp.getData());
                     if(!cp.isStatus()){
                         String id = db.runQuery(QuerysUtil.checkContaPagaOnDate(cp.getId(), gC.getTime()));
                         boolean paid = id != null && !id.equals("");

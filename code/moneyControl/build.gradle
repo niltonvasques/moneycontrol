@@ -5,11 +5,11 @@ android {
         release
     }
     compileSdkVersion 23
-    buildToolsVersion "23.0.0 rc2"
+    buildToolsVersion "23.0.3"
     defaultConfig {
         applicationId "br.niltonvasques.moneycontrol"
         minSdkVersion 16
-        targetSdkVersion 17
+        targetSdkVersion 21
     }
     buildTypes {
         release {
@@ -21,13 +21,14 @@ android {
 }
 
 repositories {
-    maven {url "https://jitpack.io"}
+    maven { url "https://jitpack.io" }
+    jcenter { url 'http://jcenter.bintray.com' } 
 }
 
 dependencies {
     compile 'com.github.DeveloperPaul123:FilePickerLibrary:1.0.0'
     compile project(':androidBootstrap')
-    compile 'com.android.support:appcompat-v7:23.0.0'
+    compile 'com.android.support:appcompat-v7:23.0.3'
     compile 'com.github.lecho:hellocharts-library:1.5.5@aar'
 }
 

@@ -1,208 +1,213 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources
-    xmlns:tools="http://schemas.android.com/tools" 
-    tools:locale="pt_BR"
-    tools:ignore="MissingTranslation">
+  xmlns:tools="http://schemas.android.com/tools" 
+  tools:locale="pt_BR"
+  tools:ignore="MissingTranslation">
 
-    <string name="app_name">MoneyControl</string>
-    <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
-    
-    <string-array name="menu_array">
-        <item>Capital</item>
-        <item>Transações</item>
-        <item>Contas a pagar</item>
-        <item>Planejamento do mês</item>
-        <item>Categorias</item>
-        <item>Investimentos</item>
-        <item>Relatórios</item>
-        <item>Backup</item>
-        <item>Sobre</item>
-    </string-array>
-    
-    <string name="drawer_open">Open navigation drawer</string>
-    <string name="drawer_close">Close navigation drawer</string>
-    
-    <!-- Actions -->
-    <string name="action_add">Adicionar</string>
-    <string name="action_transfer">Transferir</string>
-    
-    <!-- Actions Transacoes -->
-    <string name="action_group">Agrupar</string>
-    <string name="action_disgroup">Desagrupar</string>
-    <string name="action_investment">Investir</string>
-    
-    <string name="default_currency_value">R$ 0.00</string>
-    
-    <!-- add_categoria_dialog.xml -->
-    <string name="categoria_dialog_title">Adicionar Categoria</string>
-    <string name="categoria_dialog_tipo">Tipo:</string>
-    <string name="categoria_dialog_descricao">Descrição:</string>
-    <string name="categoria_dialog_descricao_hint">informe uma descrição</string>
-    
-    <!-- add_orcamento_dialog.xml -->
-    <string name="orcamento_dialog_title">Adicionar Orçamento</string>
-    <string name="orcamento_dialog_tipo">Categoria:</string>
-    <string name="orcamento_dialog_descricao">Valor:</string>
-    <string name="orcamento_dialog_descricao_hint">informe um valor</string>
-    <string name="orcamento_dialog_error_message_title">Atenção!</string>
-    <string name="orcamento_dialog_error_message_message">Só é possível adicionar um orçamento para cada categoria no mês!</string>
-    
-    <!-- add_conta_dialog.xml -->
-    <string name="add_conta_dialog_title">Adicionar Conta</string>
-    <string name="add_conta_dialog_nome_hint">nome da conta</string>
-    <string name="add_conta_dialog_saldo_hint">saldo inicial</string>
-    <string name="add_conta_dialog_icon_choose_message">Escolha um ícone!</string>
-    
-    <!-- Editar Conta -->
-    <string name="edit_conta_dialog_title">Editar Conta</string>
-    
-    <!-- Editar Cartao -->
-    <string name="edit_cartao_dialog_title">Editar Cartão de Crédito</string>
-    <string name="edit_cartao_dialog_close_date">Fechamento:</string>
-    <string name="edit_cartao_dialog_expire_date">Vencimento:</string>
-    
-    
-    <!-- add_transacao_dialog.xml -->
-    <string name="add_transacao_dialog_title">Adicionar Transação</string>
-    <string name="add_transacao_dialog_tipo">Tipo:</string>
-    <string name="add_transacao_dialog_valor">Valor:</string>
-    <string name="add_transacao_dialog_valor_hint">informe o valor</string>
-    <string name="add_transacao_dialog_descricao">Descrição:</string>
-    <string name="add_transacao_dialog_descricao_hint">informe a descrição</string>
-    <string name="add_transacao_dialog_data">Data:</string>
-    <string name="add_transacao_dialog_categoria">Categoria:</string>
-    <string name="add_transacao_dialog_conta">Conta:</string>
-    
-    <!-- edit add_transacao_dialog.xml -->
-    <string name="edit_transacao_dialog_title">Editar Transação</string>
-    
-    <!-- transferencia_dialog.xml -->
-    <string name="transferencia_dialog_conta_origem">Conta origem:</string>
-    <string name="transferencia_dialog_conta_destino">Conta destino:</string>
-    <string name="transferencia_dialog_categoria">Categoria:</string>
-    <string name="transferencia_dialog_data">Data: </string>
-    <string name="transferencia_dialog_descricao_hint">informe uma descrição</string>
-    <string name="transferencia_dialog_descricao">Descrição:</string>
-    <string name="transferencia_dialog_valor_hint">informe um valor</string>
-    <string name="transferencia_dialog_valor">Valor:</string>
-    <string name="transferencia_dialog_title">Transferência</string>
-    
-	
-    <!-- icones_dialog.xml -->
-    <string name="icones_dialog_title">Escolha o Ícone</string>
-    
-    <!-- fragment_report_bycategorias.xml -->
-    <string name="report_by_categorias_despesas_chart_title">Gráfico de Despesas por Categoria</string>
-    <string name="report_by_categorias_receitas_chart_title">Gráfico de Receitas por Categoria</string>
-    
-    <!-- Messages -->
-    <string name="error_title">Erro!</string>
-    <string name="error_message">Um erro inesperado aconteceu!</string>
-    
-    <!-- ReportCategoriasByMonth.java -->
-    <string name="report_categorias_title">"Histórico mensal por categoria"</string>
-    <string name="axis_date_label">Data</string>
-    <string name="axis_price_label">Total por mês(R$)</string>
-    <string name="report_categorias_by_month_dialog_title">Escolha as categorias</string>
-    
-    <!-- ReportReceitasXDespesas.java -->
-    <string name="report_receita_x_despesas_title">"Receitas x Despesas"</string>
-    <string name="report_receita_x_despesas_axis_category">Meses</string>
-    <string name="report_receita_x_despesas_axis_value">Valor(R$)</string>
-    <string name="report_receita_x_despesas_legend_despesa">Despesas</string>
-    <string name="report_receita_x_despesas_legend_receita">Receitas</string>
-    
-    <string name="report_by_ativos_chart_title">Alocação de ativos</string>
-    
-    <!-- add_transacao_dialog.xml -->
-    <string name="add_ativo_dialog_title">Movimentação Ativo</string>
-    <string name="add_ativo_dialog_tipo">Ativo:</string>
-    <string name="add_ativo_dialog_valor">Movimentação:</string>
-    <string name="add_ativo_dialog_financeiro">Financeiro:</string>
-    <string name="add_ativo_dialog_valor_hint">informe o valor</string>
-    <string name="add_ativo_dialog_descricao">Nome:</string>
-    <string name="add_ativo_dialog_descricao_hint">informe o nome do ativo</string>
-    <string name="add_ativo_dialog_sigla">Sigla:</string>
-    <string name="add_ativo_dialog_data">Data:</string>
-    <string name="add_ativo_dialog_vencimento">Vencimento:</string>
-    <string name="add_ativo_dialog_conta">Conta:</string>
-    <string name="add_ativo_dialog_quantidade">Quantidade:</string>
-    <string name="add_ativo_dialog_message_error">Não foi possível realizar o investimento!</string>
-    
-     <!-- add_fechamento_ativo_dialog.xml -->
-    <string name="add_fechamento_ativo_dialog_title">Movimentação Ativo</string>
-    <string name="add_fechamento_ativo_dialog_fechamento">Fechamento:</string>
-    
-    <!-- ReportAportesFragment.java -->
-    <string name="report_aportes_title">"Histórico de Aportes"</string>
-    <string name="report_aportes_axis_category">Meses</string>
-    <string name="report_aportes_axis_value">Valor(R$)</string>
-    
-        <!-- add_ativo_event_dialog.xml -->
-    <string name="add_ativo_event_dialog_title">Adicionar Cotação</string>
-    <string name="add_ativo_event_dialog_price">Cotação:</string>
-    <string name="add_ativo_event_dialog_price_hint">informe a cotação</string>
-    <string name="add_ativo_event_dialog_data">Data:</string>
-    <string name="add_ativo_event_dialog_msg_error">Um erro inesperado aconteceu!</string>
-    <string name="add_ativo_event_dialog_msg_title">Desculpe!</string>
-    
-    <!-- ContasFragment -->
-    <string name="contas_fragment_message_dialog_atention_title">Atenção!</string>
-    <string name="contas_fragment_message_dialog_transfer_error_msg">Para realizar uma transferência é necessário ter pelo menos duas contas cadastradas.</string>
-	<string name="contas_fragment_fatura_status_paga">paga</string>
-	<string name="contas_fragment_fatura_status_pendente">pendente</string>
-    <string name="contas_fragment_remove_account_msg">Deseja excluir esta conta?</string>
-	<string name="contas_list_item_cartao_pay">pagar</string>
-	<string name="contas_list_item_cartao_edit">editar</string>
-    
-    <!-- AboutFragment -->
-    <string name="about_fragment_version">Versão:</string>
-    <string name="about_fragment_author_title">Desenvolvedor</string>
-    <string name="about_fragment_author">Nilton Vasques</string>
-    <string name="about_fragment_coworkers_title">Colaboradores</string>
-    <string name="about_fragment_coworkers">Larissa Kiana\nJoseni Oliveira</string>
-    <string name="about_fragment_license">2014~2015 - Todos os direitos reservados</string>
-    
-    <!-- Change Dialog -->
-    <string name="news_change_dialog_title">Novidades da versão</string>
-	<string name="news_change_dialog_body">-Adicionado o backup e restauração dos dados.\n-Adicionado a soma das contas a pagar.</string>
-    
-	<!--  Error Dialog -->
-	<string name="dialog_error_message_title">Atenção!</string>
-	<string name="dialog_error_message_message">Um erro inesperado ocorreu!</string>
-	
-	<!-- pagar_fatura_dialog_title -->
-	<string name="pagar_fatura_dialog_title">Pagar Fatura</string>
-    <string name="add_transacao_dialog_parcelar">Parcelar?</string>
-    <string name="add_transacao_dialog_parcelas">Parcelas:</string>
-    <string name="transacoes_message_title">Atenção!</string>
-    <string name="fragment_transacoes_remove_transacao_message">Deseja excluir esta transação?</string>
-    <string name="fragment_transacoes_remove_parcelas_message">Deseja excluir todas as parcelas?</string>
-    <string name="add_conta_a_pagar_dialog_title">Adicionar conta a pagar</string>
-    <string name="add_conta_a_pagar_dialog_periodo">Repetição</string>
-    <string name="conta_a_pagar_dialog_pagar_fatura_desc">"Pagamento da conta: "</string>
-    <string name="add_conta_a_pagar_dialog_quantidade">Quantidade:</string>
-    <string name="add_conta_a_pagar_dialog_hint_quantidade">5 vezes</string>
-    <string name="pagar_conta_dialog_title">Pagar Conta</string>
-    <string name="fragment_transacao_remove_dialog_title">Atenção!</string>
-    <string name="fragment_transacao_remove_dialog_message">Deseja excluir esta transação?</string>
-    <string name="fechamento_dialog_format_error_message_title">Formato inválido</string>
-    <string name="fechamento_dialog_format_error_message">O formato do valor é inválido.</string>
-    <string name="fechamento_dialog_wrong_date_error_message">A data de fechamento não pode ser inferior a primeira movimentação do ativo.</string>
-    <string name="fechamento_dialog_wrong_date_error_title">Atenção!</string>
-    <string name="fragment_backup_save_backup">Salvar Backup</string>
-    <string name="fragment_backup_restore_backup">Restaurar Backup</string>
-    <string name="fragment_backup_success_title">Sucesso!!</string>
-    <string name="fragment_backup_success_message">"O backup dos dados foi salvo com sucesso em: "</string>
-    <string name="fragment_backup_success_restore">O backup foi restaurado com sucesso!</string>
+  <string name="app_name">MoneyControl</string>
+  <string name="action_settings">Settings</string>
+  <string name="hello_world">Hello world!</string>
 
-    <string-array name="bill_period_array">
-        <item>Única vez</item>
-        <item>Semanalmente</item>
-        <item>Mensalmente</item>
-        <item>Anualmente</item>
-    </string-array>
+  <string-array name="menu_array">
+    <item>Capital</item>
+    <item>Transações</item>
+    <item>Contas a pagar</item>
+    <item>Planejamento do mês</item>
+    <item>Categorias</item>
+    <item>Investimentos</item>
+    <item>Relatórios</item>
+    <item>Backup</item>
+    <item>Sobre</item>
+  </string-array>
+
+  <string name="drawer_open">Open navigation drawer</string>
+  <string name="drawer_close">Close navigation drawer</string>
+
+  <!-- Actions -->
+  <string name="action_add">Adicionar</string>
+  <string name="action_transfer">Transferir</string>
+
+  <!-- Actions Transacoes -->
+  <string name="action_group">Agrupar</string>
+  <string name="action_disgroup">Desagrupar</string>
+  <string name="action_investment">Investir</string>
+
+  <string name="default_currency_value">R$ 0.00</string>
+
+  <!-- add_categoria_dialog.xml -->
+  <string name="categoria_dialog_title">Adicionar Categoria</string>
+  <string name="categoria_dialog_tipo">Tipo:</string>
+  <string name="categoria_dialog_descricao">Descrição:</string>
+  <string name="categoria_dialog_descricao_hint">informe uma descrição</string>
+
+  <!-- add_orcamento_dialog.xml -->
+  <string name="orcamento_dialog_title">Adicionar Orçamento</string>
+  <string name="orcamento_dialog_tipo">Categoria:</string>
+  <string name="orcamento_dialog_descricao">Valor:</string>
+  <string name="orcamento_dialog_descricao_hint">informe um valor</string>
+  <string name="orcamento_dialog_error_message_title">Atenção!</string>
+  <string name="orcamento_dialog_error_message_message">Só é possível adicionar um orçamento para cada categoria no mês!</string>
+
+  <!-- add_conta_dialog.xml -->
+  <string name="add_conta_dialog_title">Adicionar Conta</string>
+  <string name="add_conta_dialog_nome_hint">nome da conta</string>
+  <string name="add_conta_dialog_saldo_hint">saldo inicial</string>
+  <string name="add_conta_dialog_icon_choose_message">Escolha um ícone!</string>
+
+  <!-- Editar Conta -->
+  <string name="edit_conta_dialog_title">Editar Conta</string>
+
+  <!-- Editar Cartao -->
+  <string name="edit_cartao_dialog_title">Editar Cartão de Crédito</string>
+  <string name="edit_cartao_dialog_close_date">Fechamento:</string>
+  <string name="edit_cartao_dialog_expire_date">Vencimento:</string>
+
+
+  <!-- add_transacao_dialog.xml -->
+  <string name="add_transacao_dialog_title">Adicionar Transação</string>
+  <string name="add_transacao_dialog_tipo">Tipo:</string>
+  <string name="add_transacao_dialog_valor">Valor:</string>
+  <string name="add_transacao_dialog_valor_hint">informe o valor</string>
+  <string name="add_transacao_dialog_descricao">Descrição:</string>
+  <string name="add_transacao_dialog_descricao_hint">informe a descrição</string>
+  <string name="add_transacao_dialog_data">Data:</string>
+  <string name="add_transacao_dialog_categoria">Categoria:</string>
+  <string name="add_transacao_dialog_conta">Conta:</string>
+
+  <!-- edit add_transacao_dialog.xml -->
+  <string name="edit_transacao_dialog_title">Editar Transação</string>
+
+  <!-- transferencia_dialog.xml -->
+  <string name="transferencia_dialog_conta_origem">Conta origem:</string>
+  <string name="transferencia_dialog_conta_destino">Conta destino:</string>
+  <string name="transferencia_dialog_categoria">Categoria:</string>
+  <string name="transferencia_dialog_data">Data: </string>
+  <string name="transferencia_dialog_descricao_hint">informe uma descrição</string>
+  <string name="transferencia_dialog_descricao">Descrição:</string>
+  <string name="transferencia_dialog_valor_hint">informe um valor</string>
+  <string name="transferencia_dialog_valor">Valor:</string>
+  <string name="transferencia_dialog_title">Transferência</string>
+
+
+  <!-- icones_dialog.xml -->
+  <string name="icones_dialog_title">Escolha o Ícone</string>
+
+  <!-- fragment_report_bycategorias.xml -->
+  <string name="report_by_categorias_despesas_chart_title">Gráfico de Despesas por Categoria</string>
+  <string name="report_by_categorias_receitas_chart_title">Gráfico de Receitas por Categoria</string>
+
+  <!-- Messages -->
+  <string name="error_title">Erro!</string>
+  <string name="error_message">Um erro inesperado aconteceu!</string>
+
+  <!-- ReportCategoriasByMonth.java -->
+  <string name="report_categorias_title">"Histórico mensal por categoria"</string>
+  <string name="axis_date_label">Data</string>
+  <string name="axis_price_label">Total por mês(R$)</string>
+  <string name="report_categorias_by_month_dialog_title">Escolha as categorias</string>
+
+  <!-- ReportReceitasXDespesas.java -->
+  <string name="report_receita_x_despesas_title">"Receitas x Despesas"</string>
+  <string name="report_receita_x_despesas_axis_category">Meses</string>
+  <string name="report_receita_x_despesas_axis_value">Valor(R$)</string>
+  <string name="report_receita_x_despesas_legend_despesa">Despesas</string>
+  <string name="report_receita_x_despesas_legend_receita">Receitas</string>
+
+  <string name="report_by_ativos_chart_title">Alocação de ativos</string>
+
+  <!-- add_transacao_dialog.xml -->
+  <string name="add_ativo_dialog_title">Movimentação Ativo</string>
+  <string name="add_ativo_dialog_tipo">Ativo:</string>
+  <string name="add_ativo_dialog_valor">Movimentação:</string>
+  <string name="add_ativo_dialog_financeiro">Financeiro:</string>
+  <string name="add_ativo_dialog_valor_hint">informe o valor</string>
+  <string name="add_ativo_dialog_descricao">Nome:</string>
+  <string name="add_ativo_dialog_descricao_hint">informe o nome do ativo</string>
+  <string name="add_ativo_dialog_sigla">Sigla:</string>
+  <string name="add_ativo_dialog_data">Data:</string>
+  <string name="add_ativo_dialog_vencimento">Vencimento:</string>
+  <string name="add_ativo_dialog_conta">Conta:</string>
+  <string name="add_ativo_dialog_quantidade">Quantidade:</string>
+  <string name="add_ativo_dialog_message_error">Não foi possível realizar o investimento!</string>
+
+  <!-- add_fechamento_ativo_dialog.xml -->
+  <string name="add_fechamento_ativo_dialog_title">Movimentação Ativo</string>
+  <string name="add_fechamento_ativo_dialog_fechamento">Fechamento:</string>
+
+  <!-- ReportAportesFragment.java -->
+  <string name="report_aportes_title">"Histórico de Aportes"</string>
+  <string name="report_aportes_axis_category">Meses</string>
+  <string name="report_aportes_axis_value">Valor(R$)</string>
+
+  <!-- add_ativo_event_dialog.xml -->
+  <string name="add_ativo_event_dialog_title">Adicionar Cotação</string>
+  <string name="add_ativo_event_dialog_price">Cotação:</string>
+  <string name="add_ativo_event_dialog_price_hint">informe a cotação</string>
+  <string name="add_ativo_event_dialog_data">Data:</string>
+  <string name="add_ativo_event_dialog_msg_error">Um erro inesperado aconteceu!</string>
+  <string name="add_ativo_event_dialog_msg_title">Desculpe!</string>
+
+  <!-- ContasFragment -->
+  <string name="contas_fragment_message_dialog_atention_title">Atenção!</string>
+  <string name="contas_fragment_message_dialog_transfer_error_msg">Para realizar uma transferência é necessário ter pelo menos duas contas cadastradas.</string>
+  <string name="contas_fragment_fatura_status_paga">paga</string>
+  <string name="contas_fragment_fatura_status_pendente">pendente</string>
+  <string name="contas_fragment_remove_account_msg">Deseja excluir esta conta?</string>
+  <string name="contas_list_item_cartao_pay">pagar</string>
+  <string name="contas_list_item_cartao_edit">editar</string>
+
+  <!-- AboutFragment -->
+  <string name="about_fragment_version">Versão:</string>
+  <string name="about_fragment_author_title">Desenvolvedor</string>
+  <string name="about_fragment_author">Nilton Vasques</string>
+  <string name="about_fragment_coworkers_title">Colaboradores</string>
+  <string name="about_fragment_coworkers">Adonel Francisco\nJoseni Oliveira\nLarissa Kiana\nTiago Gonçalves</string>
+  <string name="about_fragment_license">2014~2016 - Todos os direitos reservados</string>
+
+  <!-- Change Dialog -->
+  <string name="news_change_dialog_title">Novidades da versão</string>
+  <string name="news_change_dialog_body">- Lembretes diários para atualizar as finanças.\n- Alertas quando as contas a pagar estiverem vencendo.</string>
+
+  <!--  Error Dialog -->
+  <string name="dialog_error_message_title">Atenção!</string>
+  <string name="dialog_error_message_message">Um erro inesperado ocorreu!</string>
+
+  <!-- pagar_fatura_dialog_title -->
+  <string name="pagar_fatura_dialog_title">Pagar Fatura</string>
+  <string name="add_transacao_dialog_parcelar">Parcelar?</string>
+  <string name="add_transacao_dialog_parcelas">Parcelas:</string>
+  <string name="transacoes_message_title">Atenção!</string>
+  <string name="fragment_transacoes_remove_transacao_message">Deseja excluir esta transação?</string>
+  <string name="fragment_transacoes_remove_parcelas_message">Deseja excluir todas as parcelas?</string>
+  <string name="add_conta_a_pagar_dialog_title">Adicionar conta a pagar</string>
+  <string name="add_conta_a_pagar_dialog_periodo">Repetição</string>
+  <string name="conta_a_pagar_dialog_pagar_fatura_desc">"Pagamento da conta: "</string>
+  <string name="add_conta_a_pagar_dialog_quantidade">Quantidade:</string>
+  <string name="add_conta_a_pagar_dialog_hint_quantidade">5 vezes</string>
+  <string name="pagar_conta_dialog_title">Pagar Conta</string>
+  <string name="fragment_transacao_remove_dialog_title">Atenção!</string>
+  <string name="fragment_transacao_remove_dialog_message">Deseja excluir esta transação?</string>
+  <string name="fechamento_dialog_format_error_message_title">Formato inválido</string>
+  <string name="fechamento_dialog_format_error_message">O formato do valor é inválido.</string>
+  <string name="fechamento_dialog_wrong_date_error_message">A data de fechamento não pode ser inferior a primeira movimentação do ativo.</string>
+  <string name="fechamento_dialog_wrong_date_error_title">Atenção!</string>
+  <string name="fragment_backup_save_backup">Salvar Backup</string>
+  <string name="fragment_backup_restore_backup">Restaurar Backup</string>
+  <string name="fragment_backup_success_title">Sucesso!!</string>
+  <string name="fragment_backup_success_message">"O backup dos dados foi salvo com sucesso em: "</string>
+  <string name="fragment_backup_success_restore">O backup foi restaurado com sucesso!</string>
+
+  <string-array name="bill_period_array">
+    <item>Única vez</item>
+    <item>Semanalmente</item>
+    <item>Mensalmente</item>
+    <item>Anualmente</item>
+  </string-array>
+
+  <string name="notification_title">Controle seus gastos</string>
+  <string name="notification_text">Atualize suas finanças diariamente!</string>
+  <string name="notification_pagar_contas_title">Contas em aberto</string>
+  <string name="notification_pagar_contas">Evite juros, pagando suas contas em dia!</string>
 
 
 </resources>
