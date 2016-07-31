@@ -627,7 +627,7 @@ public class FontAwesome {
             try {
                 font = Typeface.createFromAsset(context.getAssets(), "fontawesome-webfont.ttf");
             } catch (Exception e) {
-                Log.e("BButton", "Could not get typeface because " + e.getMessage());
+                ////Log.e("BButton", "Could not get typeface because " + e.getMessage());
                 font = Typeface.DEFAULT;
             }
         }

@@ -10,3 +10,4 @@ money-db
 .gradle
 .idea
 .irb-history
+*.log

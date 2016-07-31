@@ -372,8 +372,14 @@ public class ViewFactory {
         return view;
     }
 
-    public static View createContaAPagarItemView(final Context context, final ContaAPagar tr, final GregorianCalendar range, final MoneyControlApp app, final LayoutInflater inflater,
-                                                 final DialogInterface.OnClickListener listener){
+    public static View createContaAPagarItemView(
+            final Context context, 
+            final ContaAPagar tr, 
+            final GregorianCalendar range, 
+            final MoneyControlApp app, 
+            final LayoutInflater inflater,
+            final DialogInterface.OnClickListener listener){
+
         View view = inflater.inflate(R.layout.conta_a_pagar_list_item, null);
 
         TextView txtNome = (TextView) view.findViewById(R.id.contaAPagarListItemTxtDescricao);
@@ -383,7 +389,7 @@ public class ViewFactory {
 
         final GregorianCalendar contaData = new GregorianCalendar();
         try {
-            Log.d(TAG, "create conta " + tr.getDescricao() + " " + tr.getData());
+            ////Log.d(TAG, "create conta " + tr.getDescricao() + " " + tr.getData());
             contaData.setTime(DateUtil.sqlDateFormat().parse(tr.getData()));
             contaData.set(Calendar.MONTH, range.get(Calendar.MONTH));
             contaData.set(Calendar.YEAR, range.get(Calendar.YEAR));
@@ -402,7 +408,7 @@ public class ViewFactory {
                 valor = f.getValorPago();
                 id = "pago";
             }
-        }else {
+        } else {
             id = app.getDatabase().runQuery(QuerysUtil.checkContaPagaOnDate(tr.getId(), contaData.getTime()));
         }
 

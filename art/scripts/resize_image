@@ -1,0 +1,13 @@
+#!/bin/bash
+rm -Rf images_by_dimension
+mkdir images_by_dimension
+mkdir images_by_dimension/mipmap-xxhdpi
+mkdir images_by_dimension/mipmap-xhdpi
+mkdir images_by_dimension/mipmap-hdpi
+mkdir images_by_dimension/mipmap-mdpi
+for photo in *.png; do 
+	convert $photo -resize 144X144! images_by_dimension/mipmap-xxhdpi/$photo; 
+	convert $photo -resize 96X96! 	images_by_dimension/mipmap-xhdpi/$photo; 
+	convert $photo -resize 72X72!	images_by_dimension/mipmap-hdpi/$photo; 
+	convert $photo -resize 48X48! 	images_by_dimension/mipmap-mdpi/$photo; 
+done

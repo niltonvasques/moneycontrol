@@ -1,0 +1,7 @@
+#!/bin/bash
+for photo in *.png; do 
+	convert $photo -resize 474X474! images_by_dimension/mipmap-xxhdpi/$photo; 
+	convert $photo -resize 316X316! 	images_by_dimension/mipmap-xhdpi/$photo; 
+	convert $photo -resize 237X237!	images_by_dimension/mipmap-hdpi/$photo; 
+	convert $photo -resize 158X158! 	images_by_dimension/mipmap-mdpi/$photo; 
+done

@@ -142,7 +142,7 @@ public class ContasFragment extends Fragment{
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		Log.d(TAG, "onOptionsItemSelected");
+		////Log.d(TAG, "onOptionsItemSelected");
 	    // Handle presses on the action bar items
 	    switch (item.getItemId()) {
 	        case R.id.action_add:

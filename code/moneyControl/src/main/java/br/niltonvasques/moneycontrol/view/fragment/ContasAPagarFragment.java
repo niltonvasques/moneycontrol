@@ -38,77 +38,77 @@ import br.niltonvasques.moneycontrol.view.custom.ChangeMonthView;
 import br.niltonvasques.moneycontrolbeta.R;
 
 public class ContasAPagarFragment extends Fragment{
-	
-	
-	private static final String TAG = "[AboutFragment]";
-	
-	private MoneyControlApp app;
-	private DatabaseHandler db;
-	private LayoutInflater inflater;
 
-	private ListView listViewContas;
+
+    private static final String TAG = "[AboutFragment]";
+
+    private MoneyControlApp app;
+    private DatabaseHandler db;
+    private LayoutInflater inflater;
+
+    private ListView listViewContas;
     private ChangeMonthView monthView;
-	private View myFragmentView;
+    private View myFragmentView;
     private ContaAPagarAdapter listAdapter;
 
     private List<ContaAPagar> contas = new ArrayList<ContaAPagar>();
-	
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setHasOptionsMenu(true);
-	}
 
-	@Override
-	public void onResume() {
-		super.onResume();
-		((NVFragmentActivity)getActivity()).getSupportActionBar().setIcon(R.drawable.ic_launcher);
-		((NVFragmentActivity)getActivity()).getSupportActionBar().setTitle(getResources().getStringArray(R.array.menu_array)[MainActivity.CONTAS_A_PAGAR_ITEM_MENU]);
-	}
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		inflater.inflate(R.menu.contas_a_pagar_actions, menu);
-		super.onCreateOptionsMenu(menu, inflater);
-	}
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((NVFragmentActivity)getActivity()).getSupportActionBar().setIcon(R.drawable.ic_launcher);
+        ((NVFragmentActivity)getActivity()).getSupportActionBar().setTitle(getResources().getStringArray(R.array.menu_array)[MainActivity.CONTAS_A_PAGAR_ITEM_MENU]);
+    }
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		Log.d(TAG, "onOptionsItemSelected");
-		// Handle presses on the action bar items
-		switch (item.getItemId()) {
-			case R.id.action_add:
-				MessageUtils.showAddContaAPagar(getActivity(), inflater, db, new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						update();
-					}
-				});
-				return true;
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.contas_a_pagar_actions, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
 
-			default:
-				return super.onOptionsItemSelected(item);
-		}
-	}
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        ////Log.d(TAG, "onOptionsItemSelected");
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+            case R.id.action_add:
+                MessageUtils.showAddContaAPagar(getActivity(), inflater, db, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        update();
+                    }
+                });
+                return true;
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		
-		this.inflater = inflater;
-		
-		app = (MoneyControlApp) getActivity().getApplication();
-		db = app.getDatabase();
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
-		myFragmentView = inflater.inflate(R.layout.fragment_contas_a_pagar, container, false);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
 
-        monthView 	= (ChangeMonthView) myFragmentView.findViewById(R.id.contasAPagarFragmentChangeMonthView);
-        listViewContas 		= (ListView) myFragmentView.findViewById(R.id.contasAPagarFragmentListViewContas);
+        this.inflater = inflater;
+
+        app = (MoneyControlApp) getActivity().getApplication();
+        db = app.getDatabase();
+
+        myFragmentView = inflater.inflate(R.layout.fragment_contas_a_pagar, container, false);
+
+        monthView = (ChangeMonthView) myFragmentView.findViewById(R.id.contasAPagarFragmentChangeMonthView);
+        listViewContas = (ListView) myFragmentView.findViewById(R.id.contasAPagarFragmentListViewContas);
 
         configureComponents();
-		
-		return myFragmentView;
-	}
+
+        return myFragmentView;
+    }
 
     private void configureComponents() {
 
@@ -149,12 +149,12 @@ public class ContasAPagarFragment extends Fragment{
         listViewContas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-//                Fragment fragment = new TransacoesByContaFragment();
-//                Bundle args = new Bundle();
-//                args.putInt("conta", contas.get(position).getId());
-//                args.putString("range", DateUtil.sqlDateFormat().format(monthView.getDateRange().getTime()));
-//                fragment.setArguments(args);
-//                ((NVFragmentActivity)getActivity()).changeFragment(fragment);
+                //                Fragment fragment = new TransacoesByContaFragment();
+                //                Bundle args = new Bundle();
+                //                args.putInt("conta", contas.get(position).getId());
+                //                args.putString("range", DateUtil.sqlDateFormat().format(monthView.getDateRange().getTime()));
+                //                fragment.setArguments(args);
+                //                ((NVFragmentActivity)getActivity()).changeFragment(fragment);
             }
         });
         update();
