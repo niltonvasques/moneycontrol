@@ -32,9 +32,10 @@ The Android app to support your finances control, so you will never more lost th
 #### Developer
 * Nilton Vasques 
 
-#### Testers
+#### Colaborators
+* Adonel Franscico
 * Larissa Kiana
 * Joseni Oliveira
-* Felipe Bittencourt
+* Tiago Gonçalves
 
 
