@@ -1,4 +1,7 @@
+
+<img src="https://lh3.googleusercontent.com/3KWEK4ThW4zUg8BHJRh9YYM9GXbRru45Yb1wdD3gOeAO8yncMu4QMRkYppKbzqWrF48=w300-rw" alt="Drawing" width="100" height="100"/> 
 # MoneyControl App
+
 The Android app to support your finances control, so you will never more lost the track of your money!
 
 ## Features
