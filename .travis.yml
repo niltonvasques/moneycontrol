@@ -25,7 +25,20 @@ android:
     #- sys-img-armeabi-v7a-android-22
     - sys-img-x86-android-17
 
-  #licenses:
-  #    - 'android-sdk-preview-license-.+'
-  #    - 'android-sdk-license-.+'
-  #    - 'google-gdk-license-.+'
+before_install:
+  - rvm install 2.0.0
+  - gem install calabash-android
+  - gem install cucumber 
+before_script:
+  - echo no | android create avd --force --name test --target android-23 --abi armeabi-v7a
+  - emulator -avd test -no-skin -no-audio -no-window -no-boot-anim &
+  - android-wait-for-emulator
+  - adb shell settings put global window_animation_scale 0 &
+  - adb shell settings put global transition_animation_scale 0 &
+  - adb shell settings put global animator_duration_scale 0 &
+  - adb shell input keyevent 82 & #for unlocking as "powerkey"
+  - sleep 3 # give screen some time to become unlocked
+script:
+  - ./gradlew clean assembleDebug -PdisablePreDex --continue --stacktrace
+  - cd ../tests && calabash-android resign ../code/moneyControl/build/outputs/apk/moneyControl-debug.apk
+  - calabash-android run ../code/moneyControl/build/outputs/apk/moneyControl-debug.apk

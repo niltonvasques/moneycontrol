@@ -13,3 +13,4 @@ money-db
 *.log
 *.iml
 local.properties
+.bundle/
