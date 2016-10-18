@@ -11,3 +11,5 @@ money-db
 .idea
 .irb-history
 *.log
+*.iml
+local.properties
