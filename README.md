@@ -1,6 +1,8 @@
 
 <img src="https://lh3.googleusercontent.com/3KWEK4ThW4zUg8BHJRh9YYM9GXbRru45Yb1wdD3gOeAO8yncMu4QMRkYppKbzqWrF48=w300-rw" alt="Drawing" width="100" height="100"/> 
+
 # MoneyControl App
+
 [![Build Status](https://travis-ci.org/niltonvasques/moneycontrol.svg?branch=master)](https://travis-ci.org/niltonvasques/moneycontrol)
 [![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badge/)
 
