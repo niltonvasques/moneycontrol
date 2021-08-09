@@ -154,7 +154,7 @@
   <string name="contas_fragment_fatura_status_paga">paga</string>
   <string name="contas_fragment_fatura_status_pendente">pendente</string>
   <string name="contas_fragment_remove_account_msg">Deseja excluir esta conta?</string>
-  <string name="contas_list_item_cartao_pay">pagar</string>
+  <string name="contas_list_item_cartao_pay"></string>
   <string name="contas_list_item_cartao_edit">editar</string>
 
   <!-- AboutFragment -->

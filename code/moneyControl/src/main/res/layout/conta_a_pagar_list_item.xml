@@ -8,9 +8,9 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:orientation="vertical"
-        android:layout_toLeftOf="@+id/contaAPagarListItemBtnPagarFatura">
+        android:layout_height="90dp"
+        android:layout_toLeftOf="@+id/contaAPagarListItemBtnPagarFatura"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/contaAPagarListItemTxtData"
@@ -22,20 +22,24 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/contaAPagarListItemTxtDescricao"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="6"
                 android:text="Banco do Brasil"
-                android:textSize="25sp" />
+                android:textSize="30sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="3" >
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:id="@+id/contaAPagarListItemTxtValor"
@@ -43,24 +47,17 @@
                     android:layout_height="wrap_content"
                     android:text="@string/default_currency_value"
                     android:textColor="#ff0000"
-                    android:textSize="25sp"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="horizontal">
+                    android:textSize="25sp" />
 
                 <com.beardedhen.androidbootstrap.FontAwesomeText
                     android:id="@+id/contaAPagarListItemFontAwe"
+                    android:layout_marginLeft="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="#ff0000"
-                    android:textSize="40sp"
+                    android:textSize="25sp"
                     fontawesometext:fa_icon="fa-check" />
             </LinearLayout>
-
         </LinearLayout>
     </LinearLayout>
 
@@ -69,7 +66,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
         android:text="@string/contas_list_item_cartao_pay"
         bootstrap:bb_icon_right="fa-money"
         bootstrap:bb_type="default"
