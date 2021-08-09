@@ -1,25 +1,29 @@
 package br.niltonvasques.moneycontrol.view.fragment;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.devpaul.filepickerlibrary.FilePickerActivity;
-import com.devpaul.filepickerlibrary.enums.FileType;
+import com.github.developerpaul123.filepickerlibrary.FilePickerActivity;
+import com.github.developerpaul123.filepickerlibrary.enums.Request;
+import com.github.developerpaul123.filepickerlibrary.enums.Scope;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import br.niltonvasques.moneycontrol.MainActivity;
@@ -31,19 +35,29 @@ import br.niltonvasques.moneycontrol.util.FileUtils;
 import br.niltonvasques.moneycontrol.util.MessageUtils;
 import br.niltonvasques.moneycontrolbeta.R;
 
-public class BackupFragment extends Fragment{
+import static com.github.developerpaul123.filepickerlibrary.FilePickerActivity.REQUEST_FILE;
+
+public class BackupFragment extends Fragment {
 
 
 	private static final String TAG = "[BackupFragment]";
+    private static final int READ_STORAGE_PERMISSION_REQUEST_CODE = 6;
 
-	private MoneyControlApp app;
+    private static final int REQUEST_BACKUP_DIR = 7;
+    private static final int REQUEST_RESTORE_FILE = 8;
+
+    private MoneyControlApp app;
 	private DatabaseHandler db;
 	private LayoutInflater inflater;
 
 	private View myFragmentView;
+    private String[] permissions = new String[] {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+    };
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 	}
@@ -51,8 +65,22 @@ public class BackupFragment extends Fragment{
 	@Override
 	public void onResume() {
 		super.onResume();
-		((NVFragmentActivity)getActivity()).getSupportActionBar().setIcon(R.drawable.ic_launcher);
-		((NVFragmentActivity)getActivity()).getSupportActionBar().setTitle(getResources().getStringArray(R.array.menu_array)[MainActivity.SOBRE_ITEM_MENU]);
+		((NVFragmentActivity) getActivity()).getSupportActionBar().setIcon(R.drawable.ic_launcher);
+		((NVFragmentActivity) getActivity()).getSupportActionBar().setTitle(getResources().getStringArray(R.array.menu_array)[MainActivity.SOBRE_ITEM_MENU]);
+
+		String txt = "Storage permissions? " + checkPermissionForReadExtertalStorage();
+        Toast.makeText(getActivity(), txt, Toast.LENGTH_LONG).show();
+
+        if (!checkPermissionForReadExtertalStorage()) {
+            try {
+                requestPermissionForReadExternalStorage();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            File dir = new File(Environment.getExternalStorageDirectory().getPath());
+            Log.i("BACKUP", "FILES: " + dir.listFiles());
+        }
 	}
 
 	@Override
@@ -71,9 +99,12 @@ public class BackupFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 if (db.checkDataBase()) {
-                    Intent filePickerIntent = new Intent(getActivity(), FilePickerActivity.class);
-                    filePickerIntent.putExtra(FilePickerActivity.REQUEST_CODE, FilePickerActivity.REQUEST_DIRECTORY);
-                    startActivityForResult(filePickerIntent, FilePickerActivity.REQUEST_DIRECTORY);
+                    Intent filePicker = new Intent(getActivity(), FilePickerActivity.class);
+                    filePicker.putExtra(FilePickerActivity.SCOPE, Scope.ALL);
+                    filePicker.putExtra(FilePickerActivity.REQUEST, Request.DIRECTORY);
+                    filePicker.putExtra(FilePickerActivity.INTENT_EXTRA_COLOR_ID, android.R.color.holo_green_dark);
+//                    filePicker.putExtra(FilePickerActivity.MIME_TYPE, MimeType.PNG);
+                    startActivityForResult(filePicker, REQUEST_BACKUP_DIR);
                 } else {
                     MessageUtils.showDefaultErrorMessage(getActivity());
                 }
@@ -83,9 +114,11 @@ public class BackupFragment extends Fragment{
 		myFragmentView.findViewById(R.id.fragmentBackupBtnRestoreBackup).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent filePickerIntent = new Intent(getActivity(), FilePickerActivity.class);
-                filePickerIntent.putExtra(FilePickerActivity.REQUEST_CODE, FilePickerActivity.REQUEST_FILE);
-                startActivityForResult(filePickerIntent, FilePickerActivity.REQUEST_FILE);
+                Intent filePicker = new Intent(getActivity(), FilePickerActivity.class);
+                filePicker.putExtra(FilePickerActivity.SCOPE, Scope.ALL);
+                filePicker.putExtra(FilePickerActivity.REQUEST, Request.FILE);
+                filePicker.putExtra(FilePickerActivity.INTENT_EXTRA_COLOR_ID, android.R.color.holo_green_dark);
+                startActivityForResult(filePicker, REQUEST_RESTORE_FILE);
             }
         });
 
@@ -94,14 +127,13 @@ public class BackupFragment extends Fragment{
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == FilePickerActivity.REQUEST_DIRECTORY
-                && resultCode == Activity.RESULT_OK) {
+        if(requestCode == REQUEST_BACKUP_DIR && resultCode == Activity.RESULT_OK) {
 
             String filePath = data.
                     getStringExtra(FilePickerActivity.FILE_EXTRA_DATA_PATH);
             if(filePath != null) {
                 File in = new File(db.getDbPath());
-                File out = new File(filePath+"/moneycontrol"+DateUtil.formatCalendarToDate(new GregorianCalendar())+".mcbk");
+                File out = new File(filePath+"/moneycontrol"+ DateUtil.formatCalendarToDate(new GregorianCalendar())+".mcbk");
                 System.out.println(in);
                 System.out.println(out);
                 try {
@@ -119,7 +151,7 @@ public class BackupFragment extends Fragment{
                 }
             }
         }
-        else if(requestCode == FilePickerActivity.REQUEST_FILE
+        else if(requestCode == REQUEST_RESTORE_FILE
                 && resultCode == Activity.RESULT_OK) {
             String filePath = data.
                     getStringExtra(FilePickerActivity.FILE_EXTRA_DATA_PATH);
@@ -141,5 +173,28 @@ public class BackupFragment extends Fragment{
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public boolean checkPermissionForReadExtertalStorage() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            boolean allowed = true;
+            for (String permission : permissions) {
+                int result = getActivity().checkSelfPermission(permission);
+                allowed = result == PackageManager.PERMISSION_GRANTED && allowed;
+                System.out.println(permission + " " + (result == PackageManager.PERMISSION_GRANTED));
+            }
+            return allowed;
+        }
+        return false;
+    }
+
+    public void requestPermissionForReadExternalStorage() throws Exception {
+        try {
+            ActivityCompat.requestPermissions(getActivity(), permissions,
+                    READ_STORAGE_PERMISSION_REQUEST_CODE);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
     }
 }
