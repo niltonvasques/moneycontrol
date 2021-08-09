@@ -30,6 +30,11 @@ public class CategoriaTransacao implements Comparable<CategoriaTransacao>{
 	public String toString() {
 		return nome;
 	}
+
+	public String tipo() {
+		return id_TipoTransacao == 1 ? "(receita)" : "(despesa)";
+	}
+
 	@Override
 	public int compareTo(CategoriaTransacao another) {
 		return this.id - another.getId();

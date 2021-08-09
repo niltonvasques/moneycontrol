@@ -53,21 +53,15 @@ public class CategoriasFragment extends Fragment{
 		
 		db = app.getDatabase();
 		
-		categorias = db.select(CategoriaTransacao.class, QuerysUtil.whereNoSystemCategorias());
+		categorias = db.select(CategoriaTransacao.class, QuerysUtil.whereNoSystemCategoriasSorted());
+
+		Object[] cats = categorias.stream().map(c -> c + " " + c.tipo()).toArray();
 		
-		listViewContas = (ListView) myFragmentView.findViewById(R.id.categoriaFragmentListViewCategorias);
-		listViewContas.setAdapter(new ArrayAdapter<CategoriaTransacao>(getActivity(), android.R.layout.simple_list_item_1, categorias));
-		listViewContas.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-				MessageUtils.showEditCategoria(getActivity(), categorias.get(position), CategoriasFragment.this.inflater, db, new OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						update();
-					}
-				});
-			}
-		});
+		listViewContas = myFragmentView.findViewById(R.id.categoriaFragmentListViewCategorias);
+		listViewContas.setAdapter(new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, cats));
+		listViewContas.setOnItemClickListener((arg0, arg1, position, arg3) ->
+				MessageUtils.showEditCategoria(getActivity(), categorias.get(position),
+						CategoriasFragment.this.inflater, db, (dialog, which) -> update()));
 		
 		return myFragmentView;
 	}

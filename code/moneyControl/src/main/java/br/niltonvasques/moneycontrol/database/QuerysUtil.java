@@ -37,7 +37,11 @@ public class QuerysUtil {
 	public static final String whereNoSystemCategorias(){
 		return "WHERE system = 0";
 	}
-	
+
+	public static final String whereNoSystemCategoriasSorted(){
+		return whereNoSystemCategorias() + " ORDER BY id_TipoTransacao, nome";
+	}
+
 	public static final String whereTransacaoTransferenciaDespesa(){
 		return "WHERE system = 1 AND id_TipoTransacao = "+2;
 	}

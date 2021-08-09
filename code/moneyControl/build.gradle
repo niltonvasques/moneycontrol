@@ -8,7 +8,7 @@ android {
     buildToolsVersion "29.0.0"
     defaultConfig {
         applicationId "br.niltonvasques.moneycontrol"
-        minSdkVersion 16
+        minSdkVersion 24
         targetSdkVersion 29
     }
     buildTypes {
