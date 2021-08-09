@@ -36,8 +36,6 @@ import br.niltonvasques.moneycontrol.util.MessageUtils;
 import br.niltonvasques.moneycontrolbeta.R;
 
 public class BackupFragment extends Fragment {
-
-
 	private static final String TAG = "[BackupFragment]";
     private static final int READ_STORAGE_PERMISSION_REQUEST_CODE = 6;
 
@@ -64,7 +62,6 @@ public class BackupFragment extends Fragment {
 	public void onResume() {
 		super.onResume();
 		((NVFragmentActivity) getActivity()).getSupportActionBar().setIcon(R.drawable.ic_launcher);
-		((NVFragmentActivity) getActivity()).getSupportActionBar().setTitle(getResources().getStringArray(R.array.menu_array)[MainActivity.SOBRE_ITEM_MENU]);
 
 		String txt = "Storage permissions? " + checkPermissionForReadExtertalStorage();
         Toast.makeText(getActivity(), txt, Toast.LENGTH_LONG).show();
