@@ -35,8 +35,6 @@ import br.niltonvasques.moneycontrol.util.FileUtils;
 import br.niltonvasques.moneycontrol.util.MessageUtils;
 import br.niltonvasques.moneycontrolbeta.R;
 
-import static com.github.developerpaul123.filepickerlibrary.FilePickerActivity.REQUEST_FILE;
-
 public class BackupFragment extends Fragment {
 
 

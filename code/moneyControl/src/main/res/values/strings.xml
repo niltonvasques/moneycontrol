@@ -11,6 +11,7 @@
   <string-array name="menu_array">
     <item>Capital</item>
     <item>Transações</item>
+    <item>Busca</item>
     <item>Contas a pagar</item>
     <item>Planejamento do mês</item>
     <item>Categorias</item>
@@ -166,7 +167,10 @@
 
   <!-- Change Dialog -->
   <string name="news_change_dialog_title">Novidades da versão</string>
-  <string name="news_change_dialog_body">- Lembretes diários para atualizar as finanças.\n- Alertas quando as contas a pagar estiverem vencendo.</string>
+  <string name="news_change_dialog_body">
+    - Tela de busca.\n
+    - Lembretes diários para atualizar as finanças.\n- Alertas quando as contas a pagar estiverem vencendo.
+  </string>
 
   <!--  Error Dialog -->
   <string name="dialog_error_message_title">Atenção!</string>

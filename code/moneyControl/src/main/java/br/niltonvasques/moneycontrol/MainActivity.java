@@ -30,6 +30,7 @@ import br.niltonvasques.moneycontrol.view.fragment.ContasFragment;
 import br.niltonvasques.moneycontrol.view.fragment.InvestimentosFragment;
 import br.niltonvasques.moneycontrol.view.fragment.OrcamentoFragment;
 import br.niltonvasques.moneycontrol.view.fragment.ReportsFragment;
+import br.niltonvasques.moneycontrol.view.fragment.SearchFragment;
 import br.niltonvasques.moneycontrol.view.fragment.TransacoesFragment;
 import br.niltonvasques.moneycontrol.service.NotificationService;
 import br.niltonvasques.moneycontrolbeta.R;
@@ -39,18 +40,18 @@ public class MainActivity extends NVFragmentActivity {
 
     public static final int CONTAS_ITEM_MENU 			= 0;
     public static final int TRANSACOES_ITEM_MENU 		= 1;
-    public static final int CONTAS_A_PAGAR_ITEM_MENU 	        = 2;
-    public static final int ORCAMENTO_ITEM_MENU 		= 3;
-    public static final int CATEGORIAS_ITEM_MENU 		= 4;
-    public static final int INVESTIMENTOS_ITEM_MENU 	        = 5;
-    public static final int RELATORIOS_ITEM_MENU 		= 6;
-    public static final int BACKUP_ITEM_MENU 			= 7;
-    public static final int SOBRE_ITEM_MENU 			= 8;
+    public static final int SEARCH_ITEM_MENU 		    = 2;
+    public static final int CONTAS_A_PAGAR_ITEM_MENU 	= 3;
+    public static final int ORCAMENTO_ITEM_MENU 		= 4;
+    public static final int CATEGORIAS_ITEM_MENU 		= 5;
+    public static final int INVESTIMENTOS_ITEM_MENU 	= 6;
+    public static final int RELATORIOS_ITEM_MENU 		= 7;
+    public static final int BACKUP_ITEM_MENU 			= 8;
+    public static final int SOBRE_ITEM_MENU 			= 9;
 
     private static final String TAG = "[MainActivity]";
 
     private MoneyControlApp app;
-    private DatabaseHandler db;
 
     private String[] mDrawerItens;
     private DrawerLayout mDrawerLayout;
@@ -63,7 +64,6 @@ public class MainActivity extends NVFragmentActivity {
         setContentView(R.layout.activity_main);
 
         app = (MoneyControlApp) getApplication();
-
 
         mDrawerItens = getResources().getStringArray(R.array.menu_array);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -80,11 +80,7 @@ public class MainActivity extends NVFragmentActivity {
             public void onItemClick(AdapterView<?> arg0, View arg1, int position,long arg3) {
                 switchContent(position);
                 mDrawerLayout.closeDrawer(mDrawerList);
-
-
             }
-
-
         });
 
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
@@ -152,7 +148,6 @@ public class MainActivity extends NVFragmentActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        //Log.d(TAG, "onOptionsItemSelected");
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
@@ -182,6 +177,8 @@ public class MainActivity extends NVFragmentActivity {
             args.putString("range", DateUtil.sqlDateFormat().format(dateRange.getTime()));
             fragment.setArguments(args);
             changeFragment(fragment);
+        }else if(mDrawerItens[position].equals(mDrawerItens[SEARCH_ITEM_MENU])){
+            changeFragment(new SearchFragment());
         }else if(mDrawerItens[position].equals(mDrawerItens[INVESTIMENTOS_ITEM_MENU])){
             changeFragment(new InvestimentosFragment());
         }else if(mDrawerItens[position].equals(mDrawerItens[ORCAMENTO_ITEM_MENU])){

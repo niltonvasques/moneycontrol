@@ -100,7 +100,11 @@ public class QuerysUtil {
 		return "WHERE data < date('"+DateUtil.sqlDateFormat().format(range)+"', '+1 month') AND " +
 				"data >= date('"+DateUtil.sqlDateFormat().format(range)+"') ORDER BY data DESC";
 	}
-	
+
+	public static final String whereTransacaoSearch(String busca){
+		return "WHERE descricao LIKE '%" + busca + "%' ORDER BY data DESC LIMIT 100 ";
+	}
+
 	public static final String sumContasCreditoWithDateInterval(Date range){
 		return SUM_CONTAS_CREDITO+" " +
 				"AND c.nome not like 'Transferência' "+
