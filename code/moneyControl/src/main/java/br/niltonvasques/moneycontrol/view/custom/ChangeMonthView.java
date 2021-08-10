@@ -1,9 +1,11 @@
 package br.niltonvasques.moneycontrol.view.custom;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -11,6 +13,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.whiteelephant.monthpicker.MonthPickerDialog;
+
 import br.niltonvasques.moneycontrol.util.StringUtil;
 import br.niltonvasques.moneycontrolbeta.R;
 
@@ -53,8 +58,9 @@ public class ChangeMonthView extends RelativeLayout{
 		
         btnPreviousMonth.setOnClickListener(mOnClick);
         btnNextMonth.setOnClickListener(mOnClick);
+		txtViewDateRange.setOnClickListener(v -> openDateDialog(context));
 	}
-	
+
 	private void loadComponentsFromXml() {
 		txtViewDateRange 	= (TextView) mView.findViewById(R.id.principalFragmentTxtViewMonth);
 		btnPreviousMonth 	= (Button) mView.findViewById(R.id.principalFragmentBtnPreviousMonth);
@@ -108,6 +114,18 @@ public class ChangeMonthView extends RelativeLayout{
 	    txtViewDateRange.setText(dateFormated);
 	}
 
+	private void openDateDialog(Context context) {
+		MonthPickerDialog.Builder builder = new MonthPickerDialog.Builder(context,
+				(selectedMonth, selectedYear) -> {
+					dateRange.set(Calendar.YEAR, selectedYear);
+					dateRange.set(Calendar.MONTH, selectedMonth);
+					updateDateRange();
+					if(listener != null) listener.onMonthChange(dateRange.getTime());
+				},
+				dateRange.get(Calendar.YEAR), dateRange.get(Calendar.MONTH));
+		builder.build().show();
+	}
+
 	public void setListener(ChangeMonthListener listener) {
 		this.listener = listener;
 	}
@@ -129,7 +147,4 @@ public class ChangeMonthView extends RelativeLayout{
 	public void setDateRange(GregorianCalendar dateRange) {
 		this.dateRange = dateRange;
 	}
-	
-	
-
 }
