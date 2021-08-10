@@ -1,6 +1,9 @@
 package br.niltonvasques.moneycontrol.database.bean;
 
 public class TipoTransacao {
+
+	public static int CREDITO = 1;
+	public static int DEBITO = 2;
 	
 	private int id;
 	private String nome;

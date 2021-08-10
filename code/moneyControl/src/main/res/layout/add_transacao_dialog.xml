@@ -7,47 +7,61 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:background="@android:color/white">
-    
-    <ScrollView 
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-	    <LinearLayout 
+	    <LinearLayout
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:orientation="vertical">
-	        
-		    <TextView 
+
+		    <TextView
 		        android:id="@+id/addTransacaoDialogTxtViewTitle"
 		        android:layout_width="match_parent"
 		        android:layout_height="wrap_content"
 		        android:gravity="center"
 		        style="@style/TextViewTitle"
 		        android:text="@string/add_transacao_dialog_title"/>
-		    
+
 		    <LinearLayout
 		        android:layout_width="match_parent"
 		        android:layout_height="wrap_content"
 		        android:orientation="vertical"
 		        android:gravity="center">
-		        
-		        <LinearLayout 
+
+		        <LinearLayout
 		            android:id="@+id/addTransacaoDialogLayoutTipo"
 		            android:layout_width="match_parent"
 		            android:layout_height="wrap_content"
 		            android:orientation="horizontal"
 		            android:gravity="center">
-		            
+
 		            <TextView
 		                android:layout_width="0dp"
 		                android:layout_height="wrap_content"
 		                android:layout_weight="3"
 		                android:text="@string/add_transacao_dialog_tipo"/>
-		            
-				    <Spinner 
-				        android:id="@+id/addTransacaoDialogSpinnerTipo"
-				        android:layout_width="0dp"
-				        android:layout_height="wrap_content"
-				        android:layout_weight="7"/>
+
+					<RadioGroup
+						android:layout_width="0dp"
+						android:layout_height="wrap_content"
+						android:layout_weight="7"
+						android:orientation="horizontal">
+						<RadioButton
+							android:id="@+id/addTransacaoDialogRadioBtnDespesa"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:checked="true"
+							android:text="Despesa"
+							/>
+						<RadioButton
+							android:id="@+id/addTransacaoDialogRadioBtnReceita"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:text="Receita"
+							/>
+					</RadioGroup>
 			    </LinearLayout>
 
 				<LinearLayout
@@ -69,19 +83,19 @@
 						android:layout_height="wrap_content"
 						android:layout_weight="7"/>
 				</LinearLayout>
-		        
-		        <LinearLayout 
+
+		        <LinearLayout
 		            android:layout_width="match_parent"
 		            android:layout_height="wrap_content"
 		            android:orientation="horizontal"
 		            android:gravity="center">
-		            
+
 		            <TextView
 		                android:layout_width="0dp"
 		                android:layout_height="wrap_content"
 		                android:layout_weight="3"
 		                android:text="@string/add_transacao_dialog_valor"/>
-				    <EditText 
+				    <EditText
 				        android:id="@+id/addTransacaoDialogEditTxtValor"
 				        android:layout_width="0dp"
 				        android:layout_height="wrap_content"
@@ -111,20 +125,20 @@
 						android:layout_height="wrap_content"
 						android:layout_weight="7"/>
 				</LinearLayout>
-			    
-			    <LinearLayout 
+
+			    <LinearLayout
 			        android:id="@+id/addTransacaoDialogLayoutDescricao"
 		            android:layout_width="match_parent"
 		            android:layout_height="wrap_content"
 		            android:orientation="horizontal"
 		            android:gravity="center">
-		            
+
 		            <TextView
 		                android:layout_width="0dp"
 		                android:layout_height="wrap_content"
 		                android:layout_weight="3"
 		                android:text="@string/add_transacao_dialog_descricao"/>
-				    <EditText 
+				    <EditText
 				        android:id="@+id/addTransacaoDialogEditTxtDescrição"
 				        android:layout_width="0dp"
 				        android:layout_height="wrap_content"
@@ -132,20 +146,20 @@
 				        android:gravity="center"
 				        android:hint="@string/add_transacao_dialog_descricao_hint"/>
 			    </LinearLayout>
-			    
-	   		    <LinearLayout 
+
+	   		    <LinearLayout
 	   		        android:id="@+id/addTransacaoDialogLayoutData"
 		            android:layout_width="match_parent"
 		            android:layout_height="wrap_content"
 		            android:orientation="horizontal"
 		            android:gravity="center">
-		            
+
 		            <TextView
 		                android:layout_width="0dp"
 		                android:layout_height="wrap_content"
 		                android:layout_weight="3"
 		                android:text="@string/add_transacao_dialog_data"/>
-				    <Button 
+				    <Button
 				        android:id="@+id/addTransacaoDialogBtnData"
 				        android:layout_width="0dp"
 				        android:layout_height="wrap_content"
@@ -153,57 +167,57 @@
 				        android:gravity="center"
 				        android:text="04/05/2014"/>
 			    </LinearLayout>
-			    
-	  		    <LinearLayout 
+
+	  		    <LinearLayout
 	  		        android:id="@+id/addTransacaoDialogLayoutCategoria"
 		            android:layout_width="match_parent"
 		            android:layout_height="wrap_content"
 		            android:orientation="horizontal"
 		            android:gravity="center">
-		            
+
 		            <TextView
 		                android:layout_width="0dp"
 		                android:layout_height="wrap_content"
 		                android:layout_weight="3"
 		                android:text="@string/add_transacao_dialog_categoria"/>
-		            
-				    <Spinner 
+
+				    <Spinner
 				        android:id="@+id/addTransacaoDialogSpinnerCategoria"
 				        android:layout_width="0dp"
 				        android:layout_height="wrap_content"
 				        android:layout_weight="6"/>
-				    
-				    <Button 
+
+				    <Button
 				        android:id="@+id/addTransacaoDialogBtnAddCategoria"
 				        android:layout_width="0dp"
 				        android:layout_height="wrap_content"
 				        android:layout_weight="1"
 				        android:background="@drawable/ic_action_new"/>
 			    </LinearLayout>
-			    
-	  		    <LinearLayout 
+
+	  		    <LinearLayout
 	  		        android:id="@+id/addTransacaoDialogLayoutConta"
 		            android:layout_width="match_parent"
 		            android:layout_height="wrap_content"
 		            android:orientation="horizontal"
 		            android:gravity="center">
-		            
+
 		            <TextView
 		                android:layout_width="0dp"
 		                android:layout_height="wrap_content"
 		                android:layout_weight="3"
 		                android:text="@string/add_transacao_dialog_conta"/>
-		            
-				    <Spinner 
+
+				    <Spinner
 				        android:id="@+id/addTransacaoDialogSpinnerConta"
 				        android:layout_width="0dp"
 				        android:layout_height="wrap_content"
 				        android:layout_weight="7"/>
 			    </LinearLayout>
-			    
-			    
+
+
 		    </LinearLayout>
-		    
+
 	    </LinearLayout>
     </ScrollView>
 

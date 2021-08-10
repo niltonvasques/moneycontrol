@@ -39,6 +39,8 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -528,7 +530,8 @@ public class MessageUtils {
 		final Transacao t = new Transacao();
 
 		final List<TipoTransacao> tipos = db.select(TipoTransacao.class);
-		final List<CategoriaTransacao> categorias = db.select(CategoriaTransacao.class, QuerysUtil.whereNoSystemCategorias(2));
+		String categoriasQuery = QuerysUtil.whereNoSystemCategorias(TipoTransacao.DEBITO);
+		final List<CategoriaTransacao> categorias = db.select(CategoriaTransacao.class, categoriasQuery);
 		final List<Conta> contas = db.select(Conta.class);
 
 		int startContaPos = 0;
@@ -585,24 +588,20 @@ public class MessageUtils {
             }
         });
 
-		final Spinner spinnerTipos = (Spinner) view.findViewById(R.id.addTransacaoDialogSpinnerTipo);
-		spinnerTipos.setAdapter(new ArrayAdapter<TipoTransacao>(context, android.R.layout.simple_list_item_1, tipos));
-		spinnerTipos.setSelection(1);
+		final RadioButton btnReceita = view.findViewById(R.id.addTransacaoDialogRadioBtnReceita);
 
-		final Spinner spinnerCategoria = (Spinner) view.findViewById(R.id.addTransacaoDialogSpinnerCategoria);
-		spinnerCategoria.setAdapter(new ArrayAdapter<CategoriaTransacao>(context, android.R.layout.simple_list_item_1, categorias));
+		final Spinner spinnerCategoria = view.findViewById(R.id.addTransacaoDialogSpinnerCategoria);
+		spinnerCategoria.setAdapter(new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, categorias));
 
 		view.findViewById(R.id.addTransacaoDialogBtnAddCategoria).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				MessageUtils.showAddCategoria(context, inflater, db, new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						TipoTransacao tipo = (TipoTransacao)spinnerTipos.getSelectedItem();
-						categorias.clear();
-						categorias.addAll(db.select(CategoriaTransacao.class, QuerysUtil.whereNoSystemCategorias(tipo.getId())));
-						((ArrayAdapter)spinnerCategoria.getAdapter()).notifyDataSetChanged();
-					}
+				MessageUtils.showAddCategoria(context, inflater, db, (dialog, which) -> {
+					int tipo = TipoTransacao.DEBITO;
+					if (btnReceita.isChecked()) tipo = TipoTransacao.CREDITO;
+					categorias.clear();
+					categorias.addAll(db.select(CategoriaTransacao.class, QuerysUtil.whereNoSystemCategorias(tipo)));
+					((ArrayAdapter)spinnerCategoria.getAdapter()).notifyDataSetChanged();
 				});
 			}
 		});
@@ -611,20 +610,12 @@ public class MessageUtils {
 		spinnerContas.setAdapter(new ArrayAdapter<Conta>(context, android.R.layout.simple_list_item_1, contas));
 		spinnerContas.setSelection(startContaPos);
 
-		spinnerTipos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-			@Override
-			public void onItemSelected(AdapterView<?> arg0, View arg1,int position, long arg3) {
-				TipoTransacao tipo = (TipoTransacao)spinnerTipos.getSelectedItem();
-				categorias.clear();
-				categorias.addAll(db.select(CategoriaTransacao.class, QuerysUtil.whereNoSystemCategorias(tipo.getId())));
-				((ArrayAdapter)spinnerCategoria.getAdapter()).notifyDataSetChanged();
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> arg0) {
-				// TODO Auto-generated method stub
-
-			}
+		btnReceita.setOnCheckedChangeListener((buttonView, isChecked) -> {
+			int tipo = TipoTransacao.DEBITO;
+			if (btnReceita.isChecked()) tipo = TipoTransacao.CREDITO;
+			categorias.clear();
+			categorias.addAll(db.select(CategoriaTransacao.class, QuerysUtil.whereNoSystemCategorias(tipo)));
+			((ArrayAdapter)spinnerCategoria.getAdapter()).notifyDataSetChanged();
 		});
 
 
@@ -769,26 +760,19 @@ public class MessageUtils {
 			}
 		}
 
-		int startTipoTransacaoPos = 0;
-
-		for(int i = 0; i < tipos.size(); i++) {
-			if(tipos.get(i).getId() == c.getId_TipoTransacao()) {
-				startTipoTransacaoPos = i;
-				break;
-			}
-		}
-
-		final Spinner spinnerTipos = (Spinner) view.findViewById(R.id.addTransacaoDialogSpinnerTipo);
+		final RadioButton btnReceita = view.findViewById(R.id.addTransacaoDialogRadioBtnReceita);
+		final RadioButton btnDespesa = view.findViewById(R.id.addTransacaoDialogRadioBtnDespesa);
 		final Spinner spinnerCategoria = (Spinner) view.findViewById(R.id.addTransacaoDialogSpinnerCategoria);
 		final Spinner spinnerContas = (Spinner) view.findViewById(R.id.addTransacaoDialogSpinnerConta);
 		final Button btnAddCategory = (Button) 		    view.findViewById(R.id.addTransacaoDialogBtnAddCategoria);
+
 		if(c.isSystem() || t.getId_Compra() > 0){
 			view.findViewById(R.id.addTransacaoDialogLayoutTipo).setVisibility(View.GONE);
 			view.findViewById(R.id.addTransacaoDialogLayoutCategoria).setVisibility(View.GONE);
 			view.findViewById(R.id.addTransacaoDialogLayoutConta).setVisibility(View.GONE);
 		}else{
-			spinnerTipos.setAdapter(new ArrayAdapter<TipoTransacao>(context, android.R.layout.simple_list_item_1, tipos));
-			spinnerTipos.setSelection(startTipoTransacaoPos);
+			if (c.getId_TipoTransacao() == TipoTransacao.CREDITO) btnReceita.setChecked(true);
+			else btnDespesa.setChecked(true);
 
 			spinnerCategoria.setAdapter(new ArrayAdapter<CategoriaTransacao>(context, android.R.layout.simple_list_item_1, categorias));
 			spinnerCategoria.setSelection(startCategoria);
@@ -796,20 +780,11 @@ public class MessageUtils {
 			spinnerContas.setAdapter(new ArrayAdapter<Conta>(context, android.R.layout.simple_list_item_1, contas));
 			spinnerContas.setSelection(startContaPos);
 
-			spinnerTipos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-				@Override
-				public void onItemSelected(AdapterView<?> arg0, View arg1,int position, long arg3) {
-					TipoTransacao tipo = (TipoTransacao)spinnerTipos.getSelectedItem();
-					categorias.clear();
-					categorias.addAll(db.select(CategoriaTransacao.class, QuerysUtil.whereNoSystemCategorias(tipo.getId())));
-					((ArrayAdapter)spinnerCategoria.getAdapter()).notifyDataSetChanged();
-				}
-
-				@Override
-				public void onNothingSelected(AdapterView<?> arg0) {
-					// TODO Auto-generated method stub
-
-				}
+			btnReceita.setOnCheckedChangeListener((buttonView, isChecked) -> {
+			    int tipo = isChecked ? TipoTransacao.CREDITO : TipoTransacao.DEBITO;
+				categorias.clear();
+				categorias.addAll(db.select(CategoriaTransacao.class, QuerysUtil.whereNoSystemCategorias(tipo)));
+				((ArrayAdapter)spinnerCategoria.getAdapter()).notifyDataSetChanged();
 			});
 
 			btnAddCategory.setOnClickListener(new OnClickListener() {
@@ -818,9 +793,9 @@ public class MessageUtils {
 					MessageUtils.showAddCategoria(context, inflater, db, new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
-							TipoTransacao tipo = (TipoTransacao)spinnerTipos.getSelectedItem();
+							int tipo = btnReceita.isChecked() ? TipoTransacao.CREDITO : TipoTransacao.DEBITO;
 							categorias.clear();
-							categorias.addAll(db.select(CategoriaTransacao.class, QuerysUtil.whereNoSystemCategorias(tipo.getId())));
+							categorias.addAll(db.select(CategoriaTransacao.class, QuerysUtil.whereNoSystemCategorias(tipo)));
 							((ArrayAdapter)spinnerCategoria.getAdapter()).notifyDataSetChanged();
 						}
 					});
