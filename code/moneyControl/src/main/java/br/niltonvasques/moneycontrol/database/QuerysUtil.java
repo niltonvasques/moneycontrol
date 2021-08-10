@@ -119,6 +119,7 @@ public class QuerysUtil {
 	public static final String sumContasDebitoWithDateInterval(Date range){
 		return SUM_CONTAS_DEBITO+" " +
 				"AND c.nome not like 'Transferência' "+
+				"AND c.nome not like 'Investimento' "+
 				"AND data < date('"+DateUtil.sqlDateFormat().format(range)+"', '+1 month') AND " +
 				"data >= date('"+DateUtil.sqlDateFormat().format(range)+"')";
 	}
