@@ -70,44 +70,32 @@ public class InvestimentosFragment extends Fragment{
 	}
 
 	private void loadComponentsFromXml() {
-		monthView 	= (ChangeMonthView) myFragmentView.findViewById(R.id.reportInvestimentosFragmentChangeMonthView);
-		listViewAtivos = (ListView) myFragmentView.findViewById(R.id.transacoesActivityListViewTransacoes);
+		monthView 	= myFragmentView.findViewById(R.id.reportInvestimentosFragmentChangeMonthView);
+		listViewAtivos = myFragmentView.findViewById(R.id.transacoesActivityListViewTransacoes);
 	}
 
 	private void configureComponents() {
 		
-		monthView.setListener(new ChangeMonthListener() {
-			@Override
-			public void onMonthChange(Date time) {
-				update();				
-			}
-		});
+		monthView.setListener(time -> update());
         
-//		ativos = db.select(Ativo.class, " WHERE data < date('"+DateUtil.sqlDateFormat().format(dateRange.getTime())+"','+1 month')");
         ativos = db.select(Ativo.class, "WHERE (SELECT count(*) FROM MovimentacaoAtivo WHERE id_Ativo = Ativo.id) > 0");
-        for (Ativo a : ativos) {
-			////Log.i(TAG, a.toString());
-		}
-		
+
 		listAdapter = new AtivoAdapter(ativos, getActivity(), monthView.getDateRange(), inflater, app);
 		listViewAtivos.setAdapter(listAdapter);
-		listViewAtivos.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int position,long arg3) {
-				Ativo ativo = ativos.get(position);
+		listViewAtivos.setOnItemClickListener((arg0, arg1, position, arg3) -> {
+			Ativo ativo = ativos.get(position);
 //				MessageUtils.showEditAtivo(getActivity(), ativo, inflater, db, new OnClickListener() {
 //					@Override
 //					public void onClick(DialogInterface dialog, int which) {
 //						update();
 //					}
 //				});
-				Fragment fragment = new MovimentacaoAtivoFragment();
-				Bundle args = new Bundle();
-				args.putInt("id_Ativo", ativo.getId());
-				args.putString("range", DateUtil.sqlDateFormat().format(monthView.getDateRange().getTime()));
-				fragment.setArguments(args);
-				((NVFragmentActivity)getActivity()).changeFragment(fragment);
-			}
+			Fragment fragment = new MovimentacaoAtivoFragment();
+			Bundle args = new Bundle();
+			args.putInt("id_Ativo", ativo.getId());
+			args.putString("range", DateUtil.sqlDateFormat().format(monthView.getDateRange().getTime()));
+			fragment.setArguments(args);
+			((NVFragmentActivity)getActivity()).changeFragment(fragment);
 		});
 		
 //		listViewAtivos.setOnItemLongClickListener(new OnItemLongClickListener() {
@@ -141,41 +129,9 @@ public class InvestimentosFragment extends Fragment{
 	
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-//		inflater.inflate(R.menu.main_transacaoes_actions, menu);
 		super.onCreateOptionsMenu(menu, inflater);
 	}
-	
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-	    // Handle presses on the action bar items
-	    switch (item.getItemId()) {
-	        case R.id.action_add:
-//	        	MessageUtils.showAddTransacao(getActivity(), inflater, db, 0, new OnClickListener() {
-//					@Override
-//					public void onClick(DialogInterface dialog, int which) {
-//						update();
-//					}
-//				});
-	            return true;
-	            
-	        case R.id.action_group:
-//	        	if(item.getTitle().equals(getActivity().getString(R.string.action_group))){
-//	        		item.setTitle(getActivity().getString(R.string.action_disgroup));
-//		        	listViewAtivos.setVisibility(View.GONE);
-//		        	expandableListView.setVisibility(View.VISIBLE);
-//	        	}else{
-//	        		item.setTitle(getActivity().getString(R.string.action_group));
-//		        	listViewAtivos.setVisibility(View.VISIBLE);
-//		        	expandableListView.setVisibility(View.GONE);
-//	        	}
-	        	
-	        	return true;
-	        default:
-	            return super.onOptionsItemSelected(item);
-	    }
-	}
-	
+
 	private void update(){
 		
 		ativos.clear();
@@ -188,29 +144,6 @@ public class InvestimentosFragment extends Fragment{
 		}
 		listAdapter.notifyDataSetChanged();
 
-		float credito = 0;
-//		String creditoQuery = db.runQuery(QuerysUtil.sumContasCreditoWithDateInterval(dateRange.getTime()));
-//		if(creditoQuery != null && creditoQuery.length() > 0){
-//			credito = Float.valueOf(creditoQuery);
-//		}
-		
-		float debito = 0;
-//		String debitoQuery = db.runQuery(QuerysUtil.sumContasDebitoWithDateInterval(dateRange.getTime()));
-//		if(debitoQuery != null && debitoQuery.length() > 0){
-//			debito = Float.valueOf(debitoQuery);
-//		}
-		
-//		String saldo = db.runQuery(QuerysUtil.computeSaldoBeforeDate(dateRange.getTime()));
-//		float saldoSum = 0;
-//		if(saldo != null && saldo.length() > 0){
-//			saldoSum = Float.valueOf(saldo);
-//		}		
-		
-//		saldo = db.runQuery(QuerysUtil.sumSaldoContas());
-//		if(saldo != null && saldo.length() > 0){
-//			saldoSum += Float.valueOf(saldo);
-//		}
-		
 		String sumStr = db.runQuery("SELECT SUM(patrimonio) " +
 									"FROM (SELECT patrimonio " +
 											"FROM ( SELECT * FROM MovimentacaoAtivo " +
@@ -222,12 +155,9 @@ public class InvestimentosFragment extends Fragment{
 		try{
 			sum = Float.valueOf(sumStr);
 		}catch(Exception e){}
-		
-//		saldoSum += credito - debito;
-		
-		((TextView)myFragmentView.findViewById(R.id.transacoesActivityTxtDebitosSum)).setText("R$ "+String.format("%.2f", debito));
-		((TextView)myFragmentView.findViewById(R.id.transacoesActivityTxtCreditosSum)).setText("R$ "+String.format("%.2f",credito));
-		((TextView)myFragmentView.findViewById(R.id.transacoesActivityTxtSaldoSum)).setText("R$ "+String.format("%.2f",sum));
+
+		TextView txtSaldo = myFragmentView.findViewById(R.id.transacoesActivityTxtSaldoSum);
+		txtSaldo.setText("R$ "+String.format("%.2f",sum));
 	}
 
 }

@@ -33,7 +33,8 @@
   <string name="action_disgroup">Desagrupar</string>
   <string name="action_investment">Investir</string>
 
-  <string name="default_currency_value">R$ 0.00</string>
+  <string name="default_currency_value">R$ 1000300.00</string>
+  <string name="default_percent">0.00 %</string>
 
   <!-- add_categoria_dialog.xml -->
   <string name="categoria_dialog_title">Adicionar Categoria</string>

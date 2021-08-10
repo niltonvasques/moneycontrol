@@ -83,12 +83,11 @@ public class ViewFactory {
                                            final LayoutInflater inflater, final DialogInterface.OnClickListener listener) {
         View view = inflater.inflate(R.layout.ativo_list_item, null);
 
-        TextView txtNome = (TextView) view.findViewById(R.id.transacaoListItemTxtDescricao);
-        TextView txtValor = (TextView) view.findViewById(R.id.ativoListItemTxtPrice);
-        TextView txtProfit = (TextView) view.findViewById(R.id.ativoListItemTxtProfit);
-        TextView txtYearProfit = (TextView) view.findViewById(R.id.ativoListItemTxtYearProfit);
-//		TextView txtData = (TextView) view.findViewById(R.id.transacaoListItemTxtData);
-        Button btnNewEvent = (Button) view.findViewById(R.id.ativoListItemBtnNewEvent);
+        TextView txtNome = view.findViewById(R.id.transacaoListItemTxtDescricao);
+        TextView txtValor = view.findViewById(R.id.ativoListItemTxtPrice);
+        TextView txtProfit = view.findViewById(R.id.ativoListItemTxtProfit);
+        TextView txtYearProfit = view.findViewById(R.id.ativoListItemTxtYearProfit);
+        View btnNewEvent = view.findViewById(R.id.ativoListItemBtnNewEvent);
 
 //		String tipo = app.getDatabase().runQuery(QuerysUtil.checkTipoAtivo(ativo.getId()));
 
@@ -168,13 +167,9 @@ public class ViewFactory {
 //			e.printStackTrace();
 //		}
 //		
-        btnNewEvent.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MessageUtils.showAddAtivoFechamento(context, ativo, inflater, app.getDatabase(), listener);
-            }
+        btnNewEvent.setOnClickListener(v -> {
+            MessageUtils.showAddAtivoFechamento(context, ativo, inflater, app.getDatabase(), listener);
         });
-
 
         return view;
     }
