@@ -386,7 +386,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 		return items;
 	}
 
-	public String runQuery(String query){
+	public synchronized String runQuery(String query){
 		SQLiteDatabase db = this.getReadableDatabase();
 
 		//Log.d(TAG, "runQuery: "+query);
@@ -402,7 +402,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 		return "";
 	}
 
-	public Cursor runQueryCursor(String query){
+	public synchronized Cursor runQueryCursor(String query){
 		SQLiteDatabase db = this.getReadableDatabase();
 
 	 //Log.d(TAG, "runQuery: "+query);
