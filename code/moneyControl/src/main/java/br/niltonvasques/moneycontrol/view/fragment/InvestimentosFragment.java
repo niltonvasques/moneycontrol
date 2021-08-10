@@ -25,6 +25,7 @@ import br.niltonvasques.moneycontrol.database.QuerysUtil;
 import br.niltonvasques.moneycontrol.database.bean.Ativo;
 import br.niltonvasques.moneycontrol.database.bean.MovimentacaoAtivo;
 import br.niltonvasques.moneycontrol.util.DateUtil;
+import br.niltonvasques.moneycontrol.util.NumberUtil;
 import br.niltonvasques.moneycontrol.view.adapter.AtivoAdapter;
 import br.niltonvasques.moneycontrol.view.custom.ChangeMonthView;
 import br.niltonvasques.moneycontrol.view.custom.ChangeMonthView.ChangeMonthListener;
@@ -157,7 +158,7 @@ public class InvestimentosFragment extends Fragment{
 		}catch(Exception e){}
 
 		TextView txtSaldo = myFragmentView.findViewById(R.id.transacoesActivityTxtSaldoSum);
-		txtSaldo.setText("R$ "+String.format("%.2f",sum));
+		txtSaldo.setText("R$ "+ NumberUtil.format(sum));
 	}
 
 }

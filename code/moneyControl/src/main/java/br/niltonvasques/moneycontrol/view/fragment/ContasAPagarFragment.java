@@ -32,6 +32,7 @@ import br.niltonvasques.moneycontrol.database.bean.Conta;
 import br.niltonvasques.moneycontrol.database.bean.ContaAPagar;
 import br.niltonvasques.moneycontrol.util.DateUtil;
 import br.niltonvasques.moneycontrol.util.MessageUtils;
+import br.niltonvasques.moneycontrol.util.NumberUtil;
 import br.niltonvasques.moneycontrol.view.adapter.ContaAPagarAdapter;
 import br.niltonvasques.moneycontrol.view.adapter.ContaAdapter;
 import br.niltonvasques.moneycontrol.view.custom.ChangeMonthView;
@@ -187,9 +188,9 @@ public class ContasAPagarFragment extends Fragment{
 
         float restante = credito - debito;
 
-        ((TextView)myFragmentView.findViewById(R.id.contasAPagarFragmentTxtSaldoSum)).setText("R$ "+String.format("%.2f",restante));
-        ((TextView)myFragmentView.findViewById(R.id.contasAPagarFragmentTxtCreditosSum)).setText("R$ " + String.format("%.2f", credito));
-        ((TextView)myFragmentView.findViewById(R.id.contasAPagarFragmentTxtDebitosSum)).setText("R$ " + String.format("%.2f", debito));
+        ((TextView)myFragmentView.findViewById(R.id.contasAPagarFragmentTxtSaldoSum)).setText("R$ "+ NumberUtil.format(restante));
+        ((TextView)myFragmentView.findViewById(R.id.contasAPagarFragmentTxtCreditosSum)).setText("R$ " + NumberUtil.format(credito));
+        ((TextView)myFragmentView.findViewById(R.id.contasAPagarFragmentTxtDebitosSum)).setText("R$ " + NumberUtil.format(debito));
     }
 
     private GregorianCalendar getCalendarLastDay() {

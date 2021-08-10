@@ -38,6 +38,7 @@ import br.niltonvasques.moneycontrol.database.bean.Transacao;
 import br.niltonvasques.moneycontrol.util.AssetUtil;
 import br.niltonvasques.moneycontrol.util.DateUtil;
 import br.niltonvasques.moneycontrol.util.MessageUtils;
+import br.niltonvasques.moneycontrol.util.NumberUtil;
 import br.niltonvasques.moneycontrol.util.ViewUtil;
 import br.niltonvasques.moneycontrolbeta.R;
 
@@ -66,7 +67,7 @@ public class ViewFactory {
         }
 
         txtNome.setText(tr.getDescricao());
-        txtSaldo.setText("R$ " + String.format("%.2f", tr.getValor()));
+        txtSaldo.setText("R$ " + NumberUtil.format(tr.getValor()));
         try {
             GregorianCalendar g = new GregorianCalendar();
             g.setTime(DateUtil.sqlDateFormat().parse(tr.getData()));
@@ -105,7 +106,7 @@ public class ViewFactory {
 
                 profit = ((lastValorCota/penultValorCota)-1)*100;
 
-                txtValor.setText("R$ "+String.format("%.2f",lastMovimentacao.getPatrimonio()));
+                txtValor.setText("R$ "+ NumberUtil.format(lastMovimentacao.getPatrimonio()));
                 txtProfit.setText(String.format("%.2f",profit)+" %");
 
                 if(profit < 0){
@@ -117,7 +118,7 @@ public class ViewFactory {
             }
 
         }else{
-            txtValor.setText("R$ "+String.format("%.2f", 0f));
+            txtValor.setText("R$ "+NumberUtil.format(0f));
             txtProfit.setText("0.00 %");
         }
 
@@ -181,7 +182,7 @@ public class ViewFactory {
         TextView txtValor = (TextView) view.findViewById(R.id.ativoListItemTxtPrice);
         TextView txtData = (TextView) view.findViewById(R.id.transacaoListItemTxtData);
 
-        txtValor.setText("R$ "+String.format("%.2f", ativo.getPatrimonio()));
+        txtValor.setText("R$ "+NumberUtil.format(ativo.getPatrimonio()));
 
         try {
             GregorianCalendar g = new GregorianCalendar();
@@ -216,8 +217,8 @@ public class ViewFactory {
             if(cur.moveToFirst()){
                 float total = cur.getFloat(0);
                 float restante = tr.getValor()-total;
-                txtRealizado.setText("R$ "+String.format("%.2f", total));
-                txtRestante.setText("R$ "+String.format("%.2f", restante));
+                txtRealizado.setText("R$ "+NumberUtil.format(total));
+                txtRestante.setText("R$ "+NumberUtil.format(restante));
                 if(restante < 0){
                     txtRestante.setTextColor(Color.RED);
                 }
@@ -231,7 +232,7 @@ public class ViewFactory {
 
 
         txtNome.setText(c.getNome());
-        txtSaldo.setText("R$ "+String.format("%.2f", tr.getValor()));
+        txtSaldo.setText("R$ "+NumberUtil.format(tr.getValor()));
 
         return view;
     }
@@ -339,8 +340,8 @@ public class ViewFactory {
                 }
             });
 
-            txtCreditos.setText("limite: R$ "+String.format("%.2f",f1.getLimite()));
-            txtDebitos.setText("fatura: R$ "+String.format("%.2f",f1.getValor()));
+            txtCreditos.setText("limite: R$ "+NumberUtil.format(f1.getLimite()));
+            txtDebitos.setText("fatura: R$ "+NumberUtil.format(f1.getValor()));
 
             switch (f1.getStatus()) {
                 case PAGA:
@@ -360,9 +361,9 @@ public class ViewFactory {
                     break;
             }
         }else{
-            txtCreditos.setText("R$ "+String.format("%.2f",creditoSum));
-            txtDebitos.setText("R$ "+String.format("%.2f",debitoSum));
-            txtSaldo.setText("R$ "+String.format("%.2f",(saldoAnterior+creditoSum-debitoSum)));
+            txtCreditos.setText("R$ "+NumberUtil.format(creditoSum));
+            txtDebitos.setText("R$ "+NumberUtil.format(debitoSum));
+            txtSaldo.setText("R$ "+NumberUtil.format((saldoAnterior+creditoSum-debitoSum)));
         }
         return view;
     }
@@ -435,7 +436,7 @@ public class ViewFactory {
         }
 //
         txtNome.setText(tr.getDescricao());
-        txtSaldo.setText("R$ " + String.format("%.2f", valor));
+        txtSaldo.setText("R$ " + NumberUtil.format(valor));
 
         BootstrapButton btn = (BootstrapButton) view.findViewById(R.id.contaAPagarListItemBtnPagarFatura);
         btn.setOnClickListener(new OnClickListener() {
