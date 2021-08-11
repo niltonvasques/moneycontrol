@@ -817,28 +817,7 @@ public class MessageUtils {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				try{
-					SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");				
-
-					try{
-						float valor = Float.valueOf(editValor.getText().toString());
-						t.setValor(valor);
-					}catch(Exception e){
-						e.printStackTrace();
-					}
-
-					t.setDescricao(editDescricao.getText().toString());
-
-					CategoriaTransacao cat = (CategoriaTransacao) spinnerCategoria.getSelectedItem();
-					if(cat != null){
-						t.setId_CategoriaTransacao(cat.getId());					
-					}
-
-					Conta cc = (Conta) spinnerContas.getSelectedItem();
-					if(cc != null){
-						t.setId_Conta(cc.getId());					
-					}
-
-					t.setData(format.format(value.getTime()));
+					fillTransacao(t, value, spinnerCategoria, spinnerContas, editValor, editDescricao);
 
 					db.update(t);
 				}catch (Exception e){
@@ -846,7 +825,6 @@ public class MessageUtils {
 					MessageUtils.showDefaultErrorMessage(context);
 				}
 				listener.onClick(dialog, which);
-
 			}
 		});
 
@@ -854,6 +832,19 @@ public class MessageUtils {
 			public void onClick(DialogInterface dialog, int whichButton) {
 				dialog.cancel();
 			}
+		});
+
+		alert.setNeutralButton("Duplicar", (dialog, which) -> {
+			t.setId(0);
+			try{
+				fillTransacao(t, value, spinnerCategoria, spinnerContas, editValor, editDescricao);
+
+				db.insert(t);
+			}catch (Exception e){
+				e.printStackTrace();
+				MessageUtils.showDefaultErrorMessage(context);
+			}
+			listener.onClick(dialog, which);
 		});
 
 
@@ -888,6 +879,31 @@ public class MessageUtils {
 
 
 		alert.show();        
+	}
+
+	private static void fillTransacao(Transacao t, GregorianCalendar value, Spinner spinnerCategoria, Spinner spinnerContas, EditText editValor, EditText editDescricao) {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
+		try {
+			float valor = Float.valueOf(editValor.getText().toString());
+			t.setValor(valor);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		t.setDescricao(editDescricao.getText().toString());
+
+		CategoriaTransacao cat = (CategoriaTransacao) spinnerCategoria.getSelectedItem();
+		if (cat != null) {
+			t.setId_CategoriaTransacao(cat.getId());
+		}
+
+		Conta cc = (Conta) spinnerContas.getSelectedItem();
+		if (cc != null) {
+			t.setId_Conta(cc.getId());
+		}
+
+		t.setData(format.format(value.getTime()));
 	}
 
 	public static void showAddCategoria(final Context context, final LayoutInflater inflater, final DatabaseHandler db, final DialogInterface.OnClickListener listener){
