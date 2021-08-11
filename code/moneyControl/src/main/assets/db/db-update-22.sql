@@ -1,0 +1,2 @@
+ALTER TABLE Conta ADD favorita INTEGER DEFAULT 0;
+

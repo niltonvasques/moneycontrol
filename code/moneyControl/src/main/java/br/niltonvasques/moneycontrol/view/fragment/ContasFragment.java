@@ -87,7 +87,7 @@ public class ContasFragment extends Fragment{
 			}
 		});
 		
-		contas = db.select(Conta.class);
+		contas = db.select(Conta.class, "ORDER BY favorita DESC");
 		
 		listAdapter = new ContaAdapter(contas, monthView.getDateRange(), inflater, app);
 		listViewContas.setAdapter(listAdapter);
@@ -174,7 +174,7 @@ public class ContasFragment extends Fragment{
 	
 	private void update(){
 		contas.clear();
-		contas.addAll(db.select(Conta.class));
+		contas.addAll(db.select(Conta.class, "ORDER BY favorita DESC"));
 		listAdapter.notifyDataSetChanged();
 		
 		float credito = 0;
