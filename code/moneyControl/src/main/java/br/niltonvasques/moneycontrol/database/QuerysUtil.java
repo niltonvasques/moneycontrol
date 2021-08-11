@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import br.niltonvasques.moneycontrol.database.bean.TipoTransacao;
 import br.niltonvasques.moneycontrol.util.DateUtil;
 
 public class QuerysUtil {
@@ -249,8 +250,12 @@ public class QuerysUtil {
 				"AND data < date('"+DateUtil.sqlDateFormat().format(range)+"', '+1 month') AND " +
 				"data >= date('"+DateUtil.sqlDateFormat().format(range)+"') "+
 				"AND c.nome not like 'Transferência'"+
-				"AND c.nome not like 'Investimento'"+
-				"GROUP BY id_CategoriaTransacao "+ 
+                // Removing aportes from Despesas chart and add Proventos to Receitas chart
+				"AND c.id NOT IN (" +
+				"  SELECT id FROM CategoriaTransacao WHERE system = 1 AND nome = 'Investimento'" +
+				"  AND id_TipoTransacao = " + TipoTransacao.DEBITO +
+				")"+
+				"GROUP BY id_CategoriaTransacao "+
 				"ORDER BY Max(c.nome) ";
 	}
 	
@@ -319,8 +324,13 @@ public class QuerysUtil {
 		return "SELECT SUM(valor) as total, strftime(\"%m\", data) as month " +
 				"FROM Transacao t " +
 				"INNER JOIN CategoriaTransacao c on c.id = t.id_CategoriaTransacao " +
-				"WHERE c.id_TipoTransacao = "+tipoTransacao+" AND c.nome not like 'Transferência' AND c.nome not like 'Investimento'\n" + 
-				"AND strftime(\"%Y\", data) = '"+year+"'\n" + 
+				"WHERE c.id_TipoTransacao = "+tipoTransacao+" AND c.nome not like 'Transferência'\n" +
+				// Removing aportes and keep Proventos in chart
+				"AND c.id NOT IN (" +
+				"  SELECT id FROM CategoriaTransacao WHERE system = 1 AND nome = 'Investimento'" +
+				"  AND id_TipoTransacao = " + TipoTransacao.DEBITO +
+				")"+
+				"AND strftime(\"%Y\", data) = '"+year+"'\n" +
 				"GROUP BY strftime(\"%m-%Y\", data)\n";
 	}
 	

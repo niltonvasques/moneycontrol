@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import br.niltonvasques.moneycontrol.util.NumberUtil;
 import lecho.lib.hellocharts.model.PieChartData;
 import lecho.lib.hellocharts.model.SliceValue;
 import lecho.lib.hellocharts.util.ChartUtils;
@@ -37,8 +38,6 @@ public class ReportByCategoriasFragment extends Fragment{
 	private ChangeMonthView monthView;
     private PieChartView pieChartView;
 
-	
-	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -79,22 +78,8 @@ public class ReportByCategoriasFragment extends Fragment{
 		pieChartView.setPieChartData(createDataset(app, tipoTransacao, monthView.getDateRange().getTime()));
         
 	}
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		////Log.d(TAG, "onOptionsItemSelected");
-	    // Handle presses on the action bar items
-	    switch (item.getItemId()) {
-	        case R.id.action_add:
-	            return true;
-	        default:
-	            return super.onOptionsItemSelected(item);
-	    }
-	}
-	
-	
+
 	private void update(){
-//		pieChartView.setPieDataset(createDataset(app, tipoTransacao, monthView.getDateRange().getTime()));
 		pieChartView.setPieChartData(createDataset(app, tipoTransacao, monthView.getDateRange().getTime()));
 	}
 	
@@ -109,9 +94,8 @@ public class ReportByCategoriasFragment extends Fragment{
 			do {
 				float valor = c.getFloat(1);
 				float percentual = c.getFloat(2);
-				percentual = Math.round(percentual*100)/100f;
-//				dataset.setValue(c.getString(0)+" R$ "+String.format("%.2f", valor)+" - "+percentual+"%", Double.valueOf(valor));
-				String label = c.getString(0)+" R$ "+String.format("%.2f", valor)+" - "+percentual+"%";
+				percentual = Math.round(percentual * 100) / 100f;
+				String label = c.getString(0)+" R$ "+ NumberUtil.format(valor)+" - "+percentual+"%";
 				SliceValue sliceValue = new SliceValue(valor, ChartUtils.nextColor());
 				sliceValue.setLabel(label);
 				values.add(sliceValue);
@@ -122,54 +106,4 @@ public class ReportByCategoriasFragment extends Fragment{
     	data.setHasLabels(true);
     	return data;
     }
-    
-//    private void generateData() {
-//        int numValues = 6;
-//
-//        List<SliceValue> values = new ArrayList<SliceValue>();
-//        for (int i = 0; i < numValues; ++i) {
-//            SliceValue sliceValue = new SliceValue((float) Math.random() * 30 + 15, ChartUtils.pickColor());
-//            values.add(sliceValue);
-//        }
-//
-////        data.setHasLabels(hasLabels);
-////        data.setHasLabelsOnlyForSelected(hasLabelForSelected);
-////        data.setHasLabelsOutside(hasLabelsOutside);
-////        data.setHasCenterCircle(hasCenterCircle);
-////
-////        if (isExploded) {
-////            data.setSlicesSpacing(24);
-////        }
-////
-////        if (hasCenterText1) {
-////            data.setCenterText1("Hello!");
-////
-////            // Get roboto-italic font.
-////            Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "Roboto-Italic.ttf");
-////            data.setCenterText1Typeface(tf);
-////
-////            // Get font size from dimens.xml and convert it to sp(library uses sp values).
-////            data.setCenterText1FontSize(ChartUtils.px2sp(getResources().getDisplayMetrics().scaledDensity,
-////                    (int) getResources().getDimension(R.dimen.pie_chart_text1_size)));
-////        }
-////
-////        if (hasCenterText2) {
-////            data.setCenterText2("Charts (Roboto Italic)");
-////
-////            Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "Roboto-Italic.ttf");
-////
-////            data.setCenterText2Typeface(tf);
-////            data.setCenterText2FontSize(ChartUtils.px2sp(getResources().getDisplayMetrics().scaledDensity,
-////                    (int) getResources().getDimension(R.dimen.pie_chart_text2_size)));
-////        }
-//
-////        pieChartView.setPieChartData(data);
-//    }
-    
-    @Override
-	public void onPrepareOptionsMenu(Menu menu) {
-		menu.findItem(R.id.action_add).setVisible(false);
-		super.onPrepareOptionsMenu(menu);
-	}
-
 }
