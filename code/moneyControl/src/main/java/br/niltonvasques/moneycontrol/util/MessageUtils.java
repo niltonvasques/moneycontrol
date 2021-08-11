@@ -1098,9 +1098,10 @@ public class MessageUtils {
 				value.get(Calendar.YEAR), 
 				value.get(Calendar.MONTH), 
 				value.get(Calendar.DAY_OF_MONTH));
-		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
-			dateDialog.getDatePicker().setMaxDate(Calendar.getInstance().getTimeInMillis());
-		}
+		// blocking future transfes
+//		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
+//			dateDialog.getDatePicker().setMaxDate(Calendar.getInstance().getTimeInMillis());
+//		}
 
 		btnDate.setOnClickListener(new OnClickListener() {
             @Override
@@ -1108,8 +1109,6 @@ public class MessageUtils {
                 dateDialog.show();
             }
         });
-
-
 
 		alert.show();        
 	}
@@ -1203,9 +1202,10 @@ public class MessageUtils {
 				value.get(Calendar.YEAR), 
 				value.get(Calendar.MONTH), 
 				value.get(Calendar.DAY_OF_MONTH));
-		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
-			dateDialog.getDatePicker().setMaxDate(Calendar.getInstance().getTimeInMillis());
-		}
+		// blocking future payments
+//		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
+//			dateDialog.getDatePicker().setMaxDate(Calendar.getInstance().getTimeInMillis());
+//		}
 
 		btnDate.setOnClickListener(new OnClickListener() {
 			@Override
@@ -1929,9 +1929,10 @@ public class MessageUtils {
                 value.get(Calendar.YEAR),
                 value.get(Calendar.MONTH),
                 value.get(Calendar.DAY_OF_MONTH));
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
-            dateDialog.getDatePicker().setMaxDate(Calendar.getInstance().getTimeInMillis());
-        }
+        // blocking future dates on payments
+//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
+//            dateDialog.getDatePicker().setMaxDate(Calendar.getInstance().getTimeInMillis());
+//        }
 
         btnDate.setOnClickListener(new OnClickListener() {
             @Override
