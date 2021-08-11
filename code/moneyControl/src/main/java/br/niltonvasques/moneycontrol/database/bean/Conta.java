@@ -5,6 +5,8 @@ package br.niltonvasques.moneycontrol.database.bean;
  *
  */
 public class Conta {
+
+	public static int CARTAO = 4;
 	
 //CREATE TABLE Conta (
 //	id INTEGER DEFAULT NULL PRIMARY KEY AUTOINCREMENT,

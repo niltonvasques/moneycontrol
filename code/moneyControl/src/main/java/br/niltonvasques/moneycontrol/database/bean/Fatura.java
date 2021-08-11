@@ -70,4 +70,16 @@ public class Fatura{
 	public void setValorPago(float valorPago) {
 		this.valorPago = valorPago;
 	}
+
+	@Override
+	public String toString() {
+		return "Fatura{" +
+				"valor=" + valor +
+				", valorPago=" + valorPago +
+				", status=" + status +
+				", date=" + date +
+				", limite=" + limite +
+				", cartao=" + cartao.getId_Conta() +
+				'}';
+	}
 }

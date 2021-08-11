@@ -249,6 +249,9 @@ public class ViewFactory {
         final TextView txtSaldo = (TextView) view.findViewById(R.id.contaListItemTxtSaldo);
         final TextView txtDebitos = (TextView) view.findViewById(R.id.contaListItemTxtDebitos);
         final TextView txtCreditos = (TextView) view.findViewById(R.id.contaListItemTxtCreditos);
+        final TextView txtSaldoTitle = (TextView) view.findViewById(R.id.contaListItemTxtSaldoTitle);
+        final TextView txtDebitosTitle = (TextView) view.findViewById(R.id.contaListItemTxtDebitosTitle);
+        final TextView txtCreditosTitle = (TextView) view.findViewById(R.id.contaListItemTxtCreditosTitle);
 
         txtNome.setText(cc.getNome());
         try {
@@ -269,7 +272,7 @@ public class ViewFactory {
         float debitoSum = 0;
         float creditoSum = 0;
 
-        if(cc.getId_TipoConta() == 4){
+        if(cc.getId_TipoConta() == Conta.CARTAO){
 
             cartao = app.getDatabase().select(CartaoCredito.class, " WHERE id_Conta = "+cc.getId()).get(0);
             cartaoDateRange = (GregorianCalendar)dateRange.clone();
@@ -322,7 +325,7 @@ public class ViewFactory {
         if(saldo != null && saldo.length() > 0) saldoAnterior = Float.valueOf(saldo);
 
 
-        if(cc.getId_TipoConta() == 4){
+        if(cc.getId_TipoConta() == Conta.CARTAO){
             final Fatura f1 = CartaoBusiness.computeFatura(app.getDatabase(), cartao, cartaoDateRange);
 
             final BootstrapButton btnPagarConta = (BootstrapButton) view.findViewById(R.id.contaListItemBtnPagarFatura);
@@ -340,8 +343,11 @@ public class ViewFactory {
                 }
             });
 
-            txtCreditos.setText("limite: R$ "+NumberUtil.format(f1.getLimite()));
-            txtDebitos.setText("fatura: R$ "+NumberUtil.format(f1.getValor()));
+            txtCreditosTitle.setText("Limite");
+            txtDebitosTitle.setText("Fatura");
+            txtSaldoTitle.setText("Status");
+            txtCreditos.setText("R$ "+NumberUtil.format(f1.getLimite()));
+            txtDebitos.setText("R$ "+NumberUtil.format(f1.getValor()));
 
             switch (f1.getStatus()) {
                 case PAGA:

@@ -34,7 +34,7 @@ public class CartaoBusiness {
 		
 		float fatura = Math.abs(saldoAnterior);
 		String faturaStr = db.runQuery(QuerysUtil.sumTransacoesDebitoFromCartaoWithDateInterval(cc.getId_Conta(),cartaoDateRange.getTime()));
-		System.out.println("FATURA: "+faturaStr+" SALDO ANTERIOR: "+saldoAnterior+" - "+cartaoDateRange.getTime());
+		System.out.println("CARTAO " + cc.getId_Conta() + " FATURA: "+faturaStr+" SALDO ANTERIOR: "+saldoAnterior+" - "+cartaoDateRange.getTime());
 		if(faturaStr != null && !faturaStr.equals("")){
 			try{
 				fatura = Float.parseFloat(faturaStr);
@@ -43,7 +43,7 @@ public class CartaoBusiness {
 				e.printStackTrace();
 			}
 		}
-		
+
 		String cartaoSaldo = db.runQuery(QuerysUtil.computeSaldoConta(cc.getId_Conta()));
 		float limite = Float.valueOf(cartaoSaldo);
 		limite = cc.getLimite()-( limite > 0 ? 0 : Math.abs(limite));
