@@ -20,6 +20,12 @@
         <activity
             android:name="br.niltonvasques.moneycontrol.MainActivity"
             android:label="@string/app_name" >
+        </activity>
+
+        <activity
+            android:name="br.niltonvasques.moneycontrol.SplashActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

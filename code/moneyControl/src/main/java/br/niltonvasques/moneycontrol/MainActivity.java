@@ -1,15 +1,10 @@
 package br.niltonvasques.moneycontrol;
 
-import java.util.GregorianCalendar;
-
 import android.annotation.SuppressLint;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.legacy.app.ActionBarDrawerToggle;
-import androidx.fragment.app.Fragment;
-import androidx.drawerlayout.widget.DrawerLayout;
-
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,8 +12,16 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.legacy.app.ActionBarDrawerToggle;
+
+import java.util.GregorianCalendar;
+
 import br.niltonvasques.moneycontrol.activity.NVFragmentActivity;
 import br.niltonvasques.moneycontrol.app.MoneyControlApp;
+import br.niltonvasques.moneycontrol.service.NotificationService;
 import br.niltonvasques.moneycontrol.util.DateUtil;
 import br.niltonvasques.moneycontrol.util.MessageUtils;
 import br.niltonvasques.moneycontrol.view.fragment.AboutFragment;
@@ -31,7 +34,6 @@ import br.niltonvasques.moneycontrol.view.fragment.OrcamentoFragment;
 import br.niltonvasques.moneycontrol.view.fragment.ReportsFragment;
 import br.niltonvasques.moneycontrol.view.fragment.SearchFragment;
 import br.niltonvasques.moneycontrol.view.fragment.TransacoesFragment;
-import br.niltonvasques.moneycontrol.service.NotificationService;
 import br.niltonvasques.moneycontrolbeta.R;
 
 @SuppressLint("NewApi")
@@ -55,7 +57,7 @@ public class MainActivity extends NVFragmentActivity {
     private String[] mDrawerItens;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
-    private ListView mDrawerList;	
+    private ListView mDrawerList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

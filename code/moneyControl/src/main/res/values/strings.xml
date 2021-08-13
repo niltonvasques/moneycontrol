@@ -214,5 +214,9 @@
   <string name="notification_pagar_contas_title">Contas em aberto</string>
   <string name="notification_pagar_contas">Evite juros, pagando suas contas em dia!</string>
 
+  <!-- splash and biometric -->
+  <string name="biometric_title">MoneyControl</string>
+  <string name="biometric_subtitle">Desbloqueie seu app</string>
+  <string name="biometric_negative_button">Cancelar</string>
 
 </resources>
