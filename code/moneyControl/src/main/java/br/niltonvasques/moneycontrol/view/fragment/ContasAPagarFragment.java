@@ -2,8 +2,8 @@ package br.niltonvasques.moneycontrol.view.fragment;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.util.Log;
+import androidx.fragment.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,8 +14,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -28,13 +26,10 @@ import br.niltonvasques.moneycontrol.app.MoneyControlApp;
 import br.niltonvasques.moneycontrol.business.ContaAPagarBusiness;
 import br.niltonvasques.moneycontrol.database.DatabaseHandler;
 import br.niltonvasques.moneycontrol.database.QuerysUtil;
-import br.niltonvasques.moneycontrol.database.bean.Conta;
 import br.niltonvasques.moneycontrol.database.bean.ContaAPagar;
-import br.niltonvasques.moneycontrol.util.DateUtil;
 import br.niltonvasques.moneycontrol.util.MessageUtils;
 import br.niltonvasques.moneycontrol.util.NumberUtil;
 import br.niltonvasques.moneycontrol.view.adapter.ContaAPagarAdapter;
-import br.niltonvasques.moneycontrol.view.adapter.ContaAdapter;
 import br.niltonvasques.moneycontrol.view.custom.ChangeMonthView;
 import br.niltonvasques.moneycontrolbeta.R;
 

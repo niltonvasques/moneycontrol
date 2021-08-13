@@ -3,14 +3,14 @@ package br.niltonvasques.moneycontrol.activity;
 import java.util.Stack;
 
 import br.niltonvasques.moneycontrol.view.fragment.ContasFragment;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBarActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import android.view.MenuItem;
 
-public abstract class NVFragmentActivity extends ActionBarActivity{
+public abstract class NVFragmentActivity extends AppCompatActivity {
 
 	private Fragment overFragment;
 	private Stack<Fragment> stackFragments = new Stack<Fragment>();

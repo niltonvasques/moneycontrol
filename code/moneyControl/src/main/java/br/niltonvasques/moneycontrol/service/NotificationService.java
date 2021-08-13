@@ -7,9 +7,7 @@ import br.niltonvasques.moneycontrol.business.ContaAPagarBusiness;
 import br.niltonvasques.moneycontrol.database.bean.ContaAPagar;
 import br.niltonvasques.moneycontrol.util.DateUtil;
 
-import android.util.Log;
 import android.app.AlarmManager;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.IntentService;
 import android.app.Notification;
@@ -17,20 +15,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
-import android.os.IBinder;
-import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
-import android.support.v4.app.TaskStackBuilder;
-import android.support.v4.content.ContextCompat;
+
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 
 import android.media.RingtoneManager;
-import static android.media.RingtoneManager.TYPE_NOTIFICATION;
-import static android.media.RingtoneManager.getDefaultUri;
 
 import java.util.Calendar;
-import java.util.Random;
-import java.util.Vector;
 import java.util.List;
 import java.util.GregorianCalendar;
 

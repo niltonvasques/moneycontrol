@@ -1,19 +1,15 @@
 package br.niltonvasques.moneycontrol.view.fragment;
 
-import java.util.Date;
 import java.util.List;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.util.Log;
+import androidx.fragment.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -23,12 +19,10 @@ import br.niltonvasques.moneycontrol.app.MoneyControlApp;
 import br.niltonvasques.moneycontrol.database.DatabaseHandler;
 import br.niltonvasques.moneycontrol.database.QuerysUtil;
 import br.niltonvasques.moneycontrol.database.bean.Ativo;
-import br.niltonvasques.moneycontrol.database.bean.MovimentacaoAtivo;
 import br.niltonvasques.moneycontrol.util.DateUtil;
 import br.niltonvasques.moneycontrol.util.NumberUtil;
 import br.niltonvasques.moneycontrol.view.adapter.AtivoAdapter;
 import br.niltonvasques.moneycontrol.view.custom.ChangeMonthView;
-import br.niltonvasques.moneycontrol.view.custom.ChangeMonthView.ChangeMonthListener;
 import br.niltonvasques.moneycontrolbeta.R;
 
 public class InvestimentosFragment extends Fragment{
